@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--  Copyright (C) 2022-2024 CJH.  -->
+<policyDefinitionResources xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" revision="1.0" schemaVersion="1.0" xmlns="http://schemas.microsoft.com/GroupPolicy/2006/07/PolicyDefinitions">
+  <displayName>TimeControl</displayName>
+  <description>TimeControl</description>
+  <resources>
+    <stringTable>
+	  <string id="CJH">CJH</string>
+      <string id="TimeControl">TimeControl</string>
+      <string id="TimeControlDisbFu">Disable the customization feature of TimeControl</string>
+      <string id="TimeControlDisbFu_Help">This policy controls whether the custom feature of TimeControl is disabled or enabled.
+
+Note: To apply this policy, it is necessary to run the clock tool as an administrator. Therefore, it is recommended to use the policy applied in the user configuration (HKEY_CURRENT_USER). The policy in the computer configuration takes precedence over the policy in the user configuration and is effective for all users. TimeControl version must be at least 1.0.15.24051 to support this policy.</string>
+      <string id="TimeControlDisbFuTip">Disable the tip of after disabling the custom function of TimeControl</string>
+      <string id="TimeControlDisbFuTip_Help">This policy controls the display or hiding of disabled prompts when the custom function of TimeControl is disabled.
+
+Note: To apply this policy, it is necessary to run the clock tool as an administrator. Therefore, it is recommended to use the policy applied in the user configuration (HKEY_CURRENT_USER). The policy in the computer configuration takes precedence over the policy in the user configuration and is effective for all users. TimeControl version must be at least 1.0.15.24051 to support this policy.</string>
+    </stringTable>
+  </resources>
+</policyDefinitionResources>

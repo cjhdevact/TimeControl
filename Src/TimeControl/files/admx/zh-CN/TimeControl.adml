@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--  Copyright (C) 2022-2024 CJH.  -->
+<policyDefinitionResources xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" revision="1.0" schemaVersion="1.0" xmlns="http://schemas.microsoft.com/GroupPolicy/2006/07/PolicyDefinitions">
+  <displayName>时钟小工具</displayName>
+  <description>时钟小工具</description>
+  <resources>
+    <stringTable>
+	  <string id="CJH">CJH</string>
+      <string id="TimeControl">时钟小工具（TimeControl）</string>
+      <string id="TimeControlDisbFu">禁用时钟小工具的自定义功能</string>
+      <string id="TimeControlDisbFu_Help">此策略控制时钟小工具（TimeControl）自定义功能是否被禁用。
+
+注意：要应用本策略，需要以管理员身份运行时钟小工具，所以建议使用在用户配置（HKEY_CURRENT_USER）处应用策略，计算机配置里的策略优先于用户配置里的策略，并对所有用户有效。时钟小工具版本须在1.0.15.24051以上才支持本策略。</string>
+      <string id="TimeControlDisbFuTip">关闭禁用时钟小工具的自定义功能后的禁用提示</string>
+      <string id="TimeControlDisbFuTip_Help">此策略控制时钟小工具（TimeControl）自定义功能禁用后是否显示被禁用提示。
+
+注意：要应用本策略，需要以管理员身份运行时钟小工具，所以建议使用在用户配置（HKEY_CURRENT_USER）处应用策略，计算机配置里的策略优先于用户配置里的策略，并对所有用户有效。时钟小工具版本须在1.0.15.24051以上才支持本策略。</string>
+    </stringTable>
+  </resources>
+</policyDefinitionResources>
