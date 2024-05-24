@@ -1,6 +1,6 @@
 ::/*****************************************************\
 ::
-::     TimeControl - 卸载.cmd
+::     TimeControl - 安装.bat
 ::
 ::     版权所有(C) 2022-2024 CJH。
 ::
@@ -8,9 +8,12 @@
 ::
 ::\*****************************************************/
 @echo off
+cls
+title 时钟小工具安装程序
+if exist "%windir%\cpadver.bat" echo 检测到当前已安装教室计算机批量配置工具，请使用其安装包来管理本软件。 & echo 任意键关闭... & pause > nul & goto enda
+if exist "%windir%\csetver.bat" echo 检测到当前已安装计算机批量配置工具，请使用其安装包来管理本软件。 & echo 任意键关闭... & pause > nul & goto enda
 if "%1" == "/noadm" goto main
 fltmc 1>nul 2>nul&& goto main
-title 时钟小工具安装程序
 echo 正在获取管理员权限...
 echo.
 echo 可以使用 %0 /noadm 跳过Bat提权，但请手动以管理员身份运行
@@ -96,6 +99,10 @@ if exist "%windir%\TimeControl.exe" if "%a%" == "1" call "%~dp0UserinitBootUnIns
 if exist "%windir%\TimeControl.exe" if "%a%" == "1" Reg delete HKLM\Software\Microsoft\Windows\CurrentVersion\run /v TimeControl /f
 if exist "%windir%\TimeControl.exe" if "%a%" == "1" del /q "%windir%\TimeControl.exe"
 if exist "%windir%\TimeControl.exe" if "%a%" == "1" del /q "%windir%\TimeControlm.exe"
+if exist "%windir%\TimeControl.exe" if "%a%" == "1" del /q "%windir%\TimeControln35.exe"
+if exist "%windir%\TimeControl.exe" if "%a%" == "1" del /q "%windir%\TimeControln35d.exe"
+
+if exist "%windir%\CJH\TimeControl\TimeControl.exe" del /q "%windir%\CJH\TimeControl\TimeControl.exe"
 
 if not exist "%windir%\CJH\TimeControl" md "%windir%\CJH\TimeControl"
 copy "%~dp0TimeControl.exe" "%windir%\CJH\TimeControl\TimeControl.exe"
@@ -125,8 +132,9 @@ echo.
 choice /C YN /T 5 /D Y /M "是(Y)否(N)要创建快捷方式到开始菜单（5秒后自动选择Y）"
 if errorlevel 1 set ac=1
 if errorlevel 2 set ac=2
-if "%ad%" == "1" if not exist "%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\CJH\时钟小工具" md "%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\CJH\时钟小工具"
-if "%ad%" == "1" call mshta VBScript:Execute("Set a=CreateObject(""WScript.Shell""):Set b=a.CreateShortcut(""%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\CJH\时钟小工具\时钟小工具.lnk""):b.TargetPath=""%windir%\CJH\TimeControl\TimeControl.exe"":b.WorkingDirectory=""%windir%\CJH\TimeControl"":b.Save:close")
+if "%ad%" == "1" if not exist "%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\时钟小工具" md "%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\时钟小工具"
+if "%ad%" == "1" if exist "%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\时钟小工具\时钟小工具.lnk" del /q "%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\时钟小工具\时钟小工具.lnk"
+if "%ad%" == "1" call mshta VBScript:Execute("Set a=CreateObject(""WScript.Shell""):Set b=a.CreateShortcut(""%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\时钟小工具\时钟小工具.lnk""):b.TargetPath=""%windir%\CJH\TimeControl\TimeControl.exe"":b.WorkingDirectory=""%windir%\CJH\TimeControl"":b.Save:close")
 
 copy /y "%~dp0卸载.bat" "%windir%\CJH\TimeControl\Uninstall.bat"
 
@@ -166,6 +174,13 @@ if exist "%windir%\TimeControl.exe" if "%a%" == "1" del /q "%windir%\TimeControl
 if exist "%windir%\TimeControl.exe" if "%a%" == "1" del /q "%windir%\TimeControlm.exe"
 if exist "%windir%\TimeControl.exe" if "%a%" == "1" del /q "%windir%\syswow64\TimeControl.exe"
 if exist "%windir%\TimeControl.exe" if "%a%" == "1" del /q "%windir%\syswow64\TimeControlm.exe"
+if exist "%windir%\TimeControl.exe" if "%a%" == "1" del /q "%windir%\syswow64\TimeControln35d.exe"
+if exist "%windir%\TimeControl.exe" if "%a%" == "1" del /q "%windir%\syswow64\TimeControln35.exe"
+if exist "%windir%\TimeControl.exe" if "%a%" == "1" del /q "%windir%\TimeControln35.exe"
+if exist "%windir%\TimeControl.exe" if "%a%" == "1" del /q "%windir%\TimeControln35d.exe"
+
+if exist "%windir%\CJH\TimeControl\TimeControl.exe" del /q "%windir%\CJH\TimeControl\TimeControl.exe"
+if exist "%windir%\CJH\TimeControl\x86\TimeControl.exe" del /q "%windir%\CJH\TimeControl\x86\TimeControl.exe"
 
 if not exist "%windir%\CJH\TimeControl" md "%windir%\CJH\TimeControl"
 if not exist "%windir%\CJH\TimeControl\x86" md "%windir%\CJH\TimeControl\x86"
@@ -197,9 +212,11 @@ echo.
 choice /C YN /T 5 /D Y /M "是(Y)否(N)要创建快捷方式到开始菜单（5秒后自动选择Y）"
 if errorlevel 1 set ad=1
 if errorlevel 2 set ad=2
-if "%ad%" == "1" if not exist "%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\CJH\时钟小工具" md "%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\CJH\时钟小工具"
-if "%ad%" == "1" call mshta VBScript:Execute("Set a=CreateObject(""WScript.Shell""):Set b=a.CreateShortcut(""%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\CJH\时钟小工具\时钟小工具.lnk""):b.TargetPath=""%windir%\CJH\TimeControl\TimeControl.exe"":b.WorkingDirectory=""%windir%\CJH\TimeControl"":b.Save:close")
-if "%ad%" == "1" call mshta VBScript:Execute("Set a=CreateObject(""WScript.Shell""):Set b=a.CreateShortcut(""%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\CJH\时钟小工具\时钟小工具（32位）.lnk""):b.TargetPath=""%windir%\CJH\TimeControl\x86\TimeControl.exe"":b.WorkingDirectory=""%windir%\CJH\TimeControl\x86"":b.Save:close")
+if "%ad%" == "1" if not exist "%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\时钟小工具" md "%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\时钟小工具"
+if "%ad%" == "1" if exist "%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\时钟小工具\时钟小工具.lnk" del /q "%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\时钟小工具\时钟小工具.lnk"
+if "%ad%" == "1" if exist "%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\时钟小工具\时钟小工具（32位）.lnk" del /q "%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\时钟小工具\时钟小工具（32位）.lnk"
+if "%ad%" == "1" call mshta VBScript:Execute("Set a=CreateObject(""WScript.Shell""):Set b=a.CreateShortcut(""%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\时钟小工具\时钟小工具.lnk""):b.TargetPath=""%windir%\CJH\TimeControl\TimeControl.exe"":b.WorkingDirectory=""%windir%\CJH\TimeControl"":b.Save:close")
+if "%ad%" == "1" call mshta VBScript:Execute("Set a=CreateObject(""WScript.Shell""):Set b=a.CreateShortcut(""%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\时钟小工具\时钟小工具（32位）.lnk""):b.TargetPath=""%windir%\CJH\TimeControl\x86\TimeControl.exe"":b.WorkingDirectory=""%windir%\CJH\TimeControl\x86"":b.Save:close")
 
 copy /y "%~dp0卸载.bat" "%windir%\CJH\TimeControl\Uninstall.bat"
 

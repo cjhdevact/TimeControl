@@ -1,6 +1,6 @@
 ::/*****************************************************\
 ::
-::     TimeControl - 卸载.cmd
+::     TimeControl - 卸载.bat
 ::
 ::     版权所有(C) 2022-2024 CJH。
 ::
@@ -8,9 +8,12 @@
 ::
 ::\*****************************************************/
 @echo off
+cls
+title 时钟小工具卸载程序
+if exist "%windir%\cpadver.bat" echo 检测到当前已安装教室计算机批量配置工具，请使用其安装包来卸载本软件。 & echo 任意键关闭... & pause > nul & goto enda
+if exist "%windir%\csetver.bat" echo 检测到当前已安装计算机批量配置工具，请使用其安装包来卸载本软件。 & echo 任意键关闭... & pause > nul & goto enda
 if "%1" == "/noadm" goto main
 fltmc 1>nul 2>nul&& goto main
-title 时钟小工具卸载程序
 echo 正在获取管理员权限...
 echo.
 echo 可以使用 %0 /noadm 跳过Bat提权，但请手动以管理员身份运行
@@ -93,6 +96,8 @@ echo.
 Reg delete HKLM\Software\Microsoft\Windows\CurrentVersion\run /v TimeControl /f
 del /q "%windir%\TimeControl.exe"
 del /q "%windir%\TimeControlm.exe"
+del /q "%windir%\TimeControln35.exe"
+del /q "%windir%\TimeControln35d.exe"
 echo.
 echo 如果长时间停留在此操作，请检测是否被杀毒软件拦截。
 echo.
@@ -101,8 +106,8 @@ del /q "%windir%\PolicyDefinitions\TimeControl.admx"
 del /q "%windir%\PolicyDefinitions\zh-CN\TimeControl.adml"
 del /q "%windir%\PolicyDefinitions\en-US\TimeControl.adml"
 
-rd /s /q "%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\CJH\时钟小工具"
-dir /a /s /b "%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\CJH" | findstr . >nul && echo. || rd /s /q "%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\CJH"
+rd /s /q "%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\时钟小工具"
+::dir /a /s /b "%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\CJH" | findstr . >nul && echo. || rd /s /q "%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\CJH"
 
 choice /C YN /T 5 /D N /M "是(Y)否(N)删除自定义设置（5秒后自动选择N）"
 if errorlevel 1 set a=1
@@ -116,7 +121,7 @@ Reg delete HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstal
 
 cd /d "%windir%"
 rd /s /q "%windir%\CJH\TimeControl"
-dir /a /s /b "%windir%\CJH\" | findstr . >nul && echo. || rd /s /q "%windir%\CJH"
+::dir /a /s /b "%windir%\CJH\" | findstr . >nul && echo. || rd /s /q "%windir%\CJH"
 
 echo.
 cls
@@ -143,6 +148,10 @@ del /q "%windir%\TimeControl.exe"
 del /q "%windir%\TimeControlm.exe"
 del /q "%windir%\syswow64\TimeControl.exe"
 del /q "%windir%\syswow64\TimeControlm.exe"
+del /q "%windir%\syswow64\TimeControln35d.exe"
+del /q "%windir%\syswow64\TimeControln35.exe"
+del /q "%windir%\TimeControln35.exe"
+del /q "%windir%\TimeControln35d.exe"
 echo.
 echo 如果长时间停留在此操作，请检测是否被杀毒软件拦截。
 echo.
@@ -151,8 +160,8 @@ del /q "%windir%\PolicyDefinitions\TimeControl.admx"
 del /q "%windir%\PolicyDefinitions\zh-CN\TimeControl.adml"
 del /q "%windir%\PolicyDefinitions\en-US\TimeControl.adml"
 
-rd /s /q "%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\CJH\时钟小工具"
-dir /a /s /b "%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\CJH" | findstr . >nul && echo. || rd /s /q "%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\CJH"
+rd /s /q "%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\时钟小工具"
+::dir /a /s /b "%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\CJH" | findstr . >nul && echo. || rd /s /q "%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\CJH"
 
 choice /C YN /T 5 /D N /M "是(Y)否(N)删除自定义设置（5秒后自动选择N）"
 if errorlevel 1 set a=1
@@ -166,7 +175,7 @@ Reg delete HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstal
 
 cd /d "%windir%"
 rd /s /q "%windir%\CJH\TimeControl"
-dir /a /s /b "%windir%\CJH" | findstr . >nul && echo. || rd /s /q "%windir%\CJH"
+::dir /a /s /b "%windir%\CJH" | findstr . >nul && echo. || rd /s /q "%windir%\CJH"
 
 echo.
 cls

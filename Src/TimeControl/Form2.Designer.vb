@@ -73,9 +73,10 @@ Partial Class Form2
         Me.LinkLabel2 = New System.Windows.Forms.LinkLabel()
         Me.CheckBox5 = New System.Windows.Forms.CheckBox()
         Me.LinkLabel3 = New System.Windows.Forms.LinkLabel()
-        Me.Label18 = New System.Windows.Forms.Label()
         Me.Label19 = New System.Windows.Forms.Label()
         Me.LinkLabel4 = New System.Windows.Forms.LinkLabel()
+        Me.LinkLabel5 = New System.Windows.Forms.LinkLabel()
+        Me.Label20 = New System.Windows.Forms.Label()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TrackBar1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
@@ -95,9 +96,9 @@ Partial Class Form2
         '
         Me.Label1.Location = New System.Drawing.Point(468, 239)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(387, 105)
+        Me.Label1.Size = New System.Drawing.Size(387, 52)
         Me.Label1.TabIndex = 8
-        Me.Label1.Text = "(Version)"
+        Me.Label1.Text = "Version"
         '
         'ComboBox2
         '
@@ -153,7 +154,7 @@ Partial Class Form2
         '
         Me.Label3.AutoSize = True
         Me.Label3.Font = New System.Drawing.Font("微软雅黑", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
-        Me.Label3.Location = New System.Drawing.Point(19, 14)
+        Me.Label3.Location = New System.Drawing.Point(19, 6)
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(159, 28)
         Me.Label3.TabIndex = 13
@@ -508,7 +509,7 @@ Partial Class Form2
         '
         Me.LinkLabel1.AutoSize = True
         Me.LinkLabel1.LinkColor = System.Drawing.Color.DodgerBlue
-        Me.LinkLabel1.Location = New System.Drawing.Point(474, 372)
+        Me.LinkLabel1.Location = New System.Drawing.Point(466, 328)
         Me.LinkLabel1.Name = "LinkLabel1"
         Me.LinkLabel1.Size = New System.Drawing.Size(69, 20)
         Me.LinkLabel1.TabIndex = 50
@@ -519,7 +520,7 @@ Partial Class Form2
         '
         Me.LinkLabel2.AutoSize = True
         Me.LinkLabel2.LinkColor = System.Drawing.Color.DodgerBlue
-        Me.LinkLabel2.Location = New System.Drawing.Point(560, 372)
+        Me.LinkLabel2.Location = New System.Drawing.Point(541, 328)
         Me.LinkLabel2.Name = "LinkLabel2"
         Me.LinkLabel2.Size = New System.Drawing.Size(69, 20)
         Me.LinkLabel2.TabIndex = 51
@@ -541,30 +542,17 @@ Partial Class Form2
         Me.LinkLabel3.AutoSize = True
         Me.LinkLabel3.Font = New System.Drawing.Font("微软雅黑", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
         Me.LinkLabel3.LinkColor = System.Drawing.Color.IndianRed
-        Me.LinkLabel3.Location = New System.Drawing.Point(727, 372)
+        Me.LinkLabel3.Location = New System.Drawing.Point(719, 328)
         Me.LinkLabel3.Name = "LinkLabel3"
         Me.LinkLabel3.Size = New System.Drawing.Size(144, 20)
         Me.LinkLabel3.TabIndex = 53
         Me.LinkLabel3.TabStop = True
         Me.LinkLabel3.Text = "删除配置并退出程序"
         '
-        'Label18
-        '
-        Me.Label18.BackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(192, Byte), Integer))
-        Me.Label18.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
-        Me.Label18.ForeColor = System.Drawing.Color.Black
-        Me.Label18.Location = New System.Drawing.Point(24, 45)
-        Me.Label18.Name = "Label18"
-        Me.Label18.Size = New System.Drawing.Size(836, 31)
-        Me.Label18.TabIndex = 54
-        Me.Label18.Text = "    当前部分功能由于被管理员禁用而无法使用。"
-        Me.Label18.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
-        Me.Label18.Visible = False
-        '
         'Label19
         '
         Me.Label19.AutoSize = True
-        Me.Label19.Location = New System.Drawing.Point(470, 352)
+        Me.Label19.Location = New System.Drawing.Point(467, 296)
         Me.Label19.Name = "Label19"
         Me.Label19.Size = New System.Drawing.Size(365, 20)
         Me.Label19.TabIndex = 55
@@ -574,12 +562,35 @@ Partial Class Form2
         '
         Me.LinkLabel4.AutoSize = True
         Me.LinkLabel4.LinkColor = System.Drawing.Color.DodgerBlue
-        Me.LinkLabel4.Location = New System.Drawing.Point(654, 372)
+        Me.LinkLabel4.Location = New System.Drawing.Point(661, 328)
         Me.LinkLabel4.Name = "LinkLabel4"
         Me.LinkLabel4.Size = New System.Drawing.Size(52, 20)
         Me.LinkLabel4.TabIndex = 56
         Me.LinkLabel4.TabStop = True
         Me.LinkLabel4.Text = "GPL-3"
+        '
+        'LinkLabel5
+        '
+        Me.LinkLabel5.AutoSize = True
+        Me.LinkLabel5.LinkColor = System.Drawing.Color.DodgerBlue
+        Me.LinkLabel5.Location = New System.Drawing.Point(616, 328)
+        Me.LinkLabel5.Name = "LinkLabel5"
+        Me.LinkLabel5.Size = New System.Drawing.Size(39, 20)
+        Me.LinkLabel5.TabIndex = 57
+        Me.LinkLabel5.TabStop = True
+        Me.LinkLabel5.Text = "帮助"
+        '
+        'Label20
+        '
+        Me.Label20.BackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(192, Byte), Integer))
+        Me.Label20.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.Label20.ForeColor = System.Drawing.Color.Black
+        Me.Label20.Location = New System.Drawing.Point(24, 42)
+        Me.Label20.Name = "Label20"
+        Me.Label20.Size = New System.Drawing.Size(836, 31)
+        Me.Label20.TabIndex = 58
+        Me.Label20.Text = "时钟小工具"
+        Me.Label20.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'Form2
         '
@@ -588,9 +599,9 @@ Partial Class Form2
         Me.BackColor = System.Drawing.Color.White
         Me.CancelButton = Me.Button1
         Me.ClientSize = New System.Drawing.Size(883, 592)
+        Me.Controls.Add(Me.LinkLabel5)
         Me.Controls.Add(Me.LinkLabel4)
         Me.Controls.Add(Me.Label19)
-        Me.Controls.Add(Me.Label18)
         Me.Controls.Add(Me.LinkLabel3)
         Me.Controls.Add(Me.CheckBox5)
         Me.Controls.Add(Me.LinkLabel2)
@@ -638,6 +649,7 @@ Partial Class Form2
         Me.Controls.Add(Me.Label1)
         Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.Label15)
+        Me.Controls.Add(Me.Label20)
         Me.Font = New System.Drawing.Font("微软雅黑", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
         Me.ForeColor = System.Drawing.Color.Black
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
@@ -704,7 +716,8 @@ Partial Class Form2
     Friend WithEvents LinkLabel2 As System.Windows.Forms.LinkLabel
     Friend WithEvents CheckBox5 As System.Windows.Forms.CheckBox
     Friend WithEvents LinkLabel3 As System.Windows.Forms.LinkLabel
-    Friend WithEvents Label18 As System.Windows.Forms.Label
     Friend WithEvents Label19 As System.Windows.Forms.Label
     Friend WithEvents LinkLabel4 As System.Windows.Forms.LinkLabel
+    Friend WithEvents LinkLabel5 As System.Windows.Forms.LinkLabel
+    Friend WithEvents Label20 As System.Windows.Forms.Label
 End Class

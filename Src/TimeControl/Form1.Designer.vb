@@ -141,6 +141,7 @@ Partial Class Form1
         Me.ClientSize = New System.Drawing.Size(162, 38)
         Me.ControlBox = False
         Me.Controls.Add(Me.Label1)
+        Me.DoubleBuffered = True
         Me.Font = New System.Drawing.Font("微软雅黑", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
         Me.ForeColor = System.Drawing.Color.Black
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None

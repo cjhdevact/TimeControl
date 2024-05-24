@@ -1,6 +1,6 @@
 ﻿'****************************************************************************
 '    TimeControl
-'    Copyright (C) 2022-2024  CJH
+'    Copyright (C) 2022-2024 CJH.
 '
 '    This program is free software: you can redistribute it and/or modify
 '    it under the terms of the GNU General Public License as published by
@@ -113,6 +113,8 @@ errcode:
     End Sub
 
     Private Sub Form2_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Dim disi As Graphics = Me.CreateGraphics()
+        Label20.Width = Me.Width - disi.DpiX * 0.01 * 50
         OpenFileDialog1.Filter = "所有支持的文件 (*.png;*.jpg;*.jpeg;*.jpe;*.jfif;*.bmp;*.dib;*.gif;*.tif;*.tiff;*.ico)|*.png;*.jpg;*.jpeg;*.jpe;*.jfif;*.bmp;*.dib;*.gif;*.tif;*.tiff;*.ico|" _
                               & "PNG 图像 (*.png)|*.png|JPEG 文件 (*.jpg;*.jpeg;*.jpe;*.jfif)|*.jpg;*.jpeg;*.jpe;*.jfif|" _
                               & "BMP 文件 (*.bmp;*.dib)|*.bmp;*.dib|GIF 图像 (*.gif)|*.gif|TIFF 文件 (*.tif;*.tiff)|*.tif;*.tiff|图标文件(*.ico)|*.ico|所有文件 (*.*)|*.*"
@@ -135,21 +137,27 @@ errcode:
 
         If Form1.MySize = 1 Then
             Me.CheckBox4.Checked = True
-            TextBox3.Enabled = True
-            TextBox4.Enabled = True
-            Button9.Enabled = True
+            If Form1.DisbFuState = 0 Then
+                TextBox3.Enabled = True
+                TextBox4.Enabled = True
+                Button9.Enabled = True
+            End If
+          
         Else
             Me.CheckBox4.Checked = False
-            TextBox3.Enabled = False
-            TextBox4.Enabled = False
-            Button9.Enabled = False
+            If Form1.DisbFuState = 0 Then
+                TextBox3.Enabled = False
+                TextBox4.Enabled = False
+                Button9.Enabled = False
+            End If
+
         End If
 
         '如果预先关联事件， Me.CheckBox1.Checked = Ture / Flase 操作会触发事件，导致操作相反
-        AddHandler CheckBox1.CheckedChanged, AddressOf CheckBox1_CheckedChanged
-        AddHandler CheckBox2.CheckedChanged, AddressOf CheckBox2_CheckedChanged
-        AddHandler CheckBox3.CheckedChanged, AddressOf CheckBox3_CheckedChanged
-        AddHandler CheckBox4.CheckedChanged, AddressOf CheckBox4_CheckedChanged
+        'AddHandler CheckBox1.CheckedChanged, AddressOf CheckBox1_CheckedChanged
+        'AddHandler CheckBox2.CheckedChanged, AddressOf CheckBox2_CheckedChanged
+        'AddHandler CheckBox3.CheckedChanged, AddressOf CheckBox3_CheckedChanged
+        'AddHandler CheckBox4.CheckedChanged, AddressOf CheckBox4_CheckedChanged
 
         ComboBox1.SelectedIndex = 0
         ComboBox1.SelectedText = "秒"
@@ -200,7 +208,7 @@ errcode:
             ComboBox4.SelectedText = "自定义背景"
         End If
 
-        Label1.Text = "时间小工具 版本：" & My.Application.Info.Version.ToString & vbCrLf & "开发分支：" & Form1.DEVBRANCH & " " & vbCrLf & vbCrLf & "版权所有 © 2022-2024 CJH。"
+        Label1.Text = "时间小工具 版本：" & My.Application.Info.Version.ToString & vbCrLf & "版权所有 © 2022-2024 CJH。"
         Call formatcolorcurset()
     End Sub
     Private Sub TextBox1_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TextBox1.KeyPress
@@ -321,34 +329,49 @@ errcode:
         End If
     End Sub
 
-    Private Sub CheckBox1_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
-        If Form1.TopMost = True Then
-            CheckBox1.Checked = False
+    Private Sub CheckBox1_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles CheckBox1.CheckedChanged
+        If CheckBox1.Checked = False Then
+            'CheckBox1.Checked = False
             Form1.TopMost = False
-            AddReg("Software\CJH\TimeControl\Settings", "AllowTopMost", 0, RegistryValueKind.DWord, "HKCU")
+            If Form1.UnSaveData = 0 Then
+                AddReg("Software\CJH\TimeControl\Settings", "AllowTopMost", 0, RegistryValueKind.DWord, "HKCU")
+            End If
+
         Else
-            CheckBox1.Checked = True
+            'CheckBox1.Checked = True
             Form1.TopMost = True
-            AddReg("Software\CJH\TimeControl\Settings", "AllowTopMost", 1, RegistryValueKind.DWord, "HKCU")
+            If Form1.UnSaveData = 0 Then
+                AddReg("Software\CJH\TimeControl\Settings", "AllowTopMost", 1, RegistryValueKind.DWord, "HKCU")
+            End If
+
         End If
     End Sub
 
-    Private Sub CheckBox2_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
-        If Form1.UseMoveV = 1 Then
-            CheckBox2.Checked = False
+    Private Sub CheckBox2_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles CheckBox2.CheckedChanged
+        If CheckBox2.Checked = False Then
+            'CheckBox2.Checked = False
             Form1.UseMoveV = 0
-            AddReg("Software\CJH\TimeControl\Settings", "EnableDrag", 0, RegistryValueKind.DWord, "HKCU")
+            If Form1.UnSaveData = 0 Then
+                AddReg("Software\CJH\TimeControl\Settings", "EnableDrag", 0, RegistryValueKind.DWord, "HKCU")
+            End If
+
         Else
-            CheckBox2.Checked = True
+            'CheckBox2.Checked = True
             Form1.UseMoveV = 1
-            AddReg("Software\CJH\TimeControl\Settings", "EnableDrag", 1, RegistryValueKind.DWord, "HKCU")
+            If Form1.UnSaveData = 0 Then
+                AddReg("Software\CJH\TimeControl\Settings", "EnableDrag", 1, RegistryValueKind.DWord, "HKCU")
+            End If
+
         End If
     End Sub
 
     Private Sub ComboBox2_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles ComboBox2.SelectedIndexChanged
         If ComboBox2.SelectedIndex = 0 Then
             If Form1.UnSupportDarkSys = 1 Then
-                AddReg("Software\CJH\TimeControl\Settings", "ColorMode", 1, Microsoft.Win32.RegistryValueKind.DWord, "HKCU")
+                If Form1.UnSaveData = 0 Then
+                    AddReg("Software\CJH\TimeControl\Settings", "ColorMode", 1, Microsoft.Win32.RegistryValueKind.DWord, "HKCU")
+                End If
+
                 Form1.crmd = 1 'Light
                 Form1.appcolor = 1
                 Call MsgForm.formatcolorcursetmsg()
@@ -357,7 +380,10 @@ errcode:
                 Call GPLForm.formatcolorcursetmsg()
             Else
                 Form1.appcolor = 0
-                AddReg("Software\CJH\TimeControl\Settings", "ColorMode", 0, Microsoft.Win32.RegistryValueKind.DWord, "HKCU")
+                If Form1.UnSaveData = 0 Then
+                    AddReg("Software\CJH\TimeControl\Settings", "ColorMode", 0, Microsoft.Win32.RegistryValueKind.DWord, "HKCU")
+                End If
+
                 'Get System Color
                 Dim regkey As RegistryKey = Registry.CurrentUser.OpenSubKey("SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize", True)
                 Dim sysacr As Integer
@@ -381,7 +407,10 @@ errcode:
             End If
         ElseIf ComboBox2.SelectedIndex = 1 Then
             If Form1.UnSupportDarkSys = 1 Then
-                AddReg("Software\CJH\TimeControl\Settings", "ColorMode", 2, Microsoft.Win32.RegistryValueKind.DWord, "HKCU")
+                If Form1.UnSaveData = 0 Then
+                    AddReg("Software\CJH\TimeControl\Settings", "ColorMode", 2, Microsoft.Win32.RegistryValueKind.DWord, "HKCU")
+                End If
+
                 Form1.crmd = 0 'Dark
                 Form1.appcolor = 2
                 Call MsgForm.formatcolorcursetmsg()
@@ -389,7 +418,10 @@ errcode:
                 Call Form1.formatcolorcur()
                 Call GPLForm.formatcolorcursetmsg()
             Else
-                AddReg("Software\CJH\TimeControl\Settings", "ColorMode", 1, Microsoft.Win32.RegistryValueKind.DWord, "HKCU")
+                If Form1.UnSaveData = 0 Then
+                    AddReg("Software\CJH\TimeControl\Settings", "ColorMode", 1, Microsoft.Win32.RegistryValueKind.DWord, "HKCU")
+                End If
+
                 Form1.crmd = 1 'Light
                 Form1.appcolor = 1
                 Call MsgForm.formatcolorcursetmsg()
@@ -398,7 +430,10 @@ errcode:
                 Call GPLForm.formatcolorcursetmsg()
             End If
         ElseIf ComboBox2.SelectedIndex = 2 Then
-            AddReg("Software\CJH\TimeControl\Settings", "ColorMode", 2, Microsoft.Win32.RegistryValueKind.DWord, "HKCU")
+            If Form1.UnSaveData = 0 Then
+                AddReg("Software\CJH\TimeControl\Settings", "ColorMode", 2, Microsoft.Win32.RegistryValueKind.DWord, "HKCU")
+            End If
+
             Form1.crmd = 0 'Dark
             Form1.appcolor = 2
             Call MsgForm.formatcolorcursetmsg()
@@ -434,11 +469,16 @@ errcode:
                     Form1.TimeF = "HH:mm:ss"
                     Me.ComboBox3.SelectedIndex = 0
                     Me.ComboBox3.SelectedText = "HH:mm:ss"
-                    AddReg("Software\CJH\TimeControl\Settings", "TimeFormat", 0, RegistryValueKind.DWord, "HKCU")
+                    If Form1.UnSaveData = 0 Then
+                        AddReg("Software\CJH\TimeControl\Settings", "TimeFormat", 0, RegistryValueKind.DWord, "HKCU")
+                    End If
+
                     MsgBox(ex.Message & vbCrLf & "时间格式化失败，已重置为默认格式。", MsgBoxStyle.Critical, "错误")
                 End Try
-                TextBox2.Enabled = False
-                Button4.Enabled = False
+                If Form1.DisbFuState = 0 Then
+                    TextBox2.Enabled = False
+                    Button4.Enabled = False
+                End If
                 'Form1.GetTimeFormSize(38, 120)
                 'a = Form1.Width - Form1.CaW
                 'If a <> 0 Then
@@ -467,8 +507,11 @@ errcode:
                         If c <> 0 Then
                             Form1.Location = New Point(Form1.Location.X + c / 2, Form1.Location.Y)
                             If Form1.SaveLoc = 1 Then
-                                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormX", Form1.Location.X, RegistryValueKind.DWord, "HKCU")
-                                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormY", Form1.Location.Y, RegistryValueKind.DWord, "HKCU")
+                                If Form1.UnSaveData = 0 Then
+                                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormX", Form1.Location.X, RegistryValueKind.DWord, "HKCU")
+                                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormY", Form1.Location.Y, RegistryValueKind.DWord, "HKCU")
+                                End If
+
                             End If
                         End If
                     End If
@@ -527,7 +570,10 @@ errcode:
 
                 End If
 
-                AddReg("Software\CJH\TimeControl\Settings", "TimeFormat", 0, RegistryValueKind.DWord, "HKCU")
+                If Form1.UnSaveData = 0 Then
+                    AddReg("Software\CJH\TimeControl\Settings", "TimeFormat", 0, RegistryValueKind.DWord, "HKCU")
+                End If
+
                 ' Form1.SetTimeFormSize(38, 120)
                 Form1.AutoSize = False
                 Form1.Label1.AutoSize = False
@@ -540,11 +586,16 @@ errcode:
                     Form1.TimeF = "HH:mm:ss"
                     Me.ComboBox3.SelectedIndex = 0
                     Me.ComboBox3.SelectedText = "HH:mm:ss"
-                    AddReg("Software\CJH\TimeControl\Settings", "TimeFormat", 0, RegistryValueKind.DWord, "HKCU")
+                    If Form1.UnSaveData = 0 Then
+                        AddReg("Software\CJH\TimeControl\Settings", "TimeFormat", 0, RegistryValueKind.DWord, "HKCU")
+                    End If
+
                     MsgBox(ex.Message & vbCrLf & "时间格式化失败，已重置为默认格式。", MsgBoxStyle.Critical, "错误")
                 End Try
-                TextBox2.Enabled = False
-                Button4.Enabled = False
+                If Form1.DisbFuState = 0 Then
+                    TextBox2.Enabled = False
+                    Button4.Enabled = False
+                End If
                 'Form1.GetTimeFormSize(38, 90)
                 'a = Form1.Width - Form1.CaW
                 'If a <> 0 Then
@@ -574,8 +625,11 @@ errcode:
                         If c <> 0 Then
                             Form1.Location = New Point(Form1.Location.X + c / 2, Form1.Location.Y)
                             If Form1.SaveLoc = 1 Then
-                                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormX", Form1.Location.X, RegistryValueKind.DWord, "HKCU")
-                                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormY", Form1.Location.Y, RegistryValueKind.DWord, "HKCU")
+                                If Form1.UnSaveData = 0 Then
+                                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormX", Form1.Location.X, RegistryValueKind.DWord, "HKCU")
+                                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormY", Form1.Location.Y, RegistryValueKind.DWord, "HKCU")
+                                End If
+
                             End If
                         End If
                     End If
@@ -591,7 +645,10 @@ errcode:
                     'End If
                 End If
 
-                AddReg("Software\CJH\TimeControl\Settings", "TimeFormat", 1, RegistryValueKind.DWord, "HKCU")
+                If Form1.UnSaveData = 0 Then
+                    AddReg("Software\CJH\TimeControl\Settings", "TimeFormat", 1, RegistryValueKind.DWord, "HKCU")
+                End If
+
                 Form1.AutoSize = False
                 Form1.Label1.AutoSize = False
 
@@ -603,11 +660,16 @@ errcode:
                     Form1.TimeF = "HH:mm:ss"
                     Me.ComboBox3.SelectedIndex = 0
                     Me.ComboBox3.SelectedText = "HH:mm:ss"
-                    AddReg("Software\CJH\TimeControl\Settings", "TimeFormat", 0, RegistryValueKind.DWord, "HKCU")
+                    If Form1.UnSaveData = 0 Then
+                        AddReg("Software\CJH\TimeControl\Settings", "TimeFormat", 0, RegistryValueKind.DWord, "HKCU")
+                    End If
+
                     MsgBox(ex.Message & vbCrLf & "时间格式化失败，已重置为默认格式。", MsgBoxStyle.Critical, "错误")
                 End Try
-                TextBox2.Enabled = False
-                Button4.Enabled = False
+                If Form1.DisbFuState = 0 Then
+                    TextBox2.Enabled = False
+                    Button4.Enabled = False
+                End If
                 'Form1.GetTimeFormSize(38, 120)
                 'a = Form1.Width - Form1.CaW
                 'If a <> 0 Then
@@ -637,8 +699,11 @@ errcode:
                         If c <> 0 Then
                             Form1.Location = New Point(Form1.Location.X + c / 2, Form1.Location.Y)
                             If Form1.SaveLoc = 1 Then
-                                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormX", Form1.Location.X, RegistryValueKind.DWord, "HKCU")
-                                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormY", Form1.Location.Y, RegistryValueKind.DWord, "HKCU")
+                                If Form1.UnSaveData = 0 Then
+                                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormX", Form1.Location.X, RegistryValueKind.DWord, "HKCU")
+                                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormY", Form1.Location.Y, RegistryValueKind.DWord, "HKCU")
+                                End If
+
                             End If
                         End If
                     End If
@@ -647,7 +712,10 @@ errcode:
                     Form1.SetTimeFormSize(aa.Height, aa.Width)
                 End If
 
-                AddReg("Software\CJH\TimeControl\Settings", "TimeFormat", 2, RegistryValueKind.DWord, "HKCU")
+                If Form1.UnSaveData = 0 Then
+                    AddReg("Software\CJH\TimeControl\Settings", "TimeFormat", 2, RegistryValueKind.DWord, "HKCU")
+                End If
+
                 Form1.AutoSize = False
                 Form1.Label1.AutoSize = False
 
@@ -659,11 +727,16 @@ errcode:
                     Form1.TimeF = "HH:mm:ss"
                     Me.ComboBox3.SelectedIndex = 0
                     Me.ComboBox3.SelectedText = "HH:mm:ss"
-                    AddReg("Software\CJH\TimeControl\Settings", "TimeFormat", 0, RegistryValueKind.DWord, "HKCU")
+                    If Form1.UnSaveData = 0 Then
+                        AddReg("Software\CJH\TimeControl\Settings", "TimeFormat", 0, RegistryValueKind.DWord, "HKCU")
+                    End If
+
                     MsgBox(ex.Message & vbCrLf & "时间格式化失败，已重置为默认格式。", MsgBoxStyle.Critical, "错误")
                 End Try
-                TextBox2.Enabled = False
-                Button4.Enabled = False
+                If Form1.DisbFuState = 0 Then
+                    TextBox2.Enabled = False
+                    Button4.Enabled = False
+                End If
                 'Form1.GetTimeFormSize(38, 90)
                 'a = Form1.Width - Form1.CaW
                 'If a <> 0 Then
@@ -693,8 +766,11 @@ errcode:
                         If c <> 0 Then
                             Form1.Location = New Point(Form1.Location.X + c / 2, Form1.Location.Y)
                             If Form1.SaveLoc = 1 Then
-                                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormX", Form1.Location.X, RegistryValueKind.DWord, "HKCU")
-                                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormY", Form1.Location.Y, RegistryValueKind.DWord, "HKCU")
+                                If Form1.UnSaveData = 0 Then
+                                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormX", Form1.Location.X, RegistryValueKind.DWord, "HKCU")
+                                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormY", Form1.Location.Y, RegistryValueKind.DWord, "HKCU")
+                                End If
+
                             End If
                         End If
                     End If
@@ -703,7 +779,10 @@ errcode:
                     Form1.SetTimeFormSize(aa.Height, aa.Width)
                 End If
 
-                AddReg("Software\CJH\TimeControl\Settings", "TimeFormat", 3, RegistryValueKind.DWord, "HKCU")
+                If Form1.UnSaveData = 0 Then
+                    AddReg("Software\CJH\TimeControl\Settings", "TimeFormat", 3, RegistryValueKind.DWord, "HKCU")
+                End If
+
                 Form1.AutoSize = False
                 Form1.Label1.AutoSize = False
 
@@ -715,11 +794,16 @@ errcode:
                     Form1.TimeF = "HH:mm:ss"
                     Me.ComboBox3.SelectedIndex = 0
                     Me.ComboBox3.SelectedText = "HH:mm:ss"
-                    AddReg("Software\CJH\TimeControl\Settings", "TimeFormat", 0, RegistryValueKind.DWord, "HKCU")
+                    If Form1.UnSaveData = 0 Then
+                        AddReg("Software\CJH\TimeControl\Settings", "TimeFormat", 0, RegistryValueKind.DWord, "HKCU")
+                    End If
+
                     MsgBox(ex.Message & vbCrLf & "时间格式化失败，已重置为默认格式。", MsgBoxStyle.Critical, "错误")
                 End Try
-                TextBox2.Enabled = False
-                Button4.Enabled = False
+                If Form1.DisbFuState = 0 Then
+                    TextBox2.Enabled = False
+                    Button4.Enabled = False
+                End If
                 'Form1.GetTimeFormSize(38, 400)
                 'a = Form1.Width - Form1.CaW
                 'If a <> 0 Then
@@ -745,8 +829,11 @@ errcode:
                         If c <> 0 Then
                             Form1.Location = New Point(Form1.Location.X + c / 2, Form1.Location.Y)
                             If Form1.SaveLoc = 1 Then
-                                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormX", Form1.Location.X, RegistryValueKind.DWord, "HKCU")
-                                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormY", Form1.Location.Y, RegistryValueKind.DWord, "HKCU")
+                                If Form1.UnSaveData = 0 Then
+                                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormX", Form1.Location.X, RegistryValueKind.DWord, "HKCU")
+                                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormY", Form1.Location.Y, RegistryValueKind.DWord, "HKCU")
+                                End If
+
                             End If
                         End If
                     End If
@@ -755,7 +842,10 @@ errcode:
                     Form1.SetTimeFormSize(aa.Height, aa.Width)
                 End If
 
-                AddReg("Software\CJH\TimeControl\Settings", "TimeFormat", 4, RegistryValueKind.DWord, "HKCU")
+                If Form1.UnSaveData = 0 Then
+                    AddReg("Software\CJH\TimeControl\Settings", "TimeFormat", 4, RegistryValueKind.DWord, "HKCU")
+                End If
+
                 Form1.AutoSize = False
                 Form1.Label1.AutoSize = False
 
@@ -767,11 +857,17 @@ errcode:
                     Form1.TimeF = "HH:mm:ss"
                     Me.ComboBox3.SelectedIndex = 0
                     Me.ComboBox3.SelectedText = "HH:mm:ss"
-                    AddReg("Software\CJH\TimeControl\Settings", "TimeFormat", 0, RegistryValueKind.DWord, "HKCU")
+                    If Form1.UnSaveData = 0 Then
+                        AddReg("Software\CJH\TimeControl\Settings", "TimeFormat", 0, RegistryValueKind.DWord, "HKCU")
+                    End If
+
                     MsgBox(ex.Message & vbCrLf & "时间格式化失败，已重置为默认格式。", MsgBoxStyle.Critical, "错误")
                 End Try
-                TextBox2.Enabled = False
-                Button4.Enabled = False
+                If Form1.DisbFuState = 0 Then
+                    TextBox2.Enabled = False
+                    Button4.Enabled = False
+                End If
+             
                 'Form1.GetTimeFormSize(38, 300)
                 'a = Form1.Width - Form1.CaW
                 'If a <> 0 Then
@@ -801,8 +897,11 @@ errcode:
                         If c <> 0 Then
                             Form1.Location = New Point(Form1.Location.X + c / 2, Form1.Location.Y)
                             If Form1.SaveLoc = 1 Then
-                                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormX", Form1.Location.X, RegistryValueKind.DWord, "HKCU")
-                                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormY", Form1.Location.Y, RegistryValueKind.DWord, "HKCU")
+                                If Form1.UnSaveData = 0 Then
+                                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormX", Form1.Location.X, RegistryValueKind.DWord, "HKCU")
+                                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormY", Form1.Location.Y, RegistryValueKind.DWord, "HKCU")
+                                End If
+
                             End If
                         End If
                     End If
@@ -810,13 +909,22 @@ errcode:
                     c = 0
                     Form1.SetTimeFormSize(aa.Height, aa.Width)
                 End If
-                AddReg("Software\CJH\TimeControl\Settings", "TimeFormat", 5, RegistryValueKind.DWord, "HKCU")
+                If Form1.UnSaveData = 0 Then
+                    AddReg("Software\CJH\TimeControl\Settings", "TimeFormat", 5, RegistryValueKind.DWord, "HKCU")
+                End If
+
                 Form1.AutoSize = False
                 Form1.Label1.AutoSize = False
             Else
-                AddReg("Software\CJH\TimeControl\Settings", "TimeFormat", 6, RegistryValueKind.DWord, "HKCU")
-                TextBox2.Enabled = True
-                Button4.Enabled = True
+                If Form1.UnSaveData = 0 Then
+                    AddReg("Software\CJH\TimeControl\Settings", "TimeFormat", 6, RegistryValueKind.DWord, "HKCU")
+                End If
+
+                If Form1.DisbFuState = 0 Then
+                    TextBox2.Enabled = True
+                    Button4.Enabled = True
+                End If
+
                 'Form1.AutoSize = True
             End If
         Catch ex As Exception
@@ -840,7 +948,10 @@ errcode:
             Catch ex As Exception
                 Form1.TimeF = "HH:mm:ss"
                 Me.TextBox2.Text = "HH:mm:ss"
-                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "CustomFormat", "HH:mm:ss", RegistryValueKind.String, "HKCU")
+                If Form1.UnSaveData = 0 Then
+                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "CustomFormat", "HH:mm:ss", RegistryValueKind.String, "HKCU")
+                End If
+
                 MsgBox(ex.Message & vbCrLf & "时间格式化失败，已重置为默认格式。", MsgBoxStyle.Critical, "错误")
             End Try
             If Form1.MySize = 0 Then
@@ -859,8 +970,11 @@ errcode:
                 If c <> 0 Then
                     Form1.Location = New Point(Form1.Location.X + c / 2, Form1.Location.Y)
                     If Form1.SaveLoc = 1 Then
-                        RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormX", Form1.Location.X, RegistryValueKind.DWord, "HKCU")
-                        RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormY", Form1.Location.Y, RegistryValueKind.DWord, "HKCU")
+                        If Form1.UnSaveData = 0 Then
+                            RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormX", Form1.Location.X, RegistryValueKind.DWord, "HKCU")
+                            RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormY", Form1.Location.Y, RegistryValueKind.DWord, "HKCU")
+                        End If
+
                     End If
                 End If
                 c = 0
@@ -868,7 +982,10 @@ errcode:
             End If
             
             'Form1.Label1.AutoSize = False
-            RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "CustomFormat", TextBox2.Text, RegistryValueKind.String, "HKCU")
+            If Form1.UnSaveData = 0 Then
+                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "CustomFormat", TextBox2.Text, RegistryValueKind.String, "HKCU")
+            End If
+
         Catch ex As Exception
             MsgBox("设置自定义格式失败，已重置为默认格式。", MsgBoxStyle.Critical, "错误")
             Me.TextBox2.Text = "HH:mm:ss"
@@ -878,12 +995,14 @@ errcode:
     Private Sub Button5_Click(sender As System.Object, e As System.EventArgs) Handles Button5.Click
         If MessageBox.Show("                                 " & vbCrLf & "确定要恢复默认设置吗？" & vbCrLf & "执行该操作会把设置恢复到默认的状态，并删除自定义内容，此操作无法撤销。" & vbCrLf & vbCrLf & "你确定要继续吗？" & vbCrLf & "                                 ", "警告 - 恢复默认设置", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) = Windows.Forms.DialogResult.Yes Then
             '如果预先关联事件， Me.CheckBox1.Checked = Ture / Flase 操作会触发事件，导致操作相反
-            RemoveHandler CheckBox1.CheckedChanged, AddressOf CheckBox1_CheckedChanged
-            RemoveHandler CheckBox2.CheckedChanged, AddressOf CheckBox2_CheckedChanged
-            RemoveHandler CheckBox3.CheckedChanged, AddressOf CheckBox3_CheckedChanged
-            RemoveHandler CheckBox4.CheckedChanged, AddressOf CheckBox4_CheckedChanged
+            'RemoveHandler CheckBox1.CheckedChanged, AddressOf CheckBox1_CheckedChanged
+            'RemoveHandler CheckBox2.CheckedChanged, AddressOf CheckBox2_CheckedChanged
+            'RemoveHandler CheckBox3.CheckedChanged, AddressOf CheckBox3_CheckedChanged
+            'RemoveHandler CheckBox4.CheckedChanged, AddressOf CheckBox4_CheckedChanged
             Try
-                AddReg("Software\CJH\TimeControl\Settings", "ColorMode", 0, Microsoft.Win32.RegistryValueKind.DWord, "HKCU")
+                    AddReg("Software\CJH\TimeControl\Settings", "ColorMode", 0, Microsoft.Win32.RegistryValueKind.DWord, "HKCU")
+
+
                 If Form1.UnSupportDarkSys = 1 Then
                     Form1.appcolor = 1
                     Form1.crmd = 1
@@ -914,40 +1033,62 @@ errcode:
                 End If
                 ComboBox2.SelectedIndex = 0
                 ComboBox1.SelectedIndex = 0
+
                 AddReg("Software\CJH\TimeControl\Settings", "EnableDrag", 1, Microsoft.Win32.RegistryValueKind.DWord, "HKCU")
+
+
                 Form1.UseMoveV = 1
                 CheckBox1.Checked = True
+
                 RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "AllowTopMost", 1, RegistryValueKind.DWord, "HKCU")
                 RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormat", 0, RegistryValueKind.DWord, "HKCU")
+
+
                 Form1.TopMost = True
                 CheckBox2.Checked = True
+
                 RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "SaveLocations", 0, RegistryValueKind.DWord, "HKCU")
+
+
                 Form1.SaveLoc = 0
                 CheckBox3.Checked = False
+
                 RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "UseCustomSize", 0, RegistryValueKind.DWord, "HKCU")
+
+
                 Form1.MySize = 0
                 CheckBox4.Checked = False
+
                 RegKeyModule.DelReg("Software\CJH\TimeControl\Settings", "CustomHeight", "HKCU")
                 RegKeyModule.DelReg("Software\CJH\TimeControl\Settings", "CustomWidth", "HKCU")
 
+
+
                 Form1.Label1.Font = New System.Drawing.Font("Segoe UI", 21.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
                 Me.FontDialog1.Font = Form1.Label1.Font
+
                 RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFont", Form1.Label1.Font.Name, RegistryValueKind.String, "HKCU")
                 RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFontPx", Form1.Label1.Font.Size, RegistryValueKind.DWord, "HKCU")
                 RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFontItalic", Form1.Label1.Font.Italic, RegistryValueKind.DWord, "HKCU")
                 RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFontBold", Form1.Label1.Font.Bold, RegistryValueKind.DWord, "HKCU")
                 RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFontUnderLine", Form1.Label1.Font.Underline, RegistryValueKind.DWord, "HKCU")
                 RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFontStrikeout", Form1.Label1.Font.Strikeout, RegistryValueKind.DWord, "HKCU")
-                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormX", 0, RegistryValueKind.DWord, "HKCU")
-                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormY", 0, RegistryValueKind.DWord, "HKCU")
+                RegKeyModule.DelReg("Software\CJH\TimeControl\Settings", "TimeFormX", "HKCU")
+                RegKeyModule.DelReg("Software\CJH\TimeControl\Settings", "TimeFormY", "HKCU")
+
+
                 ComboBox3.SelectedIndex = 0
                 Call ComboBox3_SelectedIndexChanged(sender, e)
+
                 RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "CustomFormat", "HH:mm:ss", RegistryValueKind.String, "HKCU")
+
+
                 If Form1.crmd = 1 Then
                     Form1.Label1.ForeColor = Color.Black
                 Else
                     Form1.Label1.ForeColor = Color.White
                 End If
+
                 RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFontR", Form1.Label1.ForeColor.R, RegistryValueKind.DWord, "HKCU")
                 RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFontG", Form1.Label1.ForeColor.G, RegistryValueKind.DWord, "HKCU")
                 RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFontB", Form1.Label1.ForeColor.B, RegistryValueKind.DWord, "HKCU")
@@ -956,51 +1097,62 @@ errcode:
                 Form1.TimeTheme = 0
                 RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "CustomThemePath", "", RegistryValueKind.String, "HKCU")
 
+
+
                 TextBox1.Text = ""
+                TextBox2.Text = "HH:mm:ss"
                 TextBox3.Text = Form1.Width
                 TextBox4.Text = Form1.Height
                 TextBox5.Text = ""
 
                 Form1.MySize = 0
+
                 AddReg("Software\CJH\TimeControl\Settings", "UseCustomSize", 0, RegistryValueKind.DWord, "HKCU")
+
+
                 TextBox3.Enabled = False
                 TextBox4.Enabled = False
                 Button9.Enabled = False
 
-                Dim aa As SizeF
-                Dim b As Graphics = Graphics.FromImage(New Bitmap(1, 1))
-                aa = TextRenderer.MeasureText(Form1.Label1.Text, Form1.Label1.Font)
-                Dim c As Integer
-                Form1.SetTimeFormSize(aa.Height, aa.Width)
-                c = Form1.Width - Form1.CaW
-                If Not (Form1.SaveLoc = 1 And Form1.IsBootV = 1) Then
-                    If c <> 0 Then
-                        Form1.Location = New Point(Form1.Location.X + c / 2, Form1.Location.Y)
-                    End If
-                End If
+                'Dim aa As SizeF
+                'Dim b As Graphics = Graphics.FromImage(New Bitmap(1, 1))
+                'aa = TextRenderer.MeasureText(Form1.Label1.Text, Form1.Label1.Font)
+                'Dim c As Integer
+                'Form1.SetTimeFormSize(aa.Height, aa.Width)
+                'c = Form1.Width - Form1.CaW
+                'If Not (Form1.SaveLoc = 1 And Form1.IsBootV = 1) Then
+                '    If c <> 0 Then
+                '        Form1.Location = New Point(Form1.Location.X + c / 2, Form1.Location.Y)
+                '    End If
+                'End If
 
-                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormOpacity", 100, RegistryValueKind.DWord, "HKCU")
-                Form1.CustOpacity = 100
-                Label17.Text = "99%"
-                Form1.Opacity = 0.99
-                TrackBar1.Value = 99
-
-                CheckBox5.Checked = False
-
-                Call Form1.formatcolorcur()
-                Call formatcolorcurset()
-                Call MsgForm.formatcolorcursetmsg()
-                Call GPLForm.formatcolorcursetmsg()
+                Form1.Location = New Size((System.Windows.Forms.SystemInformation.PrimaryMonitorSize.Width - Form1.Width) / 2, 5)
 
 
-                '如果预先关联事件， Me.CheckBox1.Checked = Ture / Flase 操作会触发事件，导致操作相反
-                AddHandler CheckBox1.CheckedChanged, AddressOf CheckBox1_CheckedChanged
-                AddHandler CheckBox2.CheckedChanged, AddressOf CheckBox2_CheckedChanged
-                AddHandler CheckBox3.CheckedChanged, AddressOf CheckBox3_CheckedChanged
-                AddHandler CheckBox4.CheckedChanged, AddressOf CheckBox4_CheckedChanged
+        RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormOpacity", 100, RegistryValueKind.DWord, "HKCU")
+
+
+        Form1.CustOpacity = 100
+        Label17.Text = "99%"
+        Form1.Opacity = 0.99
+        TrackBar1.Value = 99
+
+        CheckBox5.Checked = False
+
+        Call Form1.formatcolorcur()
+        Call formatcolorcurset()
+        Call MsgForm.formatcolorcursetmsg()
+        Call GPLForm.formatcolorcursetmsg()
+
+
+        '如果预先关联事件， Me.CheckBox1.Checked = Ture / Flase 操作会触发事件，导致操作相反
+        'AddHandler CheckBox1.CheckedChanged, AddressOf CheckBox1_CheckedChanged
+        'AddHandler CheckBox2.CheckedChanged, AddressOf CheckBox2_CheckedChanged
+        'AddHandler CheckBox3.CheckedChanged, AddressOf CheckBox3_CheckedChanged
+        'AddHandler CheckBox4.CheckedChanged, AddressOf CheckBox4_CheckedChanged
             Catch ex As Exception
-                MsgBox("恢复默认设置失败。" & vbCrLf & ex.Message, MsgBoxStyle.Critical, "错误")
-            End Try
+            MsgBox("恢复默认设置失败。" & vbCrLf & ex.Message, MsgBoxStyle.Critical, "错误")
+        End Try
         End If
     End Sub
 
@@ -1011,17 +1163,23 @@ errcode:
         Me.Close()
     End Sub
 
-    Private Sub CheckBox3_CheckedChanged(sender As System.Object, e As System.EventArgs)
-        If Form1.SaveLoc = 1 Then
-            CheckBox3.Checked = False
+    Private Sub CheckBox3_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles CheckBox3.CheckedChanged
+        If CheckBox3.CheckState = False Then
+            ' CheckBox3.Checked = False
             Form1.SaveLoc = 0
-            AddReg("Software\CJH\TimeControl\Settings", "SaveLocations", 0, RegistryValueKind.DWord, "HKCU")
+            If Form1.UnSaveData = 0 Then
+                AddReg("Software\CJH\TimeControl\Settings", "SaveLocations", 0, RegistryValueKind.DWord, "HKCU")
+            End If
+
         Else
-            CheckBox3.Checked = True
+            ' CheckBox3.Checked = True
             Form1.SaveLoc = 1
-            RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormX", Form1.Location.X, RegistryValueKind.DWord, "HKCU")
-            RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormY", Form1.Location.Y, RegistryValueKind.DWord, "HKCU")
-            AddReg("Software\CJH\TimeControl\Settings", "SaveLocations", 1, RegistryValueKind.DWord, "HKCU")
+            If Form1.UnSaveData = 0 Then
+                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormX", Form1.Location.X, RegistryValueKind.DWord, "HKCU")
+                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormY", Form1.Location.Y, RegistryValueKind.DWord, "HKCU")
+                AddReg("Software\CJH\TimeControl\Settings", "SaveLocations", 1, RegistryValueKind.DWord, "HKCU")
+            End If
+
         End If
     End Sub
 
@@ -1029,12 +1187,15 @@ errcode:
         If FontDialog1.ShowDialog = Windows.Forms.DialogResult.OK Then
             Form1.Label1.Font = FontDialog1.Font
             'New System.Drawing.Font("微软雅黑", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
-            RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFont", Form1.Label1.Font.Name, RegistryValueKind.String, "HKCU")
-            RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFontPx", Form1.Label1.Font.Size, RegistryValueKind.DWord, "HKCU")
-            RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFontItalic", Form1.Label1.Font.Italic, RegistryValueKind.DWord, "HKCU")
-            RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFontBold", Form1.Label1.Font.Bold, RegistryValueKind.DWord, "HKCU")
-            RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFontUnderLine", Form1.Label1.Font.Underline, RegistryValueKind.DWord, "HKCU")
-            RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFontStrikeout", Form1.Label1.Font.Strikeout, RegistryValueKind.DWord, "HKCU")
+            If Form1.UnSaveData = 0 Then
+                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFont", Form1.Label1.Font.Name, RegistryValueKind.String, "HKCU")
+                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFontPx", Form1.Label1.Font.Size, RegistryValueKind.DWord, "HKCU")
+                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFontItalic", Form1.Label1.Font.Italic, RegistryValueKind.DWord, "HKCU")
+                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFontBold", Form1.Label1.Font.Bold, RegistryValueKind.DWord, "HKCU")
+                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFontUnderLine", Form1.Label1.Font.Underline, RegistryValueKind.DWord, "HKCU")
+                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFontStrikeout", Form1.Label1.Font.Strikeout, RegistryValueKind.DWord, "HKCU")
+            End If
+
             If Form1.MySize = 0 Then
                 Dim aa As SizeF
                 Dim b As Graphics = Graphics.FromImage(New Bitmap(1, 1))
@@ -1051,8 +1212,11 @@ errcode:
                 If c <> 0 Then
                     Form1.Location = New Point(Form1.Location.X + c / 2, Form1.Location.Y)
                     If Form1.SaveLoc = 1 Then
-                        RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormX", Form1.Location.X, RegistryValueKind.DWord, "HKCU")
-                        RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormY", Form1.Location.Y, RegistryValueKind.DWord, "HKCU")
+                        If Form1.UnSaveData = 0 Then
+                            RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormX", Form1.Location.X, RegistryValueKind.DWord, "HKCU")
+                            RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormY", Form1.Location.Y, RegistryValueKind.DWord, "HKCU")
+                        End If
+
                     End If
                 End If
                 c = 0
@@ -1070,9 +1234,12 @@ errcode:
     Private Sub Button8_Click(sender As System.Object, e As System.EventArgs) Handles Button8.Click
         If ColorDialog1.ShowDialog = Windows.Forms.DialogResult.OK Then
             Form1.Label1.ForeColor = ColorDialog1.Color
-            RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFontR", Form1.Label1.ForeColor.R, RegistryValueKind.DWord, "HKCU")
-            RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFontG", Form1.Label1.ForeColor.G, RegistryValueKind.DWord, "HKCU")
-            RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFontB", Form1.Label1.ForeColor.B, RegistryValueKind.DWord, "HKCU")
+            If Form1.UnSaveData = 0 Then
+                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFontR", Form1.Label1.ForeColor.R, RegistryValueKind.DWord, "HKCU")
+                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFontG", Form1.Label1.ForeColor.G, RegistryValueKind.DWord, "HKCU")
+                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFontB", Form1.Label1.ForeColor.B, RegistryValueKind.DWord, "HKCU")
+            End If
+
         End If
     End Sub
 
@@ -1080,14 +1247,21 @@ errcode:
         MsgForm.ShowDialog()
     End Sub
 
-    Private Sub CheckBox4_CheckedChanged(sender As System.Object, e As System.EventArgs)
-        If Form1.MySize = 1 Then
-            CheckBox4.Checked = False
+    Private Sub CheckBox4_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles CheckBox4.CheckedChanged
+        'If Form1.MySize = 1 Then
+        If Me.CheckBox4.Checked = False Then
+            'CheckBox4.CheckState = False
             Form1.MySize = 0
-            AddReg("Software\CJH\TimeControl\Settings", "UseCustomSize", 0, RegistryValueKind.DWord, "HKCU")
-            TextBox3.Enabled = False
-            TextBox4.Enabled = False
-            Button9.Enabled = False
+            If Form1.UnSaveData = 0 Then
+                AddReg("Software\CJH\TimeControl\Settings", "UseCustomSize", 0, RegistryValueKind.DWord, "HKCU")
+            End If
+
+            If Form1.DisbFuState = 0 Then
+                TextBox3.Enabled = False
+                TextBox4.Enabled = False
+                Button9.Enabled = False
+            End If
+
 
             Dim aa As SizeF
             Dim b As Graphics = Graphics.FromImage(New Bitmap(1, 1))
@@ -1105,8 +1279,11 @@ errcode:
                 If c <> 0 Then
                     Form1.Location = New Point(Form1.Location.X + c / 2, Form1.Location.Y)
                     If Form1.SaveLoc = 1 Then
-                        RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormX", Form1.Location.X, RegistryValueKind.DWord, "HKCU")
-                        RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormY", Form1.Location.Y, RegistryValueKind.DWord, "HKCU")
+                        If Form1.UnSaveData = 0 Then
+                            RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormX", Form1.Location.X, RegistryValueKind.DWord, "HKCU")
+                            RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormY", Form1.Location.Y, RegistryValueKind.DWord, "HKCU")
+                        End If
+
                     End If
                 End If
             End If
@@ -1114,14 +1291,19 @@ errcode:
             c = 0
             Form1.SetTimeFormSize(aa.Height, aa.Width)
         Else
-            CheckBox4.Checked = True
+            'CheckBox4.CheckState = True
             Form1.MySize = 1
-            AddReg("Software\CJH\TimeControl\Settings", "UseCustomSize", 1, RegistryValueKind.DWord, "HKCU")
-            RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "CustomHeight", TextBox4.Text, RegistryValueKind.DWord, "HKCU")
-            RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "CustomWidth", TextBox3.Text, RegistryValueKind.DWord, "HKCU")
-            TextBox3.Enabled = True
-            TextBox4.Enabled = True
-            Button9.Enabled = True
+            If Form1.UnSaveData = 0 Then
+                AddReg("Software\CJH\TimeControl\Settings", "UseCustomSize", 1, RegistryValueKind.DWord, "HKCU")
+                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "CustomHeight", TextBox4.Text, RegistryValueKind.DWord, "HKCU")
+                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "CustomWidth", TextBox3.Text, RegistryValueKind.DWord, "HKCU")
+            End If
+            If Form1.DisbFuState = 0 Then
+                TextBox3.Enabled = True
+                TextBox4.Enabled = True
+                Button9.Enabled = True
+            End If
+
         End If
     End Sub
     Private Sub TextBox3_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TextBox3.KeyPress
@@ -1155,47 +1337,58 @@ errcode:
 
     Private Sub Button9_Click(sender As System.Object, e As System.EventArgs) Handles Button9.Click
         Try
-            Dim c As Integer
-            c = TextBox3.Text - Form1.Width
+            If TextBox3.Text = 0 And TextBox4.Text = 0 Then
+                MsgBox("设置自定义大小失败。" & vbCrLf & "大小不能为0。", MsgBoxStyle.Critical, "错误")
+            ElseIf TextBox3.Text = "" And TextBox4.Text = "" Then
+                MsgBox("设置自定义大小失败。" & vbCrLf & "大小不能为空。", MsgBoxStyle.Critical, "错误")
+            Else
+                Dim c As Integer
+                c = TextBox3.Text - Form1.Width
 
-            Form1.Width = TextBox3.Text
-            Form1.Height = TextBox4.Text
-            RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "CustomHeight", Form1.Height, RegistryValueKind.DWord, "HKCU")
-            RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "CustomWidth", Form1.Width, RegistryValueKind.DWord, "HKCU")
+                Form1.Width = TextBox3.Text
+                Form1.Height = TextBox4.Text
+                If Form1.UnSaveData = 0 Then
+                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "CustomHeight", Form1.Height, RegistryValueKind.DWord, "HKCU")
+                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "CustomWidth", Form1.Width, RegistryValueKind.DWord, "HKCU")
+                End If
 
-            If Form1.TimeTheme = 0 Then
-                If Form1.Width >= 250 Then
-                    If Form1.crmd = 0 Then
-                        Form1.BackgroundImage = My.Resources.bkgdark400
+
+                If Form1.TimeTheme = 0 Then
+                    If Form1.Width >= 250 Then
+                        If Form1.crmd = 0 Then
+                            Form1.BackgroundImage = My.Resources.bkgdark400
+                        Else
+                            Form1.BackgroundImage = My.Resources.bkg400
+                        End If
+                    ElseIf Form1.Width <= 70 Then
+                        If Form1.crmd = 0 Then
+                            Form1.BackgroundImage = My.Resources.bkgdark50
+                        Else
+                            Form1.BackgroundImage = My.Resources.bkg50
+                        End If
                     Else
-                        Form1.BackgroundImage = My.Resources.bkg400
-                    End If
-                ElseIf Form1.Width <= 70 Then
-                    If Form1.crmd = 0 Then
-                        Form1.BackgroundImage = My.Resources.bkgdark50
-                    Else
-                        Form1.BackgroundImage = My.Resources.bkg50
-                    End If
-                Else
-                    If Form1.crmd = 0 Then
-                        Form1.BackgroundImage = My.Resources.bkgdark
-                    Else
-                        Form1.BackgroundImage = My.Resources.bkg
+                        If Form1.crmd = 0 Then
+                            Form1.BackgroundImage = My.Resources.bkgdark
+                        Else
+                            Form1.BackgroundImage = My.Resources.bkg
+                        End If
                     End If
                 End If
-            End If
-            
-            If Not (Form1.SaveLoc = 1 And Form1.IsBootV = 1) Then
-                If c <> 0 Then
-                    Form1.Location = New Point(Form1.Location.X + c / 2, Form1.Location.Y)
-                    If Form1.SaveLoc = 1 Then
-                        RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormX", Form1.Location.X, RegistryValueKind.DWord, "HKCU")
-                        RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormY", Form1.Location.Y, RegistryValueKind.DWord, "HKCU")
+
+                If Not (Form1.SaveLoc = 1 And Form1.IsBootV = 1) Then
+                    If c <> 0 Then
+                        Form1.Location = New Point(Form1.Location.X + c / 2, Form1.Location.Y)
+                        If Form1.SaveLoc = 1 Then
+                            If Form1.UnSaveData = 0 Then
+                                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormX", Form1.Location.X, RegistryValueKind.DWord, "HKCU")
+                                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormY", Form1.Location.Y, RegistryValueKind.DWord, "HKCU")
+                            End If
+                        End If
                     End If
                 End If
-            End If
 
-            c = 0
+                c = 0
+            End If
         Catch ex As Exception
             MsgBox("设置自定义大小失败。" & vbCrLf & ex.Message, MsgBoxStyle.Critical, "错误")
         End Try
@@ -1203,45 +1396,77 @@ errcode:
 
     Private Sub ComboBox4_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles ComboBox4.SelectedIndexChanged
         If ComboBox4.SelectedIndex = 0 Then
-            RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeTheme", 0, RegistryValueKind.DWord, "HKCU")
-            Button10.Enabled = False
-            Button11.Enabled = False
-            TextBox5.Enabled = False
+            If Form1.UnSaveData = 0 Then
+                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeTheme", 0, RegistryValueKind.DWord, "HKCU")
+            End If
+            If Form1.DisbFuState = 0 Then
+                Button10.Enabled = False
+                Button11.Enabled = False
+                TextBox5.Enabled = False
+            End If
+
             Form1.TimeTheme = 0
             Call Form1.formatcolorcur()
-            TrackBar1.Enabled = False
+            If Form1.DisbFuState = 0 Then
+                TrackBar1.Enabled = False
+            End If
             Label17.Text = "99%"
             TrackBar1.Value = 99
+            Form1.Opacity = 0.99
         ElseIf ComboBox4.SelectedIndex = 1 Then
-            RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeTheme", 1, RegistryValueKind.DWord, "HKCU")
-            Button10.Enabled = False
-            Button11.Enabled = False
-            TextBox5.Enabled = False
+            If Form1.UnSaveData = 0 Then
+                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeTheme", 1, RegistryValueKind.DWord, "HKCU")
+            End If
+            If Form1.DisbFuState = 0 Then
+                Button10.Enabled = False
+                Button11.Enabled = False
+                TextBox5.Enabled = False
+            End If
+
             Form1.TimeTheme = 1
             Call Form1.formatcolorcur()
-            TrackBar1.Enabled = False
+            If Form1.DisbFuState = 0 Then
+                TrackBar1.Enabled = False
+            End If
             Label17.Text = "70%"
             TrackBar1.Value = 70
             Form1.BackgroundImage = Nothing
-
+            Form1.Opacity = 0.7
         ElseIf ComboBox4.SelectedIndex = 2 Then
-            RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeTheme", 2, RegistryValueKind.DWord, "HKCU")
-            Button10.Enabled = True
-            Button11.Enabled = True
-            TextBox5.Enabled = True
+            If Form1.UnSaveData = 0 Then
+                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeTheme", 2, RegistryValueKind.DWord, "HKCU")
+            End If
+            If Form1.DisbFuState = 0 Then
+                Button10.Enabled = True
+                Button11.Enabled = True
+                TextBox5.Enabled = True
+            End If
+
             Form1.TimeTheme = 2
             Call Form1.formatcolorcur()
-            TrackBar1.Enabled = True
+            If Form1.DisbFuState = 0 Then
+                TrackBar1.Enabled = True
+            End If
+
+            Form1.Opacity = Form1.CustOpacity * 0.01
             Label17.Text = Form1.CustOpacity & "%"
             TrackBar1.Value = Form1.CustOpacity
         Else
-            RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeTheme", 3, RegistryValueKind.DWord, "HKCU")
-            Button10.Enabled = False
-            Button11.Enabled = False
-            TextBox5.Enabled = False
+            If Form1.UnSaveData = 0 Then
+                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeTheme", 3, RegistryValueKind.DWord, "HKCU")
+            End If
+            If Form1.DisbFuState = 0 Then
+                Button10.Enabled = False
+                Button11.Enabled = False
+                TextBox5.Enabled = False
+            End If
+
             Form1.TimeTheme = 3
             Call Form1.formatcolorcur()
-            TrackBar1.Enabled = True
+            If Form1.DisbFuState = 0 Then
+                TrackBar1.Enabled = True
+            End If
+            Form1.Opacity = Form1.CustOpacity * 0.01
             Label17.Text = Form1.CustOpacity & "%"
             TrackBar1.Value = Form1.CustOpacity
             Form1.BackgroundImage = Nothing
@@ -1278,7 +1503,10 @@ errcode:
             End If
 
             OpenFileDialog1.FileName = ""
-            RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "CustomThemePath", "", RegistryValueKind.String, "HKCU")
+            If Form1.UnSaveData = 0 Then
+                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "CustomThemePath", "", RegistryValueKind.String, "HKCU")
+            End If
+
         End If
     End Sub
 
@@ -1287,7 +1515,10 @@ errcode:
             If IO.File.Exists(OpenFileDialog1.FileName) Then
                 Try
                     Form1.BackgroundImage = Image.FromFile(OpenFileDialog1.FileName)
-                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "CustomThemePath", OpenFileDialog1.FileName, RegistryValueKind.String, "HKCU")
+                    If Form1.UnSaveData = 0 Then
+                        RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "CustomThemePath", OpenFileDialog1.FileName, RegistryValueKind.String, "HKCU")
+                    End If
+
                     TextBox5.Text = OpenFileDialog1.FileName
                     Form1.TransparencyKey = Color.FromArgb(255, 0, 255)
                 Catch ex As Exception
@@ -1318,7 +1549,10 @@ errcode:
                             Form1.BackgroundImage = My.Resources.bkg
                         End If
                     End If
-                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "CustomThemePath", "", RegistryValueKind.String, "HKCU")
+                    If Form1.UnSaveData = 0 Then
+                        RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "CustomThemePath", "", RegistryValueKind.String, "HKCU")
+                    End If
+
                 End Try
             End If
         End If
@@ -1326,7 +1560,10 @@ errcode:
 
     Private Sub TrackBar1_Scroll(sender As System.Object, e As System.EventArgs) Handles TrackBar1.Scroll
         Form1.CustOpacity = Me.TrackBar1.Value
-        RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormOpacity", Form1.CustOpacity, RegistryValueKind.DWord, "HKCU")
+        If Form1.UnSaveData = 0 Then
+            RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormOpacity", Form1.CustOpacity, RegistryValueKind.DWord, "HKCU")
+        End If
+
         Label17.Text = Form1.CustOpacity & "%"
         Form1.Opacity = Form1.CustOpacity * 0.01
     End Sub
@@ -1359,8 +1596,11 @@ errcode:
                     If c <> 0 Then
                         Form1.Location = New Point(Form1.Location.X + c / 2, Form1.Location.Y)
                         If Form1.SaveLoc = 1 Then
-                            RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormX", Form1.Location.X, RegistryValueKind.DWord, "HKCU")
-                            RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormY", Form1.Location.Y, RegistryValueKind.DWord, "HKCU")
+                            If Form1.UnSaveData = 0 Then
+                                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormX", Form1.Location.X, RegistryValueKind.DWord, "HKCU")
+                                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormY", Form1.Location.Y, RegistryValueKind.DWord, "HKCU")
+                            End If
+
                         End If
                     End If
                     c = 0
@@ -1384,10 +1624,13 @@ errcode:
                     c = Form1.Width - Form1.CaW
                     If c <> 0 Then
                         Form1.Location = New Point(Form1.Location.X + c / 2, Form1.Location.Y)
-                        If Form1.SaveLoc = 1 Then
+                    If Form1.SaveLoc = 1 Then
+                        If Form1.UnSaveData = 0 Then
                             RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormX", Form1.Location.X, RegistryValueKind.DWord, "HKCU")
                             RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormY", Form1.Location.Y, RegistryValueKind.DWord, "HKCU")
                         End If
+
+                    End If
                     End If
                     c = 0
                 Form1.SetTimeFormSize(aa.Height, aa.Width)
@@ -1397,12 +1640,18 @@ errcode:
 
     Private Sub LinkLabel3_LinkClicked(sender As System.Object, e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles LinkLabel3.LinkClicked
         If MessageBox.Show("                                 " & vbCrLf & "确定要删除自定义配置并退出程序吗？" & vbCrLf & "执行该操作会删除本机时钟小工具的自定义设置并退出，相当于清除在本机的设置，此操作无法撤销。" & vbCrLf & vbCrLf & "你确定要继续吗？" & vbCrLf & "                                 ", "警告 - 删除自定义配置并退出", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) = Windows.Forms.DialogResult.Yes Then
-            RegKeyModule.DelKey("Software\CJH\TimeControl", True, "HKCU")
+            If Form1.UnSaveData = 0 Then
+                RegKeyModule.DelKey("Software\CJH\TimeControl", True, "HKCU")
+            End If
             End
         End If
     End Sub
 
     Private Sub LinkLabel4_LinkClicked(sender As System.Object, e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles LinkLabel4.LinkClicked
         GPLForm.ShowDialog()
+    End Sub
+
+    Private Sub LinkLabel5_LinkClicked(sender As System.Object, e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles LinkLabel5.LinkClicked
+        MessageBox.Show("当前支持的命令行：" & vbCrLf & "/safemode 以安全模式加载，不读取设置也不保存设置。当程序由于配置原因无法正常启动，可以使用该命令行启动后恢复默认设置。" & vbCrLf & "/noproflie 不使用配置文件。" & vbCrLf & "/nosaveprofile 读取设置但不保存设置" & vbCrLf & vbCrLf & "部分功能可能因为策略设置而不可用。命令行的内容要优先于策略设置，为单一用户设置的策略优先级高于针对所有用户设置的策略（需要以管理员身份启动本程序以应用针对所有用户设置的策略）。", "帮助", MessageBoxButtons.YesNo, MessageBoxIcon.Information)
     End Sub
 End Class
