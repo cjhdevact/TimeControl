@@ -130,8 +130,8 @@ if "%ac%" == "1" if exist "%windir%\PolicyDefinitions\*.admx" call "%~dp0TimeCon
 
 echo.
 choice /C YN /T 5 /D Y /M "是(Y)否(N)要创建快捷方式到开始菜单（5秒后自动选择Y）"
-if errorlevel 1 set ac=1
-if errorlevel 2 set ac=2
+if errorlevel 1 set ad=1
+if errorlevel 2 set ad=2
 if "%ad%" == "1" if not exist "%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\时钟小工具" md "%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\时钟小工具"
 if "%ad%" == "1" if exist "%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\时钟小工具\时钟小工具.lnk" del /q "%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\时钟小工具\时钟小工具.lnk"
 if "%ad%" == "1" call mshta VBScript:Execute("Set a=CreateObject(""WScript.Shell""):Set b=a.CreateShortcut(""%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\时钟小工具\时钟小工具.lnk""):b.TargetPath=""%windir%\CJH\TimeControl\TimeControl.exe"":b.WorkingDirectory=""%windir%\CJH\TimeControl"":b.Save:close")
