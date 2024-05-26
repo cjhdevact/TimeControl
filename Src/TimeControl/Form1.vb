@@ -191,6 +191,7 @@ Public Class Form1
         Form2.LinkLabel3.Visible = False
         DisbFuState = 1
         Form2.Button5.Visible = False
+        Form2.Label20.Text = "部分功能由于被管理员禁用而无法使用。"
     End Sub
     Public Sub loaddef(ByVal sender As System.Object, ByVal e As System.EventArgs)
         '////////////////////////////////////////////////////////////////////////////////////
