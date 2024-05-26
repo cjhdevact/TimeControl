@@ -12,13 +12,13 @@
 主程序界面
 
 
-![主程序界面（125%缩放）](Assets/MainUI.png)
+![主程序界面](Assets/MainUI.png)
 
 
 设置界面
 
 
-![设置界面（125%缩放）](Assets/SettingUI.png)
+![设置界面](Assets/SettingUI.png)
 
 
 ------------
