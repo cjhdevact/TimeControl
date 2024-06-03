@@ -13,6 +13,7 @@ title 时钟小工具卸载程序
 if exist "%windir%\cpadver.bat" echo 检测到当前已安装教室计算机批量配置工具，请使用其安装包来卸载本软件。 & echo 任意键关闭... & pause > nul & goto enda
 if exist "%windir%\csetver.bat" echo 检测到当前已安装计算机批量配置工具，请使用其安装包来卸载本软件。 & echo 任意键关闭... & pause > nul & goto enda
 if "%1" == "/noadm" goto main
+if "%1" == "/?" goto hlp
 fltmc 1>nul 2>nul&& goto main
 echo 正在获取管理员权限...
 echo.
@@ -53,6 +54,23 @@ echo.
 echo 当前未以管理员身份运行。请手动以管理员身份运行本程序。
 echo.
 echo 任意键关闭... & pause > NUL
+goto enda
+
+:hlp
+title 一键关闭课件小工具卸载程序
+cls
+echo.
+echo ====================================================
+echo                   时钟小工具卸载程序
+echo ====================================================
+echo.
+echo 你可以使用以下参数：
+echo 2-卸载.bat [/noadm ^| /mshtaadm ^| /psadm]
+echo.
+echo /noadm 当检测到无管理员权限跳过自动提权。
+echo /mshtaadm 强制使用mshta.exe自动提权。
+echo /psadm 强制使用Powershell.exe自动提权。
+echo.
 goto enda
 
 :main
