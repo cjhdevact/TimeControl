@@ -8,7 +8,6 @@ copy "%~dp0TimeControl\files\2-п╤ть.bat" "%~dp0TimeControl-Bin\2-п╤ть.bat"
 copy "%~dp0TimeControl\files\TimeControlAdmxs.exe" "%~dp0TimeControl-Bin\TimeControlAdmxs.exe"
 copy "%~dp0TimeControl\files\UserinitBootInstall.bat" "%~dp0TimeControl-Bin\UserinitBootInstall.bat"
 copy "%~dp0TimeControl\files\UserinitBootUnInstall.bat" "%~dp0TimeControl-Bin\UserinitBootUnInstall.bat"
-copy "%~dp0TimeControl\files\UserinitBootUnInstallOld.bat" "%~dp0TimeControl-Bin\UserinitBootUnInstallOld.bat"
 copy "%~dp0TimeControl\bin\Release\TimeControl.exe" "%~dp0TimeControl-Bin\TimeControl.exe"
 copy "%~dp0TimeControl\bin\x64\Release\TimeControl.exe" "%~dp0TimeControl-Bin\TimeControl64.exe"
 echo.

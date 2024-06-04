@@ -104,11 +104,6 @@ if "%PROCESSOR_ARCHITECTURE%"=="x86" goto x86
 if "%PROCESSOR_ARCHITECTURE%"=="AMD64" goto x64
 
 :x86
-echo.
-echo 如果长时间停留在此操作，请检测是否被杀毒软件拦截。
-echo.
-call "%~dp0UserinitBootUnInstallOld.bat"
-echo.
 echo 如果长时间停留在此操作，请检测是否被杀毒软件拦截。
 echo.
 Reg delete HKLM\Software\Microsoft\Windows\CurrentVersion\run /v TimeControl /f
@@ -119,10 +114,14 @@ del /q "%windir%\TimeControln35d.exe"
 echo.
 echo 如果长时间停留在此操作，请检测是否被杀毒软件拦截。
 echo.
-call "%~dp0UserinitBootUnInstall.bat"
+call "%~dp0UserinitBootUnInstall.bat" "%programfiles%\CJH\TimeControl\TimeControl.exe"
+call "%~dp0UserinitBootUnInstall.bat" "%windir%\CJH\TimeControl\TimeControl.exe"
+call "%~dp0UserinitBootUnInstall.bat" "%windir%\TimeControl.exe"
 del /q "%windir%\PolicyDefinitions\TimeControl.admx"
 del /q "%windir%\PolicyDefinitions\zh-CN\TimeControl.adml"
 del /q "%windir%\PolicyDefinitions\en-US\TimeControl.adml"
+
+rd /s /q "%windir%\CJH\TimeControl"
 
 rd /s /q "%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\时钟小工具"
 ::dir /a /s /b "%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\CJH" | findstr . >nul && echo. || rd /s /q "%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\CJH"
@@ -137,8 +136,8 @@ Reg delete HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstal
 Reg delete HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\TimeControl /v Publisher /f
 Reg delete HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\TimeControl /v UninstallString /f
 
-cd /d "%windir%"
-rd /s /q "%windir%\CJH\TimeControl"
+cd /d "%programfiles%"
+rd /s /q "%programfiles%\CJH\TimeControl"
 ::dir /a /s /b "%windir%\CJH\" | findstr . >nul && echo. || rd /s /q "%windir%\CJH"
 
 echo.
@@ -154,11 +153,6 @@ goto enda
 
 :x64
 echo.
-echo.
-echo 如果长时间停留在此操作，请检测是否被杀毒软件拦截。
-echo.
-call "%~dp0UserinitBootUnInstallOld.bat"
-echo.
 echo 如果长时间停留在此操作，请检测是否被杀毒软件拦截。
 echo.
 Reg delete HKLM\Software\Microsoft\Windows\CurrentVersion\run /v TimeControl /f
@@ -173,10 +167,14 @@ del /q "%windir%\TimeControln35d.exe"
 echo.
 echo 如果长时间停留在此操作，请检测是否被杀毒软件拦截。
 echo.
-call "%~dp0UserinitBootUnInstall.bat"
+call "%~dp0UserinitBootUnInstall.bat" "%programfiles%\CJH\TimeControl\TimeControl.exe"
+call "%~dp0UserinitBootUnInstall.bat" "%windir%\CJH\TimeControl\TimeControl.exe"
+call "%~dp0UserinitBootUnInstall.bat" "%windir%\TimeControl.exe"
 del /q "%windir%\PolicyDefinitions\TimeControl.admx"
 del /q "%windir%\PolicyDefinitions\zh-CN\TimeControl.adml"
 del /q "%windir%\PolicyDefinitions\en-US\TimeControl.adml"
+
+rd /s /q "%windir%\CJH\TimeControl"
 
 rd /s /q "%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\时钟小工具"
 ::dir /a /s /b "%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\CJH" | findstr . >nul && echo. || rd /s /q "%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\CJH"
@@ -191,8 +189,8 @@ Reg delete HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstal
 Reg delete HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\TimeControl /v Publisher /f
 Reg delete HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\TimeControl /v UninstallString /f
 
-cd /d "%windir%"
-rd /s /q "%windir%\CJH\TimeControl"
+cd /d "%programfiles%"
+rd /s /q "%programfiles%\CJH\TimeControl"
 ::dir /a /s /b "%windir%\CJH" | findstr . >nul && echo. || rd /s /q "%windir%\CJH"
 
 echo.

@@ -113,17 +113,27 @@ if errorlevel 2 set a=2
 if exist "%windir%\TimeControl.exe" if "%a%" == "1" echo.
 if exist "%windir%\TimeControl.exe" if "%a%" == "1" echo 如果长时间停留在此操作，请检测是否被杀毒软件拦截。
 if exist "%windir%\TimeControl.exe" if "%a%" == "1" echo.
-if exist "%windir%\TimeControl.exe" if "%a%" == "1" call "%~dp0UserinitBootUnInstallOld.bat"
+if exist "%windir%\TimeControl.exe" if "%a%" == "1" call "%~dp0UserinitBootUnInstall.bat" "%windir%\TimeControl.exe"
 if exist "%windir%\TimeControl.exe" if "%a%" == "1" Reg delete HKLM\Software\Microsoft\Windows\CurrentVersion\run /v TimeControl /f
 if exist "%windir%\TimeControl.exe" if "%a%" == "1" del /q "%windir%\TimeControl.exe"
 if exist "%windir%\TimeControl.exe" if "%a%" == "1" del /q "%windir%\TimeControlm.exe"
 if exist "%windir%\TimeControl.exe" if "%a%" == "1" del /q "%windir%\TimeControln35.exe"
 if exist "%windir%\TimeControl.exe" if "%a%" == "1" del /q "%windir%\TimeControln35d.exe"
 
-if exist "%windir%\CJH\TimeControl\TimeControl.exe" del /q "%windir%\CJH\TimeControl\TimeControl.exe"
+if exist "%windir%\CJH\TimeControl\TimeControl.exe" choice /C YN /T 5 /D Y /M "检测到当前系统存在旧版本时钟小工具。是(Y)否(N)要删除旧版时钟小工具（5秒后自动选择Y）"
+if errorlevel 1 set at=1
+if errorlevel 2 set at=2
+if exist "%windir%\CJH\TimeControl\TimeControl.exe" if "%at%" == "1" echo.
+if exist "%windir%\CJH\TimeControl\TimeControl.exe" if "%at%" == "1" echo 如果长时间停留在此操作，请检测是否被杀毒软件拦截。
+if exist "%windir%\CJH\TimeControl\TimeControl.exe" if "%at%" == "1" echo.
+if exist "%windir%\CJH\TimeControl\TimeControl.exe" if "%at%" == "1" call "%~dp0UserinitBootUnInstall.bat" "%windir%\CJH\TimeControl\TimeControl.exe"
+if exist "%windir%\CJH\TimeControl\TimeControl.exe" if "%at%" == "1" Reg delete HKLM\Software\Microsoft\Windows\CurrentVersion\run /v TimeControl /f
+if exist "%windir%\CJH\TimeControl\TimeControl.exe" if "%at%" == "1" rd /s /q "%windir%\CJH\TimeControl"
 
-if not exist "%windir%\CJH\TimeControl" md "%windir%\CJH\TimeControl"
-copy "%~dp0TimeControl.exe" "%windir%\CJH\TimeControl\TimeControl.exe"
+if exist "%programfiles%\CJH\TimeControl\TimeControl.exe" del /q "%programfiles%\CJH\TimeControl\TimeControl.exe"
+
+if not exist "%programfiles%\CJH\TimeControl" md "%programfiles%\CJH\TimeControl"
+copy "%~dp0TimeControl.exe" "%programfiles%\CJH\TimeControl\TimeControl.exe"
 echo.
 choice /C YN /T 5 /D Y /M "是(Y)否(N)要添加自动启动项（5秒后自动选择Y）"
 if errorlevel 1 set aa=1
@@ -131,7 +141,7 @@ if errorlevel 2 set aa=2
 if "%aa%" == "1" echo.
 if "%aa%" == "1" echo 如果长时间停留在此操作，请检测是否被杀毒软件拦截。
 if "%aa%" == "1" echo.
-if "%aa%" == "1" Reg add HKLM\Software\Microsoft\Windows\CurrentVersion\run /v TimeControl /t REG_SZ /d "%windir%\CJH\TimeControl\TimeControl.exe" /f
+if "%aa%" == "1" Reg add HKLM\Software\Microsoft\Windows\CurrentVersion\run /v TimeControl /t REG_SZ /d "%programfiles%\CJH\TimeControl\TimeControl.exe" /f
 echo.
 choice /C YN /T 5 /D Y /M "是(Y)否(N)要添加Userinit级自动启动项（5秒后自动选择Y）"
 if errorlevel 1 set ab=1
@@ -139,8 +149,8 @@ if errorlevel 2 set ab=2
 if "%ab%" == "1" echo.
 if "%ab%" == "1" echo 如果长时间停留在此操作，请检测是否被杀毒软件拦截。
 if "%ab%" == "1" echo.
-if "%ab%" == "1" call "%~dp0UserinitBootUnInstall.bat"
-if "%ab%" == "1" call "%~dp0UserinitBootInstall.bat"
+if "%ab%" == "1" call "%~dp0UserinitBootUnInstall.bat" "%programfiles%\CJH\TimeControl\TimeControl.exe"
+if "%ab%" == "1" call "%~dp0UserinitBootInstall.bat" "%programfiles%\CJH\TimeControl\TimeControl.exe"
 echo.
 choice /C YN /T 5 /D Y /M "是(Y)否(N)要安装策略到当前系统（安装后可以使用组策略编辑时钟小工具的策略）（仅Windows Vista以上版本支持）（5秒后自动选择Y）"
 if errorlevel 1 set ac=1
@@ -153,20 +163,20 @@ if errorlevel 1 set ad=1
 if errorlevel 2 set ad=2
 if "%ad%" == "1" if not exist "%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\时钟小工具" md "%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\时钟小工具"
 if "%ad%" == "1" if exist "%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\时钟小工具\时钟小工具.lnk" del /q "%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\时钟小工具\时钟小工具.lnk"
-if "%ad%" == "1" call mshta VBScript:Execute("Set a=CreateObject(""WScript.Shell""):Set b=a.CreateShortcut(""%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\时钟小工具\时钟小工具.lnk""):b.TargetPath=""%windir%\CJH\TimeControl\TimeControl.exe"":b.WorkingDirectory=""%windir%\CJH\TimeControl"":b.Save:close")
+if "%ad%" == "1" call mshta VBScript:Execute("Set a=CreateObject(""WScript.Shell""):Set b=a.CreateShortcut(""%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\时钟小工具\时钟小工具.lnk""):b.TargetPath=""%programfiles%\CJH\TimeControl\TimeControl.exe"":b.WorkingDirectory=""%programfiles%\CJH\TimeControl"":b.Save:close")
 
-copy /y "%~dp02-卸载.bat" "%windir%\CJH\TimeControl\Uninstall.bat"
+copy /y "%~dp02-卸载.bat" "%programfiles%\CJH\TimeControl\Uninstall.bat"
 
 echo.
 choice /C YN /T 5 /D Y /M "是(Y)否(N)添加卸载程序列表（5秒后自动选择Y）"
 if errorlevel 1 set ae=1
 if errorlevel 2 set ae=2
-if "%ae%" == "1" Reg add HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\TimeControl /v DisplayIcon /t REG_SZ /d "%windir%\CJH\TimeControl\TimeControl.exe" /f
+if "%ae%" == "1" Reg add HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\TimeControl /v DisplayIcon /t REG_SZ /d "%programfiles%\CJH\TimeControl\TimeControl.exe" /f
 if "%ae%" == "1" Reg add HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\TimeControl /v DisplayName /t REG_SZ /d "时钟小工具（TimeControl）" /f
 if "%ae%" == "1" Reg add HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\TimeControl /v Publisher /t REG_SZ /d "CJH" /f
-if "%ae%" == "1" Reg add HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\TimeControl /v UninstallString /t REG_SZ /d "%windir%\CJH\TimeControl\Uninstall.bat" /f
+if "%ae%" == "1" Reg add HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\TimeControl /v UninstallString /t REG_SZ /d "%programfiles%\CJH\TimeControl\Uninstall.bat" /f
 
-start %windir%\CJH\TimeControl\TimeControl.exe
+start "" "%programfiles%\CJH\TimeControl\TimeControl.exe"
 
 echo.
 cls
@@ -187,7 +197,7 @@ if errorlevel 2 set a=2
 if exist "%windir%\TimeControl.exe" if "%a%" == "1" echo.
 if exist "%windir%\TimeControl.exe" if "%a%" == "1" echo 如果长时间停留在此操作，请检测是否被杀毒软件拦截。
 if exist "%windir%\TimeControl.exe" if "%a%" == "1" echo.
-if exist "%windir%\TimeControl.exe" if "%a%" == "1" call "%~dp0UserinitBootUnInstallOld.bat"
+if exist "%windir%\TimeControl.exe" if "%a%" == "1" call "%~dp0UserinitBootUnInstall.bat" "%windir%\TimeControl.exe"
 if exist "%windir%\TimeControl.exe" if "%a%" == "1" Reg delete HKLM\Software\Microsoft\Windows\CurrentVersion\run /v TimeControl /f
 if exist "%windir%\TimeControl.exe" if "%a%" == "1" del /q "%windir%\TimeControl.exe"
 if exist "%windir%\TimeControl.exe" if "%a%" == "1" del /q "%windir%\TimeControlm.exe"
@@ -198,13 +208,23 @@ if exist "%windir%\TimeControl.exe" if "%a%" == "1" del /q "%windir%\syswow64\Ti
 if exist "%windir%\TimeControl.exe" if "%a%" == "1" del /q "%windir%\TimeControln35.exe"
 if exist "%windir%\TimeControl.exe" if "%a%" == "1" del /q "%windir%\TimeControln35d.exe"
 
-if exist "%windir%\CJH\TimeControl\TimeControl.exe" del /q "%windir%\CJH\TimeControl\TimeControl.exe"
-if exist "%windir%\CJH\TimeControl\x86\TimeControl.exe" del /q "%windir%\CJH\TimeControl\x86\TimeControl.exe"
+if exist "%windir%\CJH\TimeControl\TimeControl.exe" choice /C YN /T 5 /D Y /M "检测到当前系统存在旧版本时钟小工具。是(Y)否(N)要删除旧版时钟小工具（5秒后自动选择Y）"
+if errorlevel 1 set at=1
+if errorlevel 2 set at=2
+if exist "%windir%\CJH\TimeControl\TimeControl.exe" if "%at%" == "1" echo.
+if exist "%windir%\CJH\TimeControl\TimeControl.exe" if "%at%" == "1" echo 如果长时间停留在此操作，请检测是否被杀毒软件拦截。
+if exist "%windir%\CJH\TimeControl\TimeControl.exe" if "%at%" == "1" echo.
+if exist "%windir%\CJH\TimeControl\TimeControl.exe" if "%at%" == "1" call "%~dp0UserinitBootUnInstall.bat" "%windir%\CJH\TimeControl\TimeControl.exe"
+if exist "%windir%\CJH\TimeControl\TimeControl.exe" if "%at%" == "1" Reg delete HKLM\Software\Microsoft\Windows\CurrentVersion\run /v TimeControl /f
+if exist "%windir%\CJH\TimeControl\TimeControl.exe" if "%at%" == "1" rd /s /q "%windir%\CJH\TimeControl"
 
-if not exist "%windir%\CJH\TimeControl" md "%windir%\CJH\TimeControl"
-if not exist "%windir%\CJH\TimeControl\x86" md "%windir%\CJH\TimeControl\x86"
-copy "%~dp0TimeControl64.exe" "%windir%\CJH\TimeControl\TimeControl.exe"
-copy "%~dp0TimeControl.exe" "%windir%\CJH\TimeControl\x86\TimeControl.exe"
+if exist "%programfiles%\CJH\TimeControl\TimeControl.exe" del /q "%programfiles%\CJH\TimeControl\TimeControl.exe"
+if exist "%programfiles%\CJH\TimeControl\x86\TimeControl.exe" del /q "%programfiles%\CJH\TimeControl\x86\TimeControl.exe"
+
+if not exist "%programfiles%\CJH\TimeControl" md "%programfiles%\CJH\TimeControl"
+if not exist "%programfiles%\CJH\TimeControl\x86" md "%programfiles%\CJH\TimeControl\x86"
+copy "%~dp0TimeControl64.exe" "%programfiles%\CJH\TimeControl\TimeControl.exe"
+copy "%~dp0TimeControl.exe" "%programfiles%\CJH\TimeControl\x86\TimeControl.exe"
 echo.
 choice /C YN /T 5 /D Y /M "是(Y)否(N)要添加自动启动项（5秒后自动选择Y）"
 if errorlevel 1 set aa=1
@@ -212,7 +232,7 @@ if errorlevel 2 set aa=2
 if "%aa%" == "1" echo.
 if "%aa%" == "1" echo 如果长时间停留在此操作，请检测是否被杀毒软件拦截。
 if "%aa%" == "1" echo.
-if "%aa%" == "1" Reg add HKLM\Software\Microsoft\Windows\CurrentVersion\run /v TimeControl /t REG_SZ /d "%windir%\CJH\TimeControl\TimeControl.exe" /f
+if "%aa%" == "1" Reg add HKLM\Software\Microsoft\Windows\CurrentVersion\run /v TimeControl /t REG_SZ /d "%programfiles%\CJH\TimeControl\TimeControl.exe" /f
 echo.
 choice /C YN /T 5 /D Y /M "是(Y)否(N)要添加Userinit级自动启动项（5秒后自动选择Y）"
 if errorlevel 1 set ab=1
@@ -220,8 +240,8 @@ if errorlevel 2 set ab=2
 if "%ab%" == "1" echo.
 if "%ab%" == "1" echo 如果长时间停留在此操作，请检测是否被杀毒软件拦截。
 if "%ab%" == "1" echo.
-if "%ab%" == "1" call "%~dp0UserinitBootUnInstall.bat"
-if "%ab%" == "1" call "%~dp0UserinitBootInstall.bat"
+if "%ab%" == "1" call "%~dp0UserinitBootUnInstall.bat" "%programfiles%\CJH\TimeControl\TimeControl.exe"
+if "%ab%" == "1" call "%~dp0UserinitBootInstall.bat" "%programfiles%\CJH\TimeControl\TimeControl.exe"
 echo.
 choice /C YN /T 5 /D Y /M "是(Y)否(N)要安装策略到当前系统（安装后可以使用组策略编辑时钟小工具的策略）（仅Windows Vista以上版本支持）（5秒后自动选择Y）"
 if errorlevel 1 set ac=1
@@ -235,21 +255,21 @@ if errorlevel 2 set ad=2
 if "%ad%" == "1" if not exist "%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\时钟小工具" md "%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\时钟小工具"
 if "%ad%" == "1" if exist "%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\时钟小工具\时钟小工具.lnk" del /q "%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\时钟小工具\时钟小工具.lnk"
 if "%ad%" == "1" if exist "%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\时钟小工具\时钟小工具（32位）.lnk" del /q "%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\时钟小工具\时钟小工具（32位）.lnk"
-if "%ad%" == "1" call mshta VBScript:Execute("Set a=CreateObject(""WScript.Shell""):Set b=a.CreateShortcut(""%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\时钟小工具\时钟小工具.lnk""):b.TargetPath=""%windir%\CJH\TimeControl\TimeControl.exe"":b.WorkingDirectory=""%windir%\CJH\TimeControl"":b.Save:close")
-if "%ad%" == "1" call mshta VBScript:Execute("Set a=CreateObject(""WScript.Shell""):Set b=a.CreateShortcut(""%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\时钟小工具\时钟小工具（32位）.lnk""):b.TargetPath=""%windir%\CJH\TimeControl\x86\TimeControl.exe"":b.WorkingDirectory=""%windir%\CJH\TimeControl\x86"":b.Save:close")
+if "%ad%" == "1" call mshta VBScript:Execute("Set a=CreateObject(""WScript.Shell""):Set b=a.CreateShortcut(""%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\时钟小工具\时钟小工具.lnk""):b.TargetPath=""%programfiles%\CJH\TimeControl\TimeControl.exe"":b.WorkingDirectory=""%programfiles%\CJH\TimeControl"":b.Save:close")
+if "%ad%" == "1" call mshta VBScript:Execute("Set a=CreateObject(""WScript.Shell""):Set b=a.CreateShortcut(""%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\时钟小工具\时钟小工具（32位）.lnk""):b.TargetPath=""%programfiles%\CJH\TimeControl\x86\TimeControl.exe"":b.WorkingDirectory=""%programfiles%\CJH\TimeControl\x86"":b.Save:close")
 
-copy /y "%~dp02-卸载.bat" "%windir%\CJH\TimeControl\Uninstall.bat"
+copy /y "%~dp02-卸载.bat" "%programfiles%\CJH\TimeControl\Uninstall.bat"
 
 echo.
 choice /C YN /T 5 /D Y /M "是(Y)否(N)添加卸载程序列表（5秒后自动选择Y）"
 if errorlevel 1 set ae=1
 if errorlevel 2 set ae=2
-if "%ae%" == "1" Reg add HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\TimeControl /v DisplayIcon /t REG_SZ /d "%windir%\CJH\TimeControl\TimeControl.exe" /f
+if "%ae%" == "1" Reg add HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\TimeControl /v DisplayIcon /t REG_SZ /d "%programfiles%\CJH\TimeControl\TimeControl.exe" /f
 if "%ae%" == "1" Reg add HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\TimeControl /v DisplayName /t REG_SZ /d "时钟小工具（TimeControl）" /f
 if "%ae%" == "1" Reg add HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\TimeControl /v Publisher /t REG_SZ /d "CJH" /f
-if "%ae%" == "1" Reg add HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\TimeControl /v UninstallString /t REG_SZ /d "%windir%\CJH\TimeControl\Uninstall.bat" /f
+if "%ae%" == "1" Reg add HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\TimeControl /v UninstallString /t REG_SZ /d "%programfiles%\CJH\TimeControl\Uninstall.bat" /f
 
-start %windir%\CJH\TimeControl\TimeControl.exe
+start "" "%programfiles%\CJH\TimeControl\TimeControl.exe"
 
 echo.
 cls
