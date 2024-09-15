@@ -94,6 +94,7 @@ Public Class Form1
     Public UnSaveData As Integer '不保存设置
     Public UnReadData As Integer '不读取设置
     Public ShowModeTips As Integer '不显示横幅
+
     Private Sub Timer1_Tick(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Timer1.Tick
         Try
             If Form2.CheckBox5.Checked = True Then
@@ -523,17 +524,17 @@ Public Class Form1
 
         Try
             If Command().ToLower = "/safemode" Then
-                UnReadData = 1
-                UnSaveData = 1
-                Call loaddef(sender, e)
                 If DisbFuState = 1 Then
                     Form2.Label20.Text = "当前处于安全模式，你的更改将不会被保存。部分功能由于被管理员禁用而无法使用。"
                 Else
                     Form2.Label20.Text = "当前处于安全模式，你的更改将不会被保存。"
                 End If
+                UnReadData = 1
+                UnSaveData = 1
                 Form2.Label20.Visible = True
                 Form2.LinkLabel3.Visible = True
                 Form2.Button5.Visible = True
+                Call loaddef(sender, e)
             End If
 
             If Command().ToLower = "/noprofile" Then

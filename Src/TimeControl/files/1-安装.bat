@@ -166,6 +166,7 @@ if "%ad%" == "1" if exist "%systemdrive%\ProgramData\Microsoft\Windows\Start Men
 if "%ad%" == "1" call mshta VBScript:Execute("Set a=CreateObject(""WScript.Shell""):Set b=a.CreateShortcut(""%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\时钟小工具\时钟小工具.lnk""):b.TargetPath=""%programfiles%\CJH\TimeControl\TimeControl.exe"":b.WorkingDirectory=""%programfiles%\CJH\TimeControl"":b.Save:close")
 
 copy /y "%~dp02-卸载.bat" "%programfiles%\CJH\TimeControl\Uninstall.bat"
+copy /y "%~dp0UserinitBootUnInstall.bat" "%programfiles%\CJH\TimeControl\UserinitBootUnInstall.bat"
 
 echo.
 choice /C YN /T 5 /D Y /M "是(Y)否(N)添加卸载程序列表（5秒后自动选择Y）"
@@ -259,6 +260,7 @@ if "%ad%" == "1" call mshta VBScript:Execute("Set a=CreateObject(""WScript.Shell
 if "%ad%" == "1" call mshta VBScript:Execute("Set a=CreateObject(""WScript.Shell""):Set b=a.CreateShortcut(""%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\时钟小工具\时钟小工具（32位）.lnk""):b.TargetPath=""%programfiles%\CJH\TimeControl\x86\TimeControl.exe"":b.WorkingDirectory=""%programfiles%\CJH\TimeControl\x86"":b.Save:close")
 
 copy /y "%~dp02-卸载.bat" "%programfiles%\CJH\TimeControl\Uninstall.bat"
+copy /y "%~dp0UserinitBootUnInstall.bat" "%programfiles%\CJH\TimeControl\UserinitBootUnInstall.bat"
 
 echo.
 choice /C YN /T 5 /D Y /M "是(Y)否(N)添加卸载程序列表（5秒后自动选择Y）"

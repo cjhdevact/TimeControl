@@ -250,6 +250,8 @@ errcode:
             Me.Button10.ForeColor = Color.White
             Me.Button11.BackColor = Color.FromArgb(32, 32, 32)
             Me.Button11.ForeColor = Color.White
+            Me.Button12.BackColor = Color.FromArgb(32, 32, 32)
+            Me.Button12.ForeColor = Color.White
             Me.TextBox1.BackColor = Color.FromArgb(32, 32, 32)
             Me.TextBox1.ForeColor = Color.White
             Me.TextBox2.BackColor = Color.FromArgb(32, 32, 32)
@@ -300,6 +302,8 @@ errcode:
             Me.Button10.ForeColor = Color.Black
             Me.Button11.BackColor = Color.Transparent
             Me.Button11.ForeColor = Color.Black
+            Me.Button12.BackColor = Color.Transparent
+            Me.Button12.ForeColor = Color.Black
             Me.TextBox1.BackColor = Color.White
             Me.TextBox1.ForeColor = Color.Black
             Me.TextBox2.BackColor = Color.White
@@ -1584,6 +1588,7 @@ errcode:
                     Dim aa As SizeF
                     Dim b As Graphics = Graphics.FromImage(New Bitmap(1, 1))
                     aa = TextRenderer.MeasureText(Form1.Label1.Text, Form1.Label1.Font)
+                    Form1.Timer1.Interval = 100
                     Dim c As Integer
                     If aa.Width <= 42 Then
                         Form1.GetTimeFormSize(38, aa.Width + 8)
@@ -1609,7 +1614,8 @@ errcode:
             End If
         Else
                 If Form1.MySize = 0 Then
-                    Form1.Label1.Text = Format(Now(), Form1.TimeF)
+                Form1.Label1.Text = Format(Now(), Form1.TimeF)
+                Form1.Timer1.Interval = 1000
                     Dim aa As SizeF
                     Dim b As Graphics = Graphics.FromImage(New Bitmap(1, 1))
                 aa = TextRenderer.MeasureText(Form1.Label1.Text, Form1.Label1.Font)
@@ -1653,5 +1659,12 @@ errcode:
 
     Private Sub LinkLabel5_LinkClicked(sender As System.Object, e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles LinkLabel5.LinkClicked
         MessageBox.Show("当前支持的命令行：" & vbCrLf & "/safemode 以安全模式加载，不读取设置也不保存设置。当程序由于配置原因无法正常启动，可以使用该命令行启动后恢复默认设置。" & vbCrLf & "/noproflie 不使用配置文件。" & vbCrLf & "/nosaveprofile 读取设置但不保存设置" & vbCrLf & vbCrLf & "部分功能可能因为策略设置而不可用。命令行的内容要优先于策略设置，为单一用户设置的策略优先级高于针对所有用户设置的策略（需要以管理员身份启动本程序以应用针对所有用户设置的策略）。", "帮助", MessageBoxButtons.YesNo, MessageBoxIcon.Information)
+    End Sub
+
+    Private Sub Button12_Click(sender As System.Object, e As System.EventArgs) Handles Button12.Click
+        If (MessageBox.Show("确定重启时钟小工具吗？", "时钟小工具", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) = DialogResult.Yes) Then
+            System.Diagnostics.Process.Start(Application.ExecutablePath)
+            End
+        End If
     End Sub
 End Class

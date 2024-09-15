@@ -78,6 +78,7 @@ Partial Class Form2
         Me.LinkLabel5 = New System.Windows.Forms.LinkLabel()
         Me.Label20 = New System.Windows.Forms.Label()
         Me.PictureBox2 = New System.Windows.Forms.PictureBox()
+        Me.Button12 = New System.Windows.Forms.Button()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.TrackBar1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -90,7 +91,7 @@ Partial Class Form2
         Me.Button1.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(113, 27)
-        Me.Button1.TabIndex = 5
+        Me.Button1.TabIndex = 31
         Me.Button1.Text = "关闭(&C)"
         Me.Button1.UseVisualStyleBackColor = True
         '
@@ -111,7 +112,7 @@ Partial Class Form2
         Me.ComboBox2.Location = New System.Drawing.Point(134, 132)
         Me.ComboBox2.Name = "ComboBox2"
         Me.ComboBox2.Size = New System.Drawing.Size(110, 28)
-        Me.ComboBox2.TabIndex = 9
+        Me.ComboBox2.TabIndex = 0
         '
         'Label2
         '
@@ -127,7 +128,7 @@ Partial Class Form2
         Me.TextBox1.Location = New System.Drawing.Point(515, 174)
         Me.TextBox1.Name = "TextBox1"
         Me.TextBox1.Size = New System.Drawing.Size(95, 27)
-        Me.TextBox1.TabIndex = 7
+        Me.TextBox1.TabIndex = 19
         '
         'ComboBox1
         '
@@ -140,7 +141,7 @@ Partial Class Form2
         Me.ComboBox1.Location = New System.Drawing.Point(620, 173)
         Me.ComboBox1.Name = "ComboBox1"
         Me.ComboBox1.Size = New System.Drawing.Size(121, 28)
-        Me.ComboBox1.TabIndex = 6
+        Me.ComboBox1.TabIndex = 20
         '
         'Button2
         '
@@ -148,7 +149,7 @@ Partial Class Form2
         Me.Button2.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
         Me.Button2.Name = "Button2"
         Me.Button2.Size = New System.Drawing.Size(113, 27)
-        Me.Button2.TabIndex = 12
+        Me.Button2.TabIndex = 21
         Me.Button2.Text = "应用"
         Me.Button2.UseVisualStyleBackColor = True
         '
@@ -165,9 +166,10 @@ Partial Class Form2
         'Label4
         '
         Me.Label4.AutoSize = True
+        Me.Label4.Font = New System.Drawing.Font("微软雅黑", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
         Me.Label4.Location = New System.Drawing.Point(20, 111)
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(69, 20)
+        Me.Label4.Size = New System.Drawing.Size(69, 19)
         Me.Label4.TabIndex = 14
         Me.Label4.Text = "界面设置"
         '
@@ -177,7 +179,7 @@ Partial Class Form2
         Me.CheckBox1.Location = New System.Drawing.Point(33, 410)
         Me.CheckBox1.Name = "CheckBox1"
         Me.CheckBox1.Size = New System.Drawing.Size(88, 24)
-        Me.CheckBox1.TabIndex = 15
+        Me.CheckBox1.TabIndex = 10
         Me.CheckBox1.Text = "始终顶置"
         Me.CheckBox1.UseVisualStyleBackColor = True
         '
@@ -187,16 +189,17 @@ Partial Class Form2
         Me.CheckBox2.Location = New System.Drawing.Point(33, 440)
         Me.CheckBox2.Name = "CheckBox2"
         Me.CheckBox2.Size = New System.Drawing.Size(88, 24)
-        Me.CheckBox2.TabIndex = 16
+        Me.CheckBox2.TabIndex = 11
         Me.CheckBox2.Text = "允许拖动"
         Me.CheckBox2.UseVisualStyleBackColor = True
         '
         'Label5
         '
         Me.Label5.AutoSize = True
+        Me.Label5.Font = New System.Drawing.Font("微软雅黑", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
         Me.Label5.Location = New System.Drawing.Point(459, 155)
         Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(39, 20)
+        Me.Label5.Size = New System.Drawing.Size(39, 19)
         Me.Label5.TabIndex = 17
         Me.Label5.Text = "关闭"
         '
@@ -217,16 +220,17 @@ Partial Class Form2
         Me.Button3.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
         Me.Button3.Name = "Button3"
         Me.Button3.Size = New System.Drawing.Size(113, 27)
-        Me.Button3.TabIndex = 19
+        Me.Button3.TabIndex = 22
         Me.Button3.Text = "退出(&X)"
         Me.Button3.UseVisualStyleBackColor = False
         '
         'Label7
         '
         Me.Label7.AutoSize = True
+        Me.Label7.Font = New System.Drawing.Font("微软雅黑", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
         Me.Label7.Location = New System.Drawing.Point(459, 247)
         Me.Label7.Name = "Label7"
-        Me.Label7.Size = New System.Drawing.Size(39, 20)
+        Me.Label7.Size = New System.Drawing.Size(39, 19)
         Me.Label7.TabIndex = 20
         Me.Label7.Text = "关于"
         '
@@ -248,20 +252,20 @@ Partial Class Form2
         Me.ComboBox3.Location = New System.Drawing.Point(134, 173)
         Me.ComboBox3.Name = "ComboBox3"
         Me.ComboBox3.Size = New System.Drawing.Size(263, 28)
-        Me.ComboBox3.TabIndex = 21
+        Me.ComboBox3.TabIndex = 1
         '
         'TextBox2
         '
         Me.TextBox2.Enabled = False
-        Me.TextBox2.Location = New System.Drawing.Point(149, 317)
+        Me.TextBox2.Location = New System.Drawing.Point(148, 208)
         Me.TextBox2.Name = "TextBox2"
         Me.TextBox2.Size = New System.Drawing.Size(151, 27)
-        Me.TextBox2.TabIndex = 23
+        Me.TextBox2.TabIndex = 2
         '
         'Label9
         '
         Me.Label9.AutoSize = True
-        Me.Label9.Location = New System.Drawing.Point(29, 320)
+        Me.Label9.Location = New System.Drawing.Point(28, 211)
         Me.Label9.Name = "Label9"
         Me.Label9.Size = New System.Drawing.Size(114, 20)
         Me.Label9.TabIndex = 24
@@ -269,11 +273,11 @@ Partial Class Form2
         '
         'Button4
         '
-        Me.Button4.Location = New System.Drawing.Point(306, 317)
+        Me.Button4.Location = New System.Drawing.Point(305, 208)
         Me.Button4.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
         Me.Button4.Name = "Button4"
         Me.Button4.Size = New System.Drawing.Size(113, 27)
-        Me.Button4.TabIndex = 25
+        Me.Button4.TabIndex = 3
         Me.Button4.Text = "应用"
         Me.Button4.UseVisualStyleBackColor = True
         '
@@ -283,7 +287,7 @@ Partial Class Form2
         Me.Button5.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
         Me.Button5.Name = "Button5"
         Me.Button5.Size = New System.Drawing.Size(133, 27)
-        Me.Button5.TabIndex = 26
+        Me.Button5.TabIndex = 30
         Me.Button5.Text = "恢复默认设置(&D)"
         Me.Button5.UseVisualStyleBackColor = True
         '
@@ -293,7 +297,7 @@ Partial Class Form2
         Me.Button6.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
         Me.Button6.Name = "Button6"
         Me.Button6.Size = New System.Drawing.Size(113, 27)
-        Me.Button6.TabIndex = 28
+        Me.Button6.TabIndex = 23
         Me.Button6.Text = "隐藏(&H)"
         Me.Button6.UseVisualStyleBackColor = True
         '
@@ -303,7 +307,7 @@ Partial Class Form2
         Me.CheckBox3.Location = New System.Drawing.Point(33, 469)
         Me.CheckBox3.Name = "CheckBox3"
         Me.CheckBox3.Size = New System.Drawing.Size(133, 24)
-        Me.CheckBox3.TabIndex = 29
+        Me.CheckBox3.TabIndex = 12
         Me.CheckBox3.Text = "保存小工具位置"
         Me.CheckBox3.UseVisualStyleBackColor = True
         '
@@ -322,7 +326,7 @@ Partial Class Form2
         Me.Button7.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
         Me.Button7.Name = "Button7"
         Me.Button7.Size = New System.Drawing.Size(113, 27)
-        Me.Button7.TabIndex = 31
+        Me.Button7.TabIndex = 8
         Me.Button7.Text = "设置"
         Me.Button7.UseVisualStyleBackColor = True
         '
@@ -337,7 +341,7 @@ Partial Class Form2
         Me.Button8.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
         Me.Button8.Name = "Button8"
         Me.Button8.Size = New System.Drawing.Size(113, 27)
-        Me.Button8.TabIndex = 33
+        Me.Button8.TabIndex = 9
         Me.Button8.Text = "设置"
         Me.Button8.UseVisualStyleBackColor = True
         '
@@ -368,7 +372,7 @@ Partial Class Form2
         Me.CheckBox4.Location = New System.Drawing.Point(33, 529)
         Me.CheckBox4.Name = "CheckBox4"
         Me.CheckBox4.Size = New System.Drawing.Size(133, 24)
-        Me.CheckBox4.TabIndex = 35
+        Me.CheckBox4.TabIndex = 14
         Me.CheckBox4.Text = "使用自定义大小"
         Me.CheckBox4.UseVisualStyleBackColor = True
         '
@@ -387,7 +391,7 @@ Partial Class Form2
         Me.TextBox3.Location = New System.Drawing.Point(74, 553)
         Me.TextBox3.Name = "TextBox3"
         Me.TextBox3.Size = New System.Drawing.Size(83, 27)
-        Me.TextBox3.TabIndex = 37
+        Me.TextBox3.TabIndex = 15
         '
         'TextBox4
         '
@@ -395,7 +399,7 @@ Partial Class Form2
         Me.TextBox4.Location = New System.Drawing.Point(208, 553)
         Me.TextBox4.Name = "TextBox4"
         Me.TextBox4.Size = New System.Drawing.Size(83, 27)
-        Me.TextBox4.TabIndex = 39
+        Me.TextBox4.TabIndex = 16
         '
         'Label13
         '
@@ -412,14 +416,14 @@ Partial Class Form2
         Me.Button9.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
         Me.Button9.Name = "Button9"
         Me.Button9.Size = New System.Drawing.Size(113, 27)
-        Me.Button9.TabIndex = 40
+        Me.Button9.TabIndex = 17
         Me.Button9.Text = "应用"
         Me.Button9.UseVisualStyleBackColor = True
         '
         'Label14
         '
         Me.Label14.AutoSize = True
-        Me.Label14.Location = New System.Drawing.Point(29, 215)
+        Me.Label14.Location = New System.Drawing.Point(29, 247)
         Me.Label14.Name = "Label14"
         Me.Label14.Size = New System.Drawing.Size(39, 20)
         Me.Label14.TabIndex = 41
@@ -431,15 +435,15 @@ Partial Class Form2
         Me.ComboBox4.FlatStyle = System.Windows.Forms.FlatStyle.System
         Me.ComboBox4.FormattingEnabled = True
         Me.ComboBox4.Items.AddRange(New Object() {"圆角", "经典", "自定义背景", "（无）"})
-        Me.ComboBox4.Location = New System.Drawing.Point(134, 212)
+        Me.ComboBox4.Location = New System.Drawing.Point(134, 244)
         Me.ComboBox4.Name = "ComboBox4"
         Me.ComboBox4.Size = New System.Drawing.Size(181, 28)
-        Me.ComboBox4.TabIndex = 42
+        Me.ComboBox4.TabIndex = 4
         '
         'Label15
         '
         Me.Label15.AutoSize = True
-        Me.Label15.Location = New System.Drawing.Point(29, 250)
+        Me.Label15.Location = New System.Drawing.Point(29, 284)
         Me.Label15.Name = "Label15"
         Me.Label15.Size = New System.Drawing.Size(109, 60)
         Me.Label15.TabIndex = 43
@@ -447,30 +451,30 @@ Partial Class Form2
         '
         'Button10
         '
-        Me.Button10.Location = New System.Drawing.Point(134, 247)
+        Me.Button10.Location = New System.Drawing.Point(134, 281)
         Me.Button10.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
         Me.Button10.Name = "Button10"
         Me.Button10.Size = New System.Drawing.Size(113, 27)
-        Me.Button10.TabIndex = 44
+        Me.Button10.TabIndex = 5
         Me.Button10.Text = "打开文件"
         Me.Button10.UseVisualStyleBackColor = True
         '
         'TextBox5
         '
         Me.TextBox5.Enabled = False
-        Me.TextBox5.Location = New System.Drawing.Point(134, 281)
+        Me.TextBox5.Location = New System.Drawing.Point(134, 315)
         Me.TextBox5.Name = "TextBox5"
         Me.TextBox5.ReadOnly = True
         Me.TextBox5.Size = New System.Drawing.Size(285, 27)
-        Me.TextBox5.TabIndex = 45
+        Me.TextBox5.TabIndex = 7
         '
         'Button11
         '
-        Me.Button11.Location = New System.Drawing.Point(253, 247)
+        Me.Button11.Location = New System.Drawing.Point(253, 281)
         Me.Button11.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
         Me.Button11.Name = "Button11"
         Me.Button11.Size = New System.Drawing.Size(113, 27)
-        Me.Button11.TabIndex = 46
+        Me.Button11.TabIndex = 6
         Me.Button11.Text = "清除"
         Me.Button11.UseVisualStyleBackColor = True
         '
@@ -484,7 +488,7 @@ Partial Class Form2
         Me.TrackBar1.Name = "TrackBar1"
         Me.TrackBar1.Size = New System.Drawing.Size(247, 45)
         Me.TrackBar1.SmallChange = 2
-        Me.TrackBar1.TabIndex = 47
+        Me.TrackBar1.TabIndex = 18
         Me.TrackBar1.TickFrequency = 2
         Me.TrackBar1.TickStyle = System.Windows.Forms.TickStyle.Both
         Me.TrackBar1.Value = 20
@@ -514,7 +518,7 @@ Partial Class Form2
         Me.LinkLabel1.Location = New System.Drawing.Point(466, 356)
         Me.LinkLabel1.Name = "LinkLabel1"
         Me.LinkLabel1.Size = New System.Drawing.Size(69, 20)
-        Me.LinkLabel1.TabIndex = 50
+        Me.LinkLabel1.TabIndex = 25
         Me.LinkLabel1.TabStop = True
         Me.LinkLabel1.Text = "项目主页"
         '
@@ -525,7 +529,7 @@ Partial Class Form2
         Me.LinkLabel2.Location = New System.Drawing.Point(541, 356)
         Me.LinkLabel2.Name = "LinkLabel2"
         Me.LinkLabel2.Size = New System.Drawing.Size(69, 20)
-        Me.LinkLabel2.TabIndex = 51
+        Me.LinkLabel2.TabIndex = 26
         Me.LinkLabel2.TabStop = True
         Me.LinkLabel2.Text = "反馈问题"
         '
@@ -535,7 +539,7 @@ Partial Class Form2
         Me.CheckBox5.Location = New System.Drawing.Point(33, 499)
         Me.CheckBox5.Name = "CheckBox5"
         Me.CheckBox5.Size = New System.Drawing.Size(297, 24)
-        Me.CheckBox5.TabIndex = 52
+        Me.CheckBox5.TabIndex = 13
         Me.CheckBox5.Text = "显示毫秒（仅HH:mm:ss显示格式可用）"
         Me.CheckBox5.UseVisualStyleBackColor = True
         '
@@ -547,7 +551,7 @@ Partial Class Form2
         Me.LinkLabel3.Location = New System.Drawing.Point(719, 356)
         Me.LinkLabel3.Name = "LinkLabel3"
         Me.LinkLabel3.Size = New System.Drawing.Size(144, 20)
-        Me.LinkLabel3.TabIndex = 53
+        Me.LinkLabel3.TabIndex = 29
         Me.LinkLabel3.TabStop = True
         Me.LinkLabel3.Text = "删除配置并退出程序"
         '
@@ -567,7 +571,7 @@ Partial Class Form2
         Me.LinkLabel4.Location = New System.Drawing.Point(661, 356)
         Me.LinkLabel4.Name = "LinkLabel4"
         Me.LinkLabel4.Size = New System.Drawing.Size(52, 20)
-        Me.LinkLabel4.TabIndex = 56
+        Me.LinkLabel4.TabIndex = 28
         Me.LinkLabel4.TabStop = True
         Me.LinkLabel4.Text = "GPL-3"
         '
@@ -578,7 +582,7 @@ Partial Class Form2
         Me.LinkLabel5.Location = New System.Drawing.Point(616, 356)
         Me.LinkLabel5.Name = "LinkLabel5"
         Me.LinkLabel5.Size = New System.Drawing.Size(39, 20)
-        Me.LinkLabel5.TabIndex = 57
+        Me.LinkLabel5.TabIndex = 27
         Me.LinkLabel5.TabStop = True
         Me.LinkLabel5.Text = "帮助"
         '
@@ -605,6 +609,18 @@ Partial Class Form2
         Me.PictureBox2.TabIndex = 59
         Me.PictureBox2.TabStop = False
         '
+        'Button12
+        '
+        Me.Button12.BackColor = System.Drawing.Color.Transparent
+        Me.Button12.ForeColor = System.Drawing.Color.Black
+        Me.Button12.Location = New System.Drawing.Point(712, 208)
+        Me.Button12.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
+        Me.Button12.Name = "Button12"
+        Me.Button12.Size = New System.Drawing.Size(148, 27)
+        Me.Button12.TabIndex = 24
+        Me.Button12.Text = "重启本程序(&R)"
+        Me.Button12.UseVisualStyleBackColor = False
+        '
         'Form2
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -612,6 +628,7 @@ Partial Class Form2
         Me.BackColor = System.Drawing.Color.White
         Me.CancelButton = Me.Button1
         Me.ClientSize = New System.Drawing.Size(883, 623)
+        Me.Controls.Add(Me.Button12)
         Me.Controls.Add(Me.PictureBox2)
         Me.Controls.Add(Me.LinkLabel5)
         Me.Controls.Add(Me.LinkLabel4)
@@ -736,4 +753,5 @@ Partial Class Form2
     Friend WithEvents LinkLabel5 As System.Windows.Forms.LinkLabel
     Friend WithEvents Label20 As System.Windows.Forms.Label
     Friend WithEvents PictureBox2 As System.Windows.Forms.PictureBox
+    Friend WithEvents Button12 As System.Windows.Forms.Button
 End Class
