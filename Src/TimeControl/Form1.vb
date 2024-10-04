@@ -381,7 +381,7 @@ Public Class Form1
         Dim unloadfut As Integer = 0
         Try
 
-            Dim plkeycr As RegistryKey = Registry.CurrentUser.OpenSubKey("SOFTWARE\CJH\Policies\TimeControl", True)
+            Dim plkeycr As RegistryKey = Registry.LocalMachine.OpenSubKey("SOFTWARE\Policies\CJH\TimeControl", True)
 
             Dim disfucrt As Integer = -1
             If (Not plkeycr Is Nothing) Then
@@ -450,7 +450,7 @@ Public Class Form1
         End Try
 
         Try
-            Dim plkey As RegistryKey = Registry.LocalMachine.OpenSubKey("SOFTWARE\CJH\Policies\TimeControl", True)
+            Dim plkey As RegistryKey = Registry.CurrentUser.OpenSubKey("SOFTWARE\Policies\CJH\TimeControl", True)
             Dim disfu As Integer
 
             If cdisbfut = 0 Then
@@ -707,22 +707,14 @@ Public Class Form1
                 If (Not mykey Is Nothing) Then
                     Me.UseMoveV = mykey.GetValue("EnableDrag", -1)
                     If Me.UseMoveV = -1 Then
-
                         RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "EnableDrag", 1, RegistryValueKind.DWord, "HKCU")
-
-
                         Me.UseMoveV = 1
                     ElseIf Me.UseMoveV > 1 Then
-
                         RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "EnableDrag", 1, RegistryValueKind.DWord, "HKCU")
-
                         Me.UseMoveV = 1
                     End If
                 Else
-
                     RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "EnableDrag", 1, RegistryValueKind.DWord, "HKCU")
-
-
                     Me.UseMoveV = 1
                 End If
 
@@ -794,6 +786,9 @@ Public Class Form1
                     ElseIf UseTop = 0 Then
                         Me.TopMost = False
                     ElseIf UseTop = 1 Then
+                        Me.TopMost = True
+                    ElseIf UseTop > 1 Then
+                        RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "AllowTopMost", 1, RegistryValueKind.DWord, "HKCU")
                         Me.TopMost = True
                     End If
                 Else
@@ -1313,7 +1308,7 @@ Public Class Form1
                     RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFontG", Label1.ForeColor.G, RegistryValueKind.DWord, "HKCU")
                     RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFontB", Label1.ForeColor.B, RegistryValueKind.DWord, "HKCU")
                 End If
-
+                Form2.ColorDialog1.Color = Color.White
             End If
             Me.ContextMenuStrip1.BackColor = Color.FromArgb(32, 32, 32)
             Me.ContextMenuStrip1.ForeColor = Color.White
@@ -1363,6 +1358,7 @@ Public Class Form1
                     RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFontG", Label1.ForeColor.G, RegistryValueKind.DWord, "HKCU")
                     RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFontB", Label1.ForeColor.B, RegistryValueKind.DWord, "HKCU")
                 End If
+                Form2.ColorDialog1.Color = Color.Black
             End If
             Me.ContextMenuStrip1.BackColor = Color.White
             Me.ContextMenuStrip1.ForeColor = Color.Black

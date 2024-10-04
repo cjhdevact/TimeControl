@@ -152,10 +152,12 @@ if "%ab%" == "1" echo.
 if "%ab%" == "1" call "%~dp0UserinitBootUnInstall.bat" "%programfiles%\CJH\TimeControl\TimeControl.exe"
 if "%ab%" == "1" call "%~dp0UserinitBootInstall.bat" "%programfiles%\CJH\TimeControl\TimeControl.exe"
 echo.
-choice /C YN /T 5 /D Y /M "是(Y)否(N)要安装策略到当前系统（安装后可以使用组策略编辑时钟小工具的策略）（仅Windows Vista以上版本支持）（5秒后自动选择Y）"
+choice /C YN /T 5 /D Y /M "是(Y)否(N)要安装策略到当前系统（安装后可以使用组策略编辑时钟小工具的策略）（5秒后自动选择Y）"
 if errorlevel 1 set ac=1
 if errorlevel 2 set ac=2
 if "%ac%" == "1" if exist "%windir%\PolicyDefinitions\*.admx" call "%~dp0TimeControlAdmxs.exe"
+if "%ac%" == "1" if exist "%windir%\inf\*.adm" copy "%~dp0TimeControl.adm" "%windir%\inf\TimeControl.adm" /y
+::if "%ac%" == "1" if exist "%windir%\inf\*.adm" Reg add "HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Group Policy" /v OnlyUseLocalAdminFiles /t REG_DWORD /d 1 /f
 
 echo.
 choice /C YN /T 5 /D Y /M "是(Y)否(N)要创建快捷方式到开始菜单（5秒后自动选择Y）"
@@ -187,6 +189,8 @@ echo ====================================================
 echo                   时钟小工具安装程序
 echo ====================================================
 echo.
+if "%ac%" == "1" if exist "%windir%\inf\*.adm" echo Windows XP 系统请手动在gpedit.msc（组策略）里的计算机管理-管理模板右键里的添加/删除模板里手动添加 %windir%\inf\TimeControl.adm 策略文件。
+if "%ac%" == "1" if exist "%windir%\inf\*.adm" echo.
 echo 安装完成！任意键退出... & pause > nul
 goto enda
 
@@ -244,10 +248,12 @@ if "%ab%" == "1" echo.
 if "%ab%" == "1" call "%~dp0UserinitBootUnInstall.bat" "%programfiles%\CJH\TimeControl\TimeControl.exe"
 if "%ab%" == "1" call "%~dp0UserinitBootInstall.bat" "%programfiles%\CJH\TimeControl\TimeControl.exe"
 echo.
-choice /C YN /T 5 /D Y /M "是(Y)否(N)要安装策略到当前系统（安装后可以使用组策略编辑时钟小工具的策略）（仅Windows Vista以上版本支持）（5秒后自动选择Y）"
+choice /C YN /T 5 /D Y /M "是(Y)否(N)要安装策略到当前系统（安装后可以使用组策略编辑时钟小工具的策略）（5秒后自动选择Y）"
 if errorlevel 1 set ac=1
 if errorlevel 2 set ac=2
 if "%ac%" == "1" if exist "%windir%\PolicyDefinitions\*.admx" call "%~dp0TimeControlAdmxs.exe"
+if "%ac%" == "1" if exist "%windir%\inf\*.adm" copy "%~dp0TimeControl.adm" "%windir%\inf\TimeControl.adm" /y
+::if "%ac%" == "1" if exist "%windir%\inf\*.adm" Reg add "HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Group Policy" /v OnlyUseLocalAdminFiles /t REG_DWORD /d 1 /f
 
 echo.
 choice /C YN /T 5 /D Y /M "是(Y)否(N)要创建快捷方式到开始菜单（5秒后自动选择Y）"
@@ -281,6 +287,8 @@ echo ====================================================
 echo                   时钟小工具安装程序
 echo ====================================================
 echo.
+if "%ac%" == "1" if exist "%windir%\inf\*.adm" echo Windows XP 系统请手动在gpedit.msc（组策略）里的计算机管理-管理模板右键里的添加/删除模板里手动添加 %windir%\inf\TimeControl.adm 策略文件。
+if "%ac%" == "1" if exist "%windir%\inf\*.adm" echo.
 echo 安装完成！任意键退出... & pause > nul
 goto enda
 

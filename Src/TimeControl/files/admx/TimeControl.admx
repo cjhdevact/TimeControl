@@ -13,7 +13,7 @@
     </category> -->
   </categories>
   <policies>
-    <policy name="TimeControlDisbFu" class="Both" displayName="$(string.TimeControlDisbFu)" explainText="$(string.TimeControlDisbFu_Help)" key="Software\CJH\Policies\TimeControl" valueName="DisableFeatures">
+    <policy name="TimeControlDisbFu" class="Both" displayName="$(string.TimeControlDisbFu)" explainText="$(string.TimeControlDisbFu_Help)" key="Software\Policies\CJH\TimeControl" valueName="DisableFeatures">
       <parentCategory ref="TimeControl" />
 	  <supportedOn ref="windows:SUPPORTED_WindowsVista" />
       <enabledValue>
@@ -23,7 +23,7 @@
         <decimal value="0" />
       </disabledValue>
     </policy>
-    <policy name="TimeControlDisbFuTip" class="Both" displayName="$(string.TimeControlDisbFuTip)" explainText="$(string.TimeControlDisbFuTip_Help)" key="Software\CJH\Policies\TimeControl" valueName="DisableFeaturesTip">
+    <policy name="TimeControlDisbFuTip" class="Both" displayName="$(string.TimeControlDisbFuTip)" explainText="$(string.TimeControlDisbFuTip_Help)" key="Software\Policies\CJH\TimeControl" valueName="DisableFeaturesTip">
       <parentCategory ref="TimeControl" />
 	  <supportedOn ref="windows:SUPPORTED_WindowsVista" />
       <enabledValue>
@@ -33,7 +33,7 @@
         <decimal value="0" />
       </disabledValue>
     </policy>
-	<policy name="TimeControlNoSaveProfile" class="Both" displayName="$(string.TimeControlNoSaveProfile)" explainText="$(string.TimeControlNoSaveProfile_Help)" key="Software\CJH\Policies\TimeControl" valueName="NoSaveProfile">
+	<policy name="TimeControlNoSaveProfile" class="Both" displayName="$(string.TimeControlNoSaveProfile)" explainText="$(string.TimeControlNoSaveProfile_Help)" key="Software\Policies\CJH\TimeControl" valueName="NoSaveProfile">
       <parentCategory ref="TimeControl" />
 	  <supportedOn ref="windows:SUPPORTED_WindowsVista" />
       <enabledValue>
@@ -43,7 +43,7 @@
         <decimal value="0" />
       </disabledValue>
     </policy>
-	<policy name="TimeControlNoProfile" class="Both" displayName="$(string.TimeControlNoProfile)" explainText="$(string.TimeControlNoProfile_Help)" key="Software\CJH\Policies\TimeControl" valueName="NoProfile">
+	<policy name="TimeControlNoProfile" class="Both" displayName="$(string.TimeControlNoProfile)" explainText="$(string.TimeControlNoProfile_Help)" key="Software\Policies\CJH\TimeControl" valueName="NoProfile">
       <parentCategory ref="TimeControl" />
 	  <supportedOn ref="windows:SUPPORTED_WindowsVista" />
       <enabledValue>

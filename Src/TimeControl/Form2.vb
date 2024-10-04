@@ -142,7 +142,7 @@ errcode:
                 TextBox4.Enabled = True
                 Button9.Enabled = True
             End If
-          
+
         Else
             Me.CheckBox4.Checked = False
             If Form1.DisbFuState = 0 Then
@@ -208,7 +208,7 @@ errcode:
             ComboBox4.SelectedText = "自定义背景"
         End If
 
-        Label1.Text = "时间小工具 版本：" & My.Application.Info.Version.ToString & vbCrLf & "版权所有 © 2022-2024 CJH。"
+        Label1.Text = "时钟小工具 版本：" & My.Application.Info.Version.ToString & vbCrLf & "版权所有 © 2022-2024 CJH。"
         Call formatcolorcurset()
     End Sub
     Private Sub TextBox1_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TextBox1.KeyPress
@@ -537,7 +537,7 @@ errcode:
                     'ElseIf disi.DpiY > 160 Then
                     '    Form1.SetTimeFormSize(aa.Height - 30 * disi.DpiY * 0.01, aa.Width - 120 - 800 * disi.DpiY * 0.01)
                     'End If
-                   
+
                     'If disi.DpiY < 100 Then
                     '    If aa.Width <= 42 Then
                     '        Form1.SetTimeFormSize(Form1.Label1.Font.Size * disi.DpiY * 0.01 + disi.DpiY * 0.01 * 20, aa.Width + 8)
@@ -871,7 +871,7 @@ errcode:
                     TextBox2.Enabled = False
                     Button4.Enabled = False
                 End If
-             
+
                 'Form1.GetTimeFormSize(38, 300)
                 'a = Form1.Width - Form1.CaW
                 'If a <> 0 Then
@@ -984,7 +984,7 @@ errcode:
                 c = 0
                 Form1.SetTimeFormSize(a.Height + 3, a.Width + 3)
             End If
-            
+
             'Form1.Label1.AutoSize = False
             If Form1.UnSaveData = 0 Then
                 RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "CustomFormat", TextBox2.Text, RegistryValueKind.String, "HKCU")
@@ -1004,7 +1004,7 @@ errcode:
             'RemoveHandler CheckBox3.CheckedChanged, AddressOf CheckBox3_CheckedChanged
             'RemoveHandler CheckBox4.CheckedChanged, AddressOf CheckBox4_CheckedChanged
             Try
-                    AddReg("Software\CJH\TimeControl\Settings", "ColorMode", 0, Microsoft.Win32.RegistryValueKind.DWord, "HKCU")
+                AddReg("Software\CJH\TimeControl\Settings", "ColorMode", 0, Microsoft.Win32.RegistryValueKind.DWord, "HKCU")
 
 
                 If Form1.UnSupportDarkSys = 1 Then
@@ -1133,30 +1133,30 @@ errcode:
                 Form1.Location = New Size((System.Windows.Forms.SystemInformation.PrimaryMonitorSize.Width - Form1.Width) / 2, 5)
 
 
-        RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormOpacity", 100, RegistryValueKind.DWord, "HKCU")
+                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormOpacity", 100, RegistryValueKind.DWord, "HKCU")
 
 
-        Form1.CustOpacity = 100
-        Label17.Text = "99%"
-        Form1.Opacity = 0.99
-        TrackBar1.Value = 99
+                Form1.CustOpacity = 100
+                Label17.Text = "99%"
+                Form1.Opacity = 0.99
+                TrackBar1.Value = 99
 
-        CheckBox5.Checked = False
+                CheckBox5.Checked = False
 
-        Call Form1.formatcolorcur()
-        Call formatcolorcurset()
-        Call MsgForm.formatcolorcursetmsg()
-        Call GPLForm.formatcolorcursetmsg()
+                Call Form1.formatcolorcur()
+                Call formatcolorcurset()
+                Call MsgForm.formatcolorcursetmsg()
+                Call GPLForm.formatcolorcursetmsg()
 
 
-        '如果预先关联事件， Me.CheckBox1.Checked = Ture / Flase 操作会触发事件，导致操作相反
-        'AddHandler CheckBox1.CheckedChanged, AddressOf CheckBox1_CheckedChanged
-        'AddHandler CheckBox2.CheckedChanged, AddressOf CheckBox2_CheckedChanged
-        'AddHandler CheckBox3.CheckedChanged, AddressOf CheckBox3_CheckedChanged
-        'AddHandler CheckBox4.CheckedChanged, AddressOf CheckBox4_CheckedChanged
+                '如果预先关联事件， Me.CheckBox1.Checked = Ture / Flase 操作会触发事件，导致操作相反
+                'AddHandler CheckBox1.CheckedChanged, AddressOf CheckBox1_CheckedChanged
+                'AddHandler CheckBox2.CheckedChanged, AddressOf CheckBox2_CheckedChanged
+                'AddHandler CheckBox3.CheckedChanged, AddressOf CheckBox3_CheckedChanged
+                'AddHandler CheckBox4.CheckedChanged, AddressOf CheckBox4_CheckedChanged
             Catch ex As Exception
-            MsgBox("恢复默认设置失败。" & vbCrLf & ex.Message, MsgBoxStyle.Critical, "错误")
-        End Try
+                MsgBox("恢复默认设置失败。" & vbCrLf & ex.Message, MsgBoxStyle.Critical, "错误")
+            End Try
         End If
     End Sub
 
@@ -1613,23 +1613,23 @@ errcode:
                 End If
             End If
         Else
-                If Form1.MySize = 0 Then
+            If Form1.MySize = 0 Then
                 Form1.Label1.Text = Format(Now(), Form1.TimeF)
                 Form1.Timer1.Interval = 1000
-                    Dim aa As SizeF
-                    Dim b As Graphics = Graphics.FromImage(New Bitmap(1, 1))
+                Dim aa As SizeF
+                Dim b As Graphics = Graphics.FromImage(New Bitmap(1, 1))
                 aa = TextRenderer.MeasureText(Form1.Label1.Text, Form1.Label1.Font)
-                    Dim c As Integer
-                    If aa.Width <= 42 Then
-                        Form1.GetTimeFormSize(38, aa.Width + 8)
-                    ElseIf 400 <= aa.Width Then
+                Dim c As Integer
+                If aa.Width <= 42 Then
+                    Form1.GetTimeFormSize(38, aa.Width + 8)
+                ElseIf 400 <= aa.Width Then
                     Form1.GetTimeFormSize(aa.Height, aa.Width + 10)
-                    Else
-                        Form1.GetTimeFormSize(38, aa.Width + 6)
-                    End If
-                    c = Form1.Width - Form1.CaW
-                    If c <> 0 Then
-                        Form1.Location = New Point(Form1.Location.X + c / 2, Form1.Location.Y)
+                Else
+                    Form1.GetTimeFormSize(38, aa.Width + 6)
+                End If
+                c = Form1.Width - Form1.CaW
+                If c <> 0 Then
+                    Form1.Location = New Point(Form1.Location.X + c / 2, Form1.Location.Y)
                     If Form1.SaveLoc = 1 Then
                         If Form1.UnSaveData = 0 Then
                             RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormX", Form1.Location.X, RegistryValueKind.DWord, "HKCU")
@@ -1637,11 +1637,11 @@ errcode:
                         End If
 
                     End If
-                    End If
-                    c = 0
-                Form1.SetTimeFormSize(aa.Height, aa.Width)
                 End If
+                c = 0
+                Form1.SetTimeFormSize(aa.Height, aa.Width)
             End If
+        End If
     End Sub
 
     Private Sub LinkLabel3_LinkClicked(sender As System.Object, e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles LinkLabel3.LinkClicked
@@ -1658,7 +1658,7 @@ errcode:
     End Sub
 
     Private Sub LinkLabel5_LinkClicked(sender As System.Object, e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles LinkLabel5.LinkClicked
-        MessageBox.Show("当前支持的命令行：" & vbCrLf & "/safemode 以安全模式加载，不读取设置也不保存设置。当程序由于配置原因无法正常启动，可以使用该命令行启动后恢复默认设置。" & vbCrLf & "/noproflie 不使用配置文件。" & vbCrLf & "/nosaveprofile 读取设置但不保存设置" & vbCrLf & vbCrLf & "部分功能可能因为策略设置而不可用。命令行的内容要优先于策略设置，为单一用户设置的策略优先级高于针对所有用户设置的策略（需要以管理员身份启动本程序以应用针对所有用户设置的策略）。", "帮助", MessageBoxButtons.YesNo, MessageBoxIcon.Information)
+        MessageBox.Show("当前支持的命令行：" & vbCrLf & "/safemode 以安全模式加载，不读取设置也不保存设置。当程序由于配置原因无法正常启动，可以使用该命令行启动后恢复默认设置。" & vbCrLf & "/noproflie 不使用配置文件。" & vbCrLf & "/nosaveprofile 读取设置但不保存设置" & vbCrLf & vbCrLf & "部分功能可能因为策略设置而不可用。命令行的内容要优先于策略设置，为所有用户设置的策略优先级高于针对单一用户设置的策略。", "帮助", MessageBoxButtons.OK, MessageBoxIcon.Information)
     End Sub
 
     Private Sub Button12_Click(sender As System.Object, e As System.EventArgs) Handles Button12.Click

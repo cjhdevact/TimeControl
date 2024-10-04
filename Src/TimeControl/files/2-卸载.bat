@@ -120,6 +120,9 @@ call "%~dp0UserinitBootUnInstall.bat" "%windir%\TimeControl.exe"
 del /q "%windir%\PolicyDefinitions\TimeControl.admx"
 del /q "%windir%\PolicyDefinitions\zh-CN\TimeControl.adml"
 del /q "%windir%\PolicyDefinitions\en-US\TimeControl.adml"
+del /q "%windir%\inf\TimeControl.adm" /y
+::Reg add "HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Group Policy" /v OnlyUseLocalAdminFiles /t REG_DWORD /d 0 /f
+::Reg delete "HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Group Policy" /v OnlyUseLocalAdminFiles /f
 
 rd /s /q "%windir%\CJH\TimeControl"
 
@@ -148,6 +151,8 @@ echo ====================================================
 echo                   时钟小工具卸载程序
 echo ====================================================
 echo.
+if "%ac%" == "1" if exist "%windir%\inf\*.adm" echo Windows XP 系统如果添加了时钟小工具策略请手动在gpedit.msc（组策略）里的计算机管理-管理模板右键里的添加/删除模板里手动删除 %windir%\inf\TimeControl.adm 策略文件。
+if "%ac%" == "1" if exist "%windir%\inf\*.adm" echo.
 echo 卸载完成！任意键退出... & pause > nul
 goto enda
 
@@ -173,6 +178,9 @@ call "%~dp0UserinitBootUnInstall.bat" "%windir%\TimeControl.exe"
 del /q "%windir%\PolicyDefinitions\TimeControl.admx"
 del /q "%windir%\PolicyDefinitions\zh-CN\TimeControl.adml"
 del /q "%windir%\PolicyDefinitions\en-US\TimeControl.adml"
+del /q "%windir%\inf\TimeControl.adm" /y
+::Reg add "HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Group Policy" /v OnlyUseLocalAdminFiles /t REG_DWORD /d 0 /f
+::Reg delete "HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Group Policy" /v OnlyUseLocalAdminFiles /f
 
 rd /s /q "%windir%\CJH\TimeControl"
 
@@ -201,6 +209,8 @@ echo ====================================================
 echo                   时钟小工具卸载程序
 echo ====================================================
 echo.
+if "%ac%" == "1" if exist "%windir%\inf\*.adm" echo Windows XP 系统如果添加了时钟小工具策略请手动在gpedit.msc（组策略）里的计算机管理-管理模板右键里的添加/删除模板里手动删除 %windir%\inf\TimeControl.adm 策略文件。
+if "%ac%" == "1" if exist "%windir%\inf\*.adm" echo.
 echo 卸载完成！任意键退出... & pause > nul
 goto enda
 
