@@ -1370,7 +1370,7 @@ Public Class Form1
     Private Sub h30s_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles h30s.Click
         Timer2.Interval = 30000
         NotifyIcon1.Visible = True
-        NotifyIcon1.ShowBalloonTip(7000, "时钟小工具", "时钟小工具当前已隐藏到系统托盘，双击托盘图标或在设定的时间（30秒）之后重新显示。", ToolTipIcon.Info)
+        NotifyIcon1.ShowBalloonTip(7000, "时间小工具", "时间小工具当前已隐藏到系统托盘，双击托盘图标或在设定的时间（30秒）之后重新显示。", ToolTipIcon.Info)
         Me.Hide()
         Timer2.Enabled = True
     End Sub
@@ -1378,7 +1378,7 @@ Public Class Form1
     Private Sub h1m_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles h1m.Click
         Timer2.Interval = 60000
         NotifyIcon1.Visible = True
-        NotifyIcon1.ShowBalloonTip(7000, "时钟小工具", "时钟小工具当前已隐藏到系统托盘，双击托盘图标或在设定的时间（1分钟）之后重新显示。", ToolTipIcon.Info)
+        NotifyIcon1.ShowBalloonTip(7000, "时间小工具", "时间小工具当前已隐藏到系统托盘，双击托盘图标或在设定的时间（1分钟）之后重新显示。", ToolTipIcon.Info)
         Me.Hide()
         Timer2.Enabled = True
     End Sub
@@ -1386,7 +1386,7 @@ Public Class Form1
     Private Sub h5m_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles h5m.Click
         Timer2.Interval = 300000
         NotifyIcon1.Visible = True
-        NotifyIcon1.ShowBalloonTip(7000, "时钟小工具", "时钟小工具当前已隐藏到系统托盘，双击托盘图标或在设定的时间（5分钟）之后重新显示。", ToolTipIcon.Info)
+        NotifyIcon1.ShowBalloonTip(7000, "时间小工具", "时间小工具当前已隐藏到系统托盘，双击托盘图标或在设定的时间（5分钟）之后重新显示。", ToolTipIcon.Info)
         Me.Hide()
         Timer2.Enabled = True
     End Sub
@@ -1394,7 +1394,7 @@ Public Class Form1
     Private Sub h10m_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles h10m.Click
         Timer2.Interval = 600000
         NotifyIcon1.Visible = True
-        NotifyIcon1.ShowBalloonTip(7000, "时钟小工具", "时钟小工具当前已隐藏到系统托盘，双击托盘图标或在设定的时间（10分钟）之后重新显示。", ToolTipIcon.Info)
+        NotifyIcon1.ShowBalloonTip(7000, "时间小工具", "时间小工具当前已隐藏到系统托盘，双击托盘图标或在设定的时间（10分钟）之后重新显示。", ToolTipIcon.Info)
         Me.Hide()
         Timer2.Enabled = True
     End Sub

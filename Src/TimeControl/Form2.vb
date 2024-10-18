@@ -84,21 +84,21 @@ Public Class Form2
                 Form1.Timer2.Interval = TextBox1.Text * 1000
                 Form1.Timer2.Enabled = True
                 Form1.NotifyIcon1.Visible = True
-                Form1.NotifyIcon1.ShowBalloonTip(7000, "时钟小工具", "时钟小工具当前已隐藏到系统托盘，双击托盘图标或在设定的时间（" & TextBox1.Text & "秒）之后重新显示。", ToolTipIcon.Info)
+                Form1.NotifyIcon1.ShowBalloonTip(7000, "时间小工具", "时间小工具当前已隐藏到系统托盘，双击托盘图标或在设定的时间（" & TextBox1.Text & "秒）之后重新显示。", ToolTipIcon.Info)
                 Form1.Hide()
                 Me.Close()
             ElseIf ComboBox1.SelectedIndex = 1 Then '分
                 Form1.Timer2.Interval = TextBox1.Text * 1000 * 60
                 Form1.Timer2.Enabled = True
                 Form1.NotifyIcon1.Visible = True
-                Form1.NotifyIcon1.ShowBalloonTip(7000, "时钟小工具", "时钟小工具当前已隐藏到系统托盘，双击托盘图标或在设定的时间（" & TextBox1.Text & "分钟）之后重新显示。", ToolTipIcon.Info)
+                Form1.NotifyIcon1.ShowBalloonTip(7000, "时间小工具", "时间小工具当前已隐藏到系统托盘，双击托盘图标或在设定的时间（" & TextBox1.Text & "分钟）之后重新显示。", ToolTipIcon.Info)
                 Form1.Hide()
                 Me.Close()
             ElseIf ComboBox1.SelectedIndex = 2 Then '时
                 Form1.Timer2.Interval = TextBox1.Text * 1000 * 60 * 60
                 Form1.Timer2.Enabled = True
                 Form1.NotifyIcon1.Visible = True
-                Form1.NotifyIcon1.ShowBalloonTip(7000, "时钟小工具", "时钟小工具当前已隐藏到系统托盘，双击托盘图标或在设定的时间（" & TextBox1.Text & "小时）之后重新显示。", ToolTipIcon.Info)
+                Form1.NotifyIcon1.ShowBalloonTip(7000, "时间小工具", "时间小工具当前已隐藏到系统托盘，双击托盘图标或在设定的时间（" & TextBox1.Text & "小时）之后重新显示。", ToolTipIcon.Info)
                 Form1.Hide()
                 Me.Close()
             End If
@@ -208,7 +208,7 @@ errcode:
             ComboBox4.SelectedText = "自定义背景"
         End If
 
-        Label1.Text = "时钟小工具 版本：" & My.Application.Info.Version.ToString & vbCrLf & "版权所有 © 2022-2024 CJH。"
+        Label1.Text = "时间小工具 版本：" & My.Application.Info.Version.ToString & vbCrLf & "版权所有 © 2022-2024 CJH。"
         Call formatcolorcurset()
     End Sub
     Private Sub TextBox1_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TextBox1.KeyPress
@@ -448,7 +448,7 @@ errcode:
     End Sub
 
     Private Sub Button3_Click(sender As System.Object, e As System.EventArgs) Handles Button3.Click
-        If (MessageBox.Show("确定退出时钟小工具吗？", "时钟小工具", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) = DialogResult.Yes) Then
+        If (MessageBox.Show("确定退出时间小工具吗？", "时间小工具", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) = DialogResult.Yes) Then
             End
         End If
     End Sub
@@ -1162,7 +1162,7 @@ errcode:
 
     Private Sub Button6_Click(sender As System.Object, e As System.EventArgs) Handles Button6.Click
         Form1.NotifyIcon1.Visible = True
-        Form1.NotifyIcon1.ShowBalloonTip(7000, "时钟小工具", "时钟小工具当前已隐藏到系统托盘，双击托盘图标重新显示。", ToolTipIcon.Info)
+        Form1.NotifyIcon1.ShowBalloonTip(7000, "时间小工具", "时间小工具当前已隐藏到系统托盘，双击托盘图标重新显示。", ToolTipIcon.Info)
         Form1.Hide()
         Me.Close()
     End Sub
@@ -1645,7 +1645,7 @@ errcode:
     End Sub
 
     Private Sub LinkLabel3_LinkClicked(sender As System.Object, e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles LinkLabel3.LinkClicked
-        If MessageBox.Show("                                 " & vbCrLf & "确定要删除自定义配置并退出程序吗？" & vbCrLf & "执行该操作会删除本机时钟小工具的自定义设置并退出，相当于清除在本机的设置，此操作无法撤销。" & vbCrLf & vbCrLf & "你确定要继续吗？" & vbCrLf & "                                 ", "警告 - 删除自定义配置并退出", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) = Windows.Forms.DialogResult.Yes Then
+        If MessageBox.Show("                                 " & vbCrLf & "确定要删除自定义配置并退出程序吗？" & vbCrLf & "执行该操作会删除本机时间小工具的自定义设置并退出，相当于清除在本机的设置，此操作无法撤销。" & vbCrLf & vbCrLf & "你确定要继续吗？" & vbCrLf & "                                 ", "警告 - 删除自定义配置并退出", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) = Windows.Forms.DialogResult.Yes Then
             If Form1.UnSaveData = 0 Then
                 RegKeyModule.DelKey("Software\CJH\TimeControl", True, "HKCU")
             End If
@@ -1662,7 +1662,7 @@ errcode:
     End Sub
 
     Private Sub Button12_Click(sender As System.Object, e As System.EventArgs) Handles Button12.Click
-        If (MessageBox.Show("确定重启时钟小工具吗？", "时钟小工具", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) = DialogResult.Yes) Then
+        If (MessageBox.Show("确定重启时间小工具吗？", "时间小工具", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) = DialogResult.Yes) Then
             System.Diagnostics.Process.Start(Application.ExecutablePath)
             End
         End If

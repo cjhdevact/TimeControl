@@ -8,10 +8,10 @@ Imports System.Runtime.InteropServices
 
 ' 查看程序集特性的值
 
-<Assembly: AssemblyTitle("时钟小工具")> 
-<Assembly: AssemblyDescription("时钟小工具")> 
+<Assembly: AssemblyTitle("时间小工具")> 
+<Assembly: AssemblyDescription("时间小工具")> 
 <Assembly: AssemblyCompany("CJH")> 
-<Assembly: AssemblyProduct("时钟小工具")> 
+<Assembly: AssemblyProduct("时间小工具")> 
 <Assembly: AssemblyCopyright("Copyright © 2022-2024 CJH. All Rights Reserved.")> 
 <Assembly: AssemblyTrademark("")> 
 
@@ -31,5 +31,5 @@ Imports System.Runtime.InteropServices
 ' 方法是按如下所示使用“*”:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("1.1.18.24101")> 
-<Assembly: AssemblyFileVersion("1.1.18.24101")> 
+<Assembly: AssemblyVersion("1.1.19.24102")> 
+<Assembly: AssemblyFileVersion("1.1.19.24102")> 

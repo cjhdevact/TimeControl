@@ -1,4 +1,4 @@
-# TimeControl - 时钟小工具
+# TimeControl - 时间小工具
 
 ## 关于本项目
 
@@ -42,7 +42,7 @@
 
 ## 相关项目
 
-[TimeControlAero](https://github.com/cjhdevact/TimeControlAero) - 时钟小工具Aero版（开发中）
+[TimeControlAero](https://github.com/cjhdevact/TimeControlAero) - 时间小工具Aero版（开发中）
 
 ## 你知道吗？
 

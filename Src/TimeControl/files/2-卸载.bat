@@ -9,7 +9,7 @@
 ::\*****************************************************/
 @echo off
 cls
-title 时钟小工具卸载程序
+title 时间小工具卸载程序
 if exist "%windir%\cpadver.bat" echo 检测到当前已安装教室计算机批量配置工具，请使用其安装包来卸载本软件。 & echo 任意键关闭... & pause > nul & goto enda
 if exist "%windir%\csetver.bat" echo 检测到当前已安装计算机批量配置工具，请使用其安装包来卸载本软件。 & echo 任意键关闭... & pause > nul & goto enda
 if "%1" == "/noadm" goto main
@@ -61,7 +61,7 @@ title 一键关闭课件小工具卸载程序
 cls
 echo.
 echo ====================================================
-echo                   时钟小工具卸载程序
+echo                   时间小工具卸载程序
 echo ====================================================
 echo.
 echo 你可以使用以下参数：
@@ -75,11 +75,11 @@ goto enda
 
 :main
 cd /d "%~dp0"
-title 时钟小工具卸载程序
+title 时间小工具卸载程序
 cls
 echo.
 echo ====================================================
-echo                   时钟小工具卸载程序
+echo                   时间小工具卸载程序
 echo ====================================================
 echo.
 echo 卸载前建议关闭杀毒软件以及在UAC设置中设置UAC等级为最低，否则在卸载主程序以及自动启动项会被拦截导致卸载失败。
@@ -89,7 +89,7 @@ echo 任意键开始卸载... & pause >nul
 cls
 echo.
 echo ====================================================
-echo                   时钟小工具卸载程序
+echo                   时间小工具卸载程序
 echo ====================================================
 echo.
 echo 正在卸载中...
@@ -117,16 +117,17 @@ echo.
 call "%~dp0UserinitBootUnInstall.bat" "%programfiles%\CJH\TimeControl\TimeControl.exe"
 call "%~dp0UserinitBootUnInstall.bat" "%windir%\CJH\TimeControl\TimeControl.exe"
 call "%~dp0UserinitBootUnInstall.bat" "%windir%\TimeControl.exe"
+schtasks.exe /Delete /TN \CJH\TimeControl /F
 del /q "%windir%\PolicyDefinitions\TimeControl.admx"
 del /q "%windir%\PolicyDefinitions\zh-CN\TimeControl.adml"
 del /q "%windir%\PolicyDefinitions\en-US\TimeControl.adml"
-del /q "%windir%\inf\TimeControl.adm" /y
+del /q "%windir%\inf\TimeControl.adm"
 ::Reg add "HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Group Policy" /v OnlyUseLocalAdminFiles /t REG_DWORD /d 0 /f
 ::Reg delete "HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Group Policy" /v OnlyUseLocalAdminFiles /f
 
 rd /s /q "%windir%\CJH\TimeControl"
 
-rd /s /q "%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\时钟小工具"
+rd /s /q "%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\时间小工具"
 ::dir /a /s /b "%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\CJH" | findstr . >nul && echo. || rd /s /q "%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\CJH"
 
 choice /C YN /T 5 /D N /M "是(Y)否(N)删除自定义设置（5秒后自动选择N）"
@@ -148,10 +149,10 @@ cls
 
 echo.
 echo ====================================================
-echo                   时钟小工具卸载程序
+echo                   时间小工具卸载程序
 echo ====================================================
 echo.
-if "%ac%" == "1" if exist "%windir%\inf\*.adm" echo Windows XP 系统如果添加了时钟小工具策略请手动在gpedit.msc（组策略）里的计算机管理-管理模板右键里的添加/删除模板里手动删除 %windir%\inf\TimeControl.adm 策略文件。
+if "%ac%" == "1" if exist "%windir%\inf\*.adm" echo Windows XP 系统如果添加了时间小工具策略请手动在gpedit.msc（组策略）里的计算机管理-管理模板右键里的添加/删除模板里手动删除 %windir%\inf\TimeControl.adm 策略文件。
 if "%ac%" == "1" if exist "%windir%\inf\*.adm" echo.
 echo 卸载完成！任意键退出... & pause > nul
 goto enda
@@ -175,16 +176,17 @@ echo.
 call "%~dp0UserinitBootUnInstall.bat" "%programfiles%\CJH\TimeControl\TimeControl.exe"
 call "%~dp0UserinitBootUnInstall.bat" "%windir%\CJH\TimeControl\TimeControl.exe"
 call "%~dp0UserinitBootUnInstall.bat" "%windir%\TimeControl.exe"
+schtasks.exe /Delete /TN \CJH\TimeControl /F
 del /q "%windir%\PolicyDefinitions\TimeControl.admx"
 del /q "%windir%\PolicyDefinitions\zh-CN\TimeControl.adml"
 del /q "%windir%\PolicyDefinitions\en-US\TimeControl.adml"
-del /q "%windir%\inf\TimeControl.adm" /y
+del /q "%windir%\inf\TimeControl.adm"
 ::Reg add "HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Group Policy" /v OnlyUseLocalAdminFiles /t REG_DWORD /d 0 /f
 ::Reg delete "HKEY_LOCAL_MACHINE\Software\Policies\Microsoft\Windows\Group Policy" /v OnlyUseLocalAdminFiles /f
 
 rd /s /q "%windir%\CJH\TimeControl"
 
-rd /s /q "%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\时钟小工具"
+rd /s /q "%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\时间小工具"
 ::dir /a /s /b "%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\CJH" | findstr . >nul && echo. || rd /s /q "%systemdrive%\ProgramData\Microsoft\Windows\Start Menu\Programs\CJH"
 
 choice /C YN /T 5 /D N /M "是(Y)否(N)删除自定义设置（5秒后自动选择N）"
@@ -206,10 +208,10 @@ cls
 
 echo.
 echo ====================================================
-echo                   时钟小工具卸载程序
+echo                   时间小工具卸载程序
 echo ====================================================
 echo.
-if "%ac%" == "1" if exist "%windir%\inf\*.adm" echo Windows XP 系统如果添加了时钟小工具策略请手动在gpedit.msc（组策略）里的计算机管理-管理模板右键里的添加/删除模板里手动删除 %windir%\inf\TimeControl.adm 策略文件。
+if "%ac%" == "1" if exist "%windir%\inf\*.adm" echo Windows XP 系统如果添加了时间小工具策略请手动在gpedit.msc（组策略）里的计算机管理-管理模板右键里的添加/删除模板里手动删除 %windir%\inf\TimeControl.adm 策略文件。
 if "%ac%" == "1" if exist "%windir%\inf\*.adm" echo.
 echo 卸载完成！任意键退出... & pause > nul
 goto enda

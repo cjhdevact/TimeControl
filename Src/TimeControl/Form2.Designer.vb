@@ -161,7 +161,7 @@ Partial Class Form2
         Me.Label3.Name = "Label3"
         Me.Label3.Size = New System.Drawing.Size(167, 30)
         Me.Label3.TabIndex = 13
-        Me.Label3.Text = "设置时钟小工具"
+        Me.Label3.Text = "设置时间小工具"
         '
         'Label4
         '
@@ -595,7 +595,7 @@ Partial Class Form2
         Me.Label20.Name = "Label20"
         Me.Label20.Size = New System.Drawing.Size(836, 31)
         Me.Label20.TabIndex = 58
-        Me.Label20.Text = "时钟小工具"
+        Me.Label20.Text = "时间小工具"
         Me.Label20.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
         '
         'PictureBox2
@@ -689,7 +689,7 @@ Partial Class Form2
         Me.MaximizeBox = False
         Me.Name = "Form2"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "设置时钟小工具"
+        Me.Text = "设置时间小工具"
         Me.TopMost = True
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.TrackBar1, System.ComponentModel.ISupportInitialize).EndInit()

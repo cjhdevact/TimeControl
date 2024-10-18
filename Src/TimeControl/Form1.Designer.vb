@@ -115,7 +115,7 @@ Partial Class Form1
         '
         Me.NotifyIcon1.ContextMenuStrip = Me.ContextMenuStrip2
         Me.NotifyIcon1.Icon = CType(resources.GetObject("NotifyIcon1.Icon"), System.Drawing.Icon)
-        Me.NotifyIcon1.Text = "时钟小工具"
+        Me.NotifyIcon1.Text = "时间小工具"
         '
         'ContextMenuStrip2
         '
@@ -153,7 +153,7 @@ Partial Class Form1
         Me.Opacity = 0.99R
         Me.ShowInTaskbar = False
         Me.StartPosition = System.Windows.Forms.FormStartPosition.Manual
-        Me.Text = "时钟小工具"
+        Me.Text = "时间小工具"
         Me.TopMost = True
         Me.TransparencyKey = System.Drawing.Color.FromArgb(CType(CType(184, Byte), Integer), CType(CType(184, Byte), Integer), CType(CType(184, Byte), Integer))
         Me.ContextMenuStrip1.ResumeLayout(False)
