@@ -1,4 +1,6 @@
-# TimeControl - 时间小工具
+<h1 align="center">
+  TimeControl - 时间小工具
+</h1>
 
 ## 关于本项目
 

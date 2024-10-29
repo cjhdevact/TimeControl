@@ -1047,12 +1047,12 @@ Public Class Form1
                         If aa = -1 Then
                             RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormX", (System.Windows.Forms.SystemInformation.PrimaryMonitorSize.Width - Me.Width) / 2, RegistryValueKind.DWord, "HKCU")
                             aa = (System.Windows.Forms.SystemInformation.PrimaryMonitorSize.Width - Me.Width) / 2
-                        ElseIf aa < -2 - Me.Width Then
+                        ElseIf aa < 0 - Me.Width Then
                             RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormX", (System.Windows.Forms.SystemInformation.PrimaryMonitorSize.Width - Me.Width) / 2, RegistryValueKind.DWord, "HKCU")
-                            aa = (System.Windows.Forms.SystemInformation.PrimaryMonitorSize.Width - Me.Width) / 2
-                        ElseIf aa > System.Windows.Forms.SystemInformation.PrimaryMonitorSize.Width + Me.Width + 2 Then
+                            aa = 0
+                        ElseIf aa > System.Windows.Forms.SystemInformation.PrimaryMonitorSize.Width Then
                             RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormX", (System.Windows.Forms.SystemInformation.PrimaryMonitorSize.Width - Me.Width) / 2, RegistryValueKind.DWord, "HKCU")
-                            aa = (System.Windows.Forms.SystemInformation.PrimaryMonitorSize.Width - Me.Width) / 2
+                            aa = System.Windows.Forms.SystemInformation.PrimaryMonitorSize.Width - Me.Width
                         Else
                             a.X = aa
                         End If
@@ -1065,12 +1065,12 @@ Public Class Form1
                         If ba = -1 Then
                             RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormY", 5, RegistryValueKind.DWord, "HKCU")
                             ba = 5
-                        ElseIf ba < -2 - Me.Height Then
+                        ElseIf ba < 0 - Me.Height Then
                             RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormY", 5, RegistryValueKind.DWord, "HKCU")
                             ba = 5
-                        ElseIf ba > System.Windows.Forms.SystemInformation.PrimaryMonitorSize.Height + Me.Height + 2 Then
+                        ElseIf ba > System.Windows.Forms.SystemInformation.PrimaryMonitorSize.Height Then
                             RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormY", 5, RegistryValueKind.DWord, "HKCU")
-                            ba = 5
+                            ba = System.Windows.Forms.SystemInformation.PrimaryMonitorSize.Height - Me.Height
                         Else
                             a.Y = ba
                         End If
