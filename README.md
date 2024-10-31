@@ -20,7 +20,7 @@
 
 ## 下载
 
-转到[发布页](https://github.com/cjhdevact/TimeControl/releases)下载程序或源代码。
+转到[发布页](https://github.com/cjhdevact/TimeControl/releases/latest)下载程序或源代码。
 
 早期版本的源代码也在发布页里。
 
@@ -44,14 +44,9 @@
 
 ## 相关项目
 
+[CountDownControl](https://github.com/cjhdevact/CountDownControl) - 倒计时小工具，支持高度自定义的倒计时小工具
+
 [TimeControlAero](https://github.com/cjhdevact/TimeControlAero) - 时间小工具Aero版（开发中）
-
-## 你知道吗？
-
-本项目诞生于2022年12月份。开发本程序最初的目的是为了在上课时随时查看准确时间……
-
-本程序的代码由于诞生于作者刚开始使用VB.net语言开发的时候，所以代码写的很乱，命名没有那么规范，且只有少量注释，如果要理解本程序的代码，请自己尝试一下……
-~~重构本程序已经被提上了计划~~
 
 ------------
 
