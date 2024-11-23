@@ -978,7 +978,6 @@ errcode:
                             RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormX", Form1.Location.X, RegistryValueKind.DWord, "HKCU")
                             RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormY", Form1.Location.Y, RegistryValueKind.DWord, "HKCU")
                         End If
-
                     End If
                 End If
                 c = 0
@@ -1347,7 +1346,7 @@ errcode:
                 MsgBox("设置自定义大小失败。" & vbCrLf & "大小不能为空。", MsgBoxStyle.Critical, "错误")
             Else
                 Dim c As Integer
-                c = TextBox3.Text - Form1.Width
+                c = Form1.Width - TextBox3.Text
 
                 Form1.Width = TextBox3.Text
                 Form1.Height = TextBox4.Text

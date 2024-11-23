@@ -1034,6 +1034,48 @@ Public Class Form1
                 Form2.TextBox2.Text = tr
                 '////////////////////////////////////////////////////////////////////////////////////
                 '//
+                '//  时钟自定义大小设置注册表读取
+                '//
+                '////////////////////////////////////////////////////////////////////////////////////
+                Dim tformw As Integer
+                Dim tformh As Integer
+                If (Not mykey Is Nothing) Then
+                    tformw = mykey.GetValue("CustomWidth", -1)
+                    If tformw <= 0 Then
+                        If Me.MySize = 1 Then
+                            RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "CustomWidth", Me.Width, RegistryValueKind.DWord, "HKCU")
+                        End If
+                        tformw = Me.Width
+                    End If
+                Else
+                    If Me.MySize = 1 Then
+                        RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "CustomWidth", Me.Width, RegistryValueKind.DWord, "HKCU")
+                    End If
+                    tformw = Me.Width
+                End If
+                If (Not mykey Is Nothing) Then
+                    tformh = mykey.GetValue("CustomHeight", -1)
+                    If tformh <= 0 Then
+                        If Me.MySize = 1 Then
+                            RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "CustomHeight", Me.Height, RegistryValueKind.DWord, "HKCU")
+                        End If
+                        tformh = Me.Height
+                    End If
+                Else
+                    If Me.MySize = 1 Then
+                        RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "CustomHeight", Me.Height, RegistryValueKind.DWord, "HKCU")
+                    End If
+                    tformh = Me.Height
+                End If
+                Form2.TextBox3.Text = tformw
+                Form2.TextBox4.Text = tformh
+                If Me.MySize = 1 Then
+                    Me.Height = tformh
+                    Me.Width = tformw
+                End If
+
+                '////////////////////////////////////////////////////////////////////////////////////
+                '//
                 '//  时钟位置注册表读取
                 '//
                 '////////////////////////////////////////////////////////////////////////////////////
@@ -1087,48 +1129,6 @@ Public Class Form1
                 Call Form2.ComboBox3_SelectedIndexChanged(sender, e)
                 If Form2.ComboBox3.SelectedIndex = 6 Then
                     Call Form2.Button4_Click(sender, e)
-                End If
-
-                '////////////////////////////////////////////////////////////////////////////////////
-                '//
-                '//  时钟自定义大小设置注册表读取
-                '//
-                '////////////////////////////////////////////////////////////////////////////////////
-                Dim tformw As Integer
-                Dim tformh As Integer
-                If (Not mykey Is Nothing) Then
-                    tformw = mykey.GetValue("CustomWidth", -1)
-                    If tformw <= 0 Then
-                        If Me.MySize = 1 Then
-                            RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "CustomWidth", Me.Width, RegistryValueKind.DWord, "HKCU")
-                        End If
-                        tformw = Me.Width
-                    End If
-                Else
-                    If Me.MySize = 1 Then
-                        RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "CustomWidth", Me.Width, RegistryValueKind.DWord, "HKCU")
-                    End If
-                    tformw = Me.Width
-                End If
-                If (Not mykey Is Nothing) Then
-                    tformh = mykey.GetValue("CustomHeight", -1)
-                    If tformh <= 0 Then
-                        If Me.MySize = 1 Then
-                            RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "CustomHeight", Me.Height, RegistryValueKind.DWord, "HKCU")
-                        End If
-                        tformh = Me.Height
-                    End If
-                Else
-                    If Me.MySize = 1 Then
-                        RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "CustomHeight", Me.Height, RegistryValueKind.DWord, "HKCU")
-                    End If
-                    tformh = Me.Height
-                End If
-                Form2.TextBox3.Text = tformw
-                Form2.TextBox4.Text = tformh
-                If Me.MySize = 1 Then
-                    Me.Height = tformh
-                    Me.Width = tformw
                 End If
 
                 '////////////////////////////////////////////////////////////////////////////////////
@@ -1250,30 +1250,34 @@ Public Class Form1
     Const SC_MOVE = &HF010&
     Const HTCAPTION = 2
     Private Sub Form1_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles MyBase.MouseDown
-        If UseMoveV = 1 Then
-            ReleaseCapture()
-            SendMessage(Me.Handle, WM_SYSCOMMAND, SC_MOVE + HTCAPTION, 0)
-            MovedV = 1
-            If SaveLoc = 1 Then
-                If UnSaveData = 0 Then
-                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormX", Me.Location.X, RegistryValueKind.DWord, "HKCU")
-                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormY", Me.Location.Y, RegistryValueKind.DWord, "HKCU")
-                End If
+        If Me.WindowState = FormWindowState.Normal Then
+            If UseMoveV = 1 Then
+                ReleaseCapture()
+                SendMessage(Me.Handle, WM_SYSCOMMAND, SC_MOVE + HTCAPTION, 0)
+                MovedV = 1
+                If SaveLoc = 1 Then
+                    If UnSaveData = 0 Then
+                        RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormX", Me.Location.X, RegistryValueKind.DWord, "HKCU")
+                        RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormY", Me.Location.Y, RegistryValueKind.DWord, "HKCU")
+                    End If
 
+                End If
             End If
         End If
     End Sub
     Private Sub Label1_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Label1.MouseDown
-        If UseMoveV = 1 Then
-            ReleaseCapture()
-            SendMessage(Me.Handle, WM_SYSCOMMAND, SC_MOVE + HTCAPTION, 0)
-            MovedV = 1
-            If SaveLoc = 1 Then
-                If UnSaveData = 0 Then
-                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormX", Me.Location.X, RegistryValueKind.DWord, "HKCU")
-                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormY", Me.Location.Y, RegistryValueKind.DWord, "HKCU")
-                End If
+        If Me.WindowState = FormWindowState.Normal Then
+            If UseMoveV = 1 Then
+                ReleaseCapture()
+                SendMessage(Me.Handle, WM_SYSCOMMAND, SC_MOVE + HTCAPTION, 0)
+                MovedV = 1
+                If SaveLoc = 1 Then
+                    If UnSaveData = 0 Then
+                        RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormX", Me.Location.X, RegistryValueKind.DWord, "HKCU")
+                        RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormY", Me.Location.Y, RegistryValueKind.DWord, "HKCU")
+                    End If
 
+                End If
             End If
         End If
     End Sub
@@ -1483,5 +1487,78 @@ Public Class Form1
         Me.Show()
         Timer2.Enabled = False
         NotifyIcon1.Visible = False
+    End Sub
+
+    Private Sub FullM_Click(sender As System.Object, e As System.EventArgs) Handles FullM.Click
+        If Me.WindowState = FormWindowState.Normal Then
+            Me.WindowState = FormWindowState.Maximized
+            'If TimeTheme = 0 Or TimeTheme = 1 Or TimeTheme = 3 Then
+            If TimeTheme = 2 Then
+                If Form2.TextBox5.Text = "" Then
+                    Me.BackgroundImage = Nothing
+                End If
+            Else
+                Me.BackgroundImage = Nothing
+            End If
+            'End If
+            Opacity = 1
+            Me.FullM.Text = "退出全屏"
+        Else
+            Me.WindowState = FormWindowState.Normal
+            If TimeTheme = 0 Then
+                If crmd = 0 Then
+                    If Me.Width >= 250 Then
+                        Me.BackgroundImage = My.Resources.bkgdark400
+                    ElseIf Me.Width <= 70 Then
+                        Me.BackgroundImage = My.Resources.bkgdark50
+                    Else
+                        Me.BackgroundImage = My.Resources.bkgdark
+                    End If
+                    'Me.TransparencyKey = Color.FromArgb(1, 1, 1)
+                    Opacity = 0.99
+                Else
+                    If Me.Width >= 250 Then
+                        Me.BackgroundImage = My.Resources.bkg400
+                    ElseIf Me.Width <= 70 Then
+                        Me.BackgroundImage = My.Resources.bkg50
+                    Else
+                        Me.BackgroundImage = My.Resources.bkg
+                    End If
+                    'Me.TransparencyKey = Color.FromArgb(184, 184, 184)
+                    Opacity = 0.99
+                End If
+            ElseIf TimeTheme = 1 Then
+                Me.BackgroundImage = Nothing
+                'Me.TransparencyKey = Color.FromArgb(255, 0, 255)
+                Opacity = 0.7
+            ElseIf TimeTheme = 2 Then
+                If Form2.TextBox5.Text = "" Then
+                    If crmd = 0 Then
+                        If Me.Width >= 250 Then
+                            Me.BackgroundImage = My.Resources.bkgdark400
+                        ElseIf Me.Width <= 70 Then
+                            Me.BackgroundImage = My.Resources.bkgdark50
+                        Else
+                            Me.BackgroundImage = My.Resources.bkgdark
+                        End If
+                    Else
+                        If Me.Width >= 250 Then
+                            Me.BackgroundImage = My.Resources.bkg400
+                        ElseIf Me.Width <= 70 Then
+                            Me.BackgroundImage = My.Resources.bkg50
+                        Else
+                            Me.BackgroundImage = My.Resources.bkg
+                        End If
+                    End If
+                End If
+                Opacity = CustOpacity * 0.01
+            ElseIf TimeTheme = 3 Then
+                'Me.TransparencyKey = Color.FromArgb(255, 0, 255)
+                Opacity = CustOpacity * 0.01
+            Else
+                Opacity = CustOpacity * 0.01
+            End If
+            Me.FullM.Text = "全屏"
+        End If
     End Sub
 End Class
