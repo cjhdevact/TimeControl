@@ -1065,7 +1065,7 @@ errcode:
                 RegKeyModule.DelReg("Software\CJH\TimeControl\Settings", "CustomHeight", "HKCU")
                 RegKeyModule.DelReg("Software\CJH\TimeControl\Settings", "CustomWidth", "HKCU")
 
-
+                Form1.WindowState = FormWindowState.Normal
 
                 Form1.Label1.Font = New System.Drawing.Font("Segoe UI", 21.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point)
                 Me.FontDialog1.Font = Form1.Label1.Font
@@ -1355,28 +1355,30 @@ errcode:
                     RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "CustomWidth", Form1.Width, RegistryValueKind.DWord, "HKCU")
                 End If
 
-
-                If Form1.TimeTheme = 0 Then
-                    If Form1.Width >= 250 Then
-                        If Form1.crmd = 0 Then
-                            Form1.BackgroundImage = My.Resources.bkgdark400
+                If Form1.WindowState = FormWindowState.Normal Then
+                    If Form1.TimeTheme = 0 Then
+                        If Form1.Width >= 250 Then
+                            If Form1.crmd = 0 Then
+                                Form1.BackgroundImage = My.Resources.bkgdark400
+                            Else
+                                Form1.BackgroundImage = My.Resources.bkg400
+                            End If
+                        ElseIf Form1.Width <= 70 Then
+                            If Form1.crmd = 0 Then
+                                Form1.BackgroundImage = My.Resources.bkgdark50
+                            Else
+                                Form1.BackgroundImage = My.Resources.bkg50
+                            End If
                         Else
-                            Form1.BackgroundImage = My.Resources.bkg400
-                        End If
-                    ElseIf Form1.Width <= 70 Then
-                        If Form1.crmd = 0 Then
-                            Form1.BackgroundImage = My.Resources.bkgdark50
-                        Else
-                            Form1.BackgroundImage = My.Resources.bkg50
-                        End If
-                    Else
-                        If Form1.crmd = 0 Then
-                            Form1.BackgroundImage = My.Resources.bkgdark
-                        Else
-                            Form1.BackgroundImage = My.Resources.bkg
+                            If Form1.crmd = 0 Then
+                                Form1.BackgroundImage = My.Resources.bkgdark
+                            Else
+                                Form1.BackgroundImage = My.Resources.bkg
+                            End If
                         End If
                     End If
                 End If
+
 
                 If Not (Form1.SaveLoc = 1 And Form1.IsBootV = 1) Then
                     If c <> 0 Then
@@ -1480,30 +1482,33 @@ errcode:
     Private Sub Button11_Click(sender As System.Object, e As System.EventArgs) Handles Button11.Click
         If MessageBox.Show("确定要清除自定义背景吗？" & vbCrLf & "这将恢复背景到默认圆角主题。", "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
             TextBox5.Text = ""
-            If Form1.Width >= 250 Then
-                If Form1.crmd = 0 Then
-                    Form1.BackgroundImage = My.Resources.bkgdark400
+            If Form1.WindowState = FormWindowState.Normal Then
+                If Form1.Width >= 250 Then
+                    If Form1.crmd = 0 Then
+                        Form1.BackgroundImage = My.Resources.bkgdark400
+                    Else
+                        Form1.BackgroundImage = My.Resources.bkg400
+                    End If
+                ElseIf Form1.Width <= 70 Then
+                    If Form1.crmd = 0 Then
+                        Form1.BackgroundImage = My.Resources.bkgdark50
+                    Else
+                        Form1.BackgroundImage = My.Resources.bkg50
+                    End If
                 Else
-                    Form1.BackgroundImage = My.Resources.bkg400
+                    If Form1.crmd = 0 Then
+                        Form1.BackgroundImage = My.Resources.bkgdark
+                    Else
+                        Form1.BackgroundImage = My.Resources.bkg
+                    End If
                 End If
-            ElseIf Form1.Width <= 70 Then
                 If Form1.crmd = 0 Then
-                    Form1.BackgroundImage = My.Resources.bkgdark50
+                    Form1.TransparencyKey = Color.FromArgb(1, 1, 1)
                 Else
-                    Form1.BackgroundImage = My.Resources.bkg50
-                End If
-            Else
-                If Form1.crmd = 0 Then
-                    Form1.BackgroundImage = My.Resources.bkgdark
-                Else
-                    Form1.BackgroundImage = My.Resources.bkg
+                    Form1.TransparencyKey = Color.FromArgb(184, 184, 184)
                 End If
             End If
-            If Form1.crmd = 0 Then
-                Form1.TransparencyKey = Color.FromArgb(1, 1, 1)
-            Else
-                Form1.TransparencyKey = Color.FromArgb(184, 184, 184)
-            End If
+
 
             OpenFileDialog1.FileName = ""
             If Form1.UnSaveData = 0 Then
@@ -1528,28 +1533,30 @@ errcode:
                     MsgBox("加载自定义背景图片失败。已恢复默认图片。" & vbCrLf & ex.Message, MsgBoxStyle.Critical, "错误")
                     OpenFileDialog1.FileName = ""
                     TextBox5.Text = ""
-                    If Form1.crmd = 0 Then
-                        Form1.TransparencyKey = Color.FromArgb(1, 1, 1)
-                    Else
-                        Form1.TransparencyKey = Color.FromArgb(184, 184, 184)
-                    End If
-                    If Form1.Width >= 250 Then
+                    If Form1.WindowState = FormWindowState.Normal Then
                         If Form1.crmd = 0 Then
-                            Form1.BackgroundImage = My.Resources.bkgdark400
+                            Form1.TransparencyKey = Color.FromArgb(1, 1, 1)
                         Else
-                            Form1.BackgroundImage = My.Resources.bkg400
+                            Form1.TransparencyKey = Color.FromArgb(184, 184, 184)
                         End If
-                    ElseIf Form1.Width <= 70 Then
-                        If Form1.crmd = 0 Then
-                            Form1.BackgroundImage = My.Resources.bkgdark50
+                        If Form1.Width >= 250 Then
+                            If Form1.crmd = 0 Then
+                                Form1.BackgroundImage = My.Resources.bkgdark400
+                            Else
+                                Form1.BackgroundImage = My.Resources.bkg400
+                            End If
+                        ElseIf Form1.Width <= 70 Then
+                            If Form1.crmd = 0 Then
+                                Form1.BackgroundImage = My.Resources.bkgdark50
+                            Else
+                                Form1.BackgroundImage = My.Resources.bkg50
+                            End If
                         Else
-                            Form1.BackgroundImage = My.Resources.bkg50
-                        End If
-                    Else
-                        If Form1.crmd = 0 Then
-                            Form1.BackgroundImage = My.Resources.bkgdark
-                        Else
-                            Form1.BackgroundImage = My.Resources.bkg
+                            If Form1.crmd = 0 Then
+                                Form1.BackgroundImage = My.Resources.bkgdark
+                            Else
+                                Form1.BackgroundImage = My.Resources.bkg
+                            End If
                         End If
                     End If
                     If Form1.UnSaveData = 0 Then

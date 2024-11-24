@@ -136,24 +136,26 @@ Public Class Form1
         'End If
         Me.Height = MeH + disi.DpiY * 0.01 * 12
         Me.Width = MeW + disi.DpiX * 0.01 * 12
-        If TimeTheme = 0 Then
-            If Me.Width >= 250 Then
-                If crmd = 0 Then
-                    Me.BackgroundImage = My.Resources.bkgdark400
+        If Me.WindowState = FormWindowState.Normal Then
+            If TimeTheme = 0 Then
+                If Me.Width >= 250 Then
+                    If crmd = 0 Then
+                        Me.BackgroundImage = My.Resources.bkgdark400
+                    Else
+                        Me.BackgroundImage = My.Resources.bkg400
+                    End If
+                ElseIf Me.Width <= 70 Then
+                    If crmd = 0 Then
+                        Me.BackgroundImage = My.Resources.bkgdark50
+                    Else
+                        Me.BackgroundImage = My.Resources.bkg50
+                    End If
                 Else
-                    Me.BackgroundImage = My.Resources.bkg400
-                End If
-            ElseIf Me.Width <= 70 Then
-                If crmd = 0 Then
-                    Me.BackgroundImage = My.Resources.bkgdark50
-                Else
-                    Me.BackgroundImage = My.Resources.bkg50
-                End If
-            Else
-                If crmd = 0 Then
-                    Me.BackgroundImage = My.Resources.bkgdark
-                Else
-                    Me.BackgroundImage = My.Resources.bkg
+                    If crmd = 0 Then
+                        Me.BackgroundImage = My.Resources.bkgdark
+                    Else
+                        Me.BackgroundImage = My.Resources.bkg
+                    End If
                 End If
             End If
         End If
@@ -1283,28 +1285,31 @@ Public Class Form1
     End Sub
     Sub formatcolorcur()
         If crmd = 0 Then
-            If TimeTheme = 0 Then
-                If Me.Width >= 250 Then
-                    Me.BackgroundImage = My.Resources.bkgdark400
-                ElseIf Me.Width <= 70 Then
-                    Me.BackgroundImage = My.Resources.bkgdark50
+            If Me.WindowState = FormWindowState.Normal Then
+                If TimeTheme = 0 Then
+                    If Me.Width >= 250 Then
+                        Me.BackgroundImage = My.Resources.bkgdark400
+                    ElseIf Me.Width <= 70 Then
+                        Me.BackgroundImage = My.Resources.bkgdark50
+                    Else
+                        Me.BackgroundImage = My.Resources.bkgdark
+                    End If
+                    Me.TransparencyKey = Color.FromArgb(1, 1, 1)
+                    Opacity = 0.99
+                ElseIf TimeTheme = 1 Then
+                    Me.BackgroundImage = Nothing
+                    Me.TransparencyKey = Color.FromArgb(255, 0, 255)
+                    Opacity = 0.7
+                ElseIf TimeTheme = 3 Then
+                    Me.BackgroundImage = Nothing
+                    Me.TransparencyKey = Color.FromArgb(255, 0, 255)
+                    Opacity = CustOpacity * 0.01
                 Else
-                    Me.BackgroundImage = My.Resources.bkgdark
+                    Opacity = CustOpacity * 0.01
                 End If
-                Me.TransparencyKey = Color.FromArgb(1, 1, 1)
-                Opacity = 0.99
-            ElseIf TimeTheme = 1 Then
-                Me.BackgroundImage = Nothing
-                Me.TransparencyKey = Color.FromArgb(255, 0, 255)
-                Opacity = 0.7
-            ElseIf TimeTheme = 3 Then
-                Me.BackgroundImage = Nothing
-                Me.TransparencyKey = Color.FromArgb(255, 0, 255)
-                Opacity = CustOpacity * 0.01
-            Else
-                Opacity = CustOpacity * 0.01
+
             End If
-         
+
             If Label1.ForeColor.R = 0 And Label1.ForeColor.G = 0 And Label1.ForeColor.B = 0 Then
                 Me.Label1.ForeColor = Color.White
                 If UnSaveData = 0 Then
@@ -1331,28 +1336,29 @@ Public Class Form1
             EnableDarkModeForWindow(Me.Handle, True)
 
         Else
-            If TimeTheme = 0 Then
-                If Me.Width >= 250 Then
-                    Me.BackgroundImage = My.Resources.bkg400
-                ElseIf Me.Width <= 70 Then
-                    Me.BackgroundImage = My.Resources.bkg50
+            If Me.WindowState = FormWindowState.Normal Then
+                If TimeTheme = 0 Then
+                    If Me.Width >= 250 Then
+                        Me.BackgroundImage = My.Resources.bkg400
+                    ElseIf Me.Width <= 70 Then
+                        Me.BackgroundImage = My.Resources.bkg50
+                    Else
+                        Me.BackgroundImage = My.Resources.bkg
+                    End If
+                    Me.TransparencyKey = Color.FromArgb(184, 184, 184)
+                    Opacity = 0.99
+                ElseIf TimeTheme = 1 Then
+                    Me.BackgroundImage = Nothing
+                    Me.TransparencyKey = Color.FromArgb(255, 0, 255)
+                    Opacity = 0.7
+                ElseIf TimeTheme = 3 Then
+                    Me.BackgroundImage = Nothing
+                    Me.TransparencyKey = Color.FromArgb(255, 0, 255)
+                    Opacity = CustOpacity * 0.01
                 Else
-                    Me.BackgroundImage = My.Resources.bkg
+                    Opacity = CustOpacity * 0.01
                 End If
-                Me.TransparencyKey = Color.FromArgb(184, 184, 184)
-                Opacity = 0.99
-            ElseIf TimeTheme = 1 Then
-                Me.BackgroundImage = Nothing
-                Me.TransparencyKey = Color.FromArgb(255, 0, 255)
-                Opacity = 0.7
-            ElseIf TimeTheme = 3 Then
-                Me.BackgroundImage = Nothing
-                Me.TransparencyKey = Color.FromArgb(255, 0, 255)
-                Opacity = CustOpacity * 0.01
-            Else
-                Opacity = CustOpacity * 0.01
             End If
-
             Me.BackColor = Color.White
             Me.ForeColor = Color.Black
             If Label1.ForeColor.R = 255 And Label1.ForeColor.G = 255 And Label1.ForeColor.B = 255 Then
