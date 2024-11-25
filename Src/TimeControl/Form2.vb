@@ -1399,6 +1399,23 @@ errcode:
         End Try
     End Sub
 
+    Private Sub PictureBox2_Click(sender As System.Object, e As System.EventArgs) Handles PictureBox2.Click
+        If Label3.Text = "设置时间小工具" Then
+            Dim a(5) As String
+            a(0) = "^_^"
+            a(1) = "ahhhhhhhhh?"
+            a(2) = "Let's have a try!"
+            a(3) = "The quick fox jumps over the lazy brown dog"
+            a(4) = "?????????????????"
+            a(5) = "Undefine string"
+            Dim b As New Random
+            Dim c As Integer = b.Next(0, 5)
+            Label3.Text = a(c)
+        Else
+            Label3.Text = "设置时间小工具"
+        End If
+    End Sub
+
     Private Sub ComboBox4_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles ComboBox4.SelectedIndexChanged
         If ComboBox4.SelectedIndex = 0 Then
             If Form1.UnSaveData = 0 Then
@@ -1417,7 +1434,12 @@ errcode:
             End If
             Label17.Text = "99%"
             TrackBar1.Value = 99
-            Form1.Opacity = 0.99
+            If Form1.WindowState = FormWindowState.Normal Then
+                Form1.Opacity = 0.99
+            Else
+                Form1.Opacity = 1
+            End If
+
         ElseIf ComboBox4.SelectedIndex = 1 Then
             If Form1.UnSaveData = 0 Then
                 RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeTheme", 1, RegistryValueKind.DWord, "HKCU")
@@ -1436,7 +1458,11 @@ errcode:
             Label17.Text = "70%"
             TrackBar1.Value = 70
             Form1.BackgroundImage = Nothing
-            Form1.Opacity = 0.7
+            If Form1.WindowState = FormWindowState.Normal Then
+                Form1.Opacity = 0.7
+            Else
+                Form1.Opacity = 1
+            End If
         ElseIf ComboBox4.SelectedIndex = 2 Then
             If Form1.UnSaveData = 0 Then
                 RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeTheme", 2, RegistryValueKind.DWord, "HKCU")

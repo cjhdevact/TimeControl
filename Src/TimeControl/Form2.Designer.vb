@@ -97,7 +97,7 @@ Partial Class Form2
         '
         'Label1
         '
-        Me.Label1.Location = New System.Drawing.Point(468, 267)
+        Me.Label1.Location = New System.Drawing.Point(468, 335)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(387, 52)
         Me.Label1.TabIndex = 8
@@ -125,7 +125,7 @@ Partial Class Form2
         '
         'TextBox1
         '
-        Me.TextBox1.Location = New System.Drawing.Point(515, 174)
+        Me.TextBox1.Location = New System.Drawing.Point(515, 242)
         Me.TextBox1.Name = "TextBox1"
         Me.TextBox1.Size = New System.Drawing.Size(95, 27)
         Me.TextBox1.TabIndex = 19
@@ -138,14 +138,14 @@ Partial Class Form2
         Me.ComboBox1.ForeColor = System.Drawing.Color.Black
         Me.ComboBox1.FormattingEnabled = True
         Me.ComboBox1.Items.AddRange(New Object() {"秒", "分钟", "小时"})
-        Me.ComboBox1.Location = New System.Drawing.Point(620, 173)
+        Me.ComboBox1.Location = New System.Drawing.Point(620, 241)
         Me.ComboBox1.Name = "ComboBox1"
         Me.ComboBox1.Size = New System.Drawing.Size(121, 28)
         Me.ComboBox1.TabIndex = 20
         '
         'Button2
         '
-        Me.Button2.Location = New System.Drawing.Point(747, 174)
+        Me.Button2.Location = New System.Drawing.Point(747, 242)
         Me.Button2.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
         Me.Button2.Name = "Button2"
         Me.Button2.Size = New System.Drawing.Size(113, 27)
@@ -176,7 +176,7 @@ Partial Class Form2
         'CheckBox1
         '
         Me.CheckBox1.AutoSize = True
-        Me.CheckBox1.Location = New System.Drawing.Point(33, 410)
+        Me.CheckBox1.Location = New System.Drawing.Point(33, 496)
         Me.CheckBox1.Name = "CheckBox1"
         Me.CheckBox1.Size = New System.Drawing.Size(88, 24)
         Me.CheckBox1.TabIndex = 10
@@ -186,7 +186,7 @@ Partial Class Form2
         'CheckBox2
         '
         Me.CheckBox2.AutoSize = True
-        Me.CheckBox2.Location = New System.Drawing.Point(33, 440)
+        Me.CheckBox2.Location = New System.Drawing.Point(33, 526)
         Me.CheckBox2.Name = "CheckBox2"
         Me.CheckBox2.Size = New System.Drawing.Size(88, 24)
         Me.CheckBox2.TabIndex = 11
@@ -197,7 +197,7 @@ Partial Class Form2
         '
         Me.Label5.AutoSize = True
         Me.Label5.Font = New System.Drawing.Font("微软雅黑", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
-        Me.Label5.Location = New System.Drawing.Point(459, 155)
+        Me.Label5.Location = New System.Drawing.Point(459, 223)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(39, 19)
         Me.Label5.TabIndex = 17
@@ -206,7 +206,7 @@ Partial Class Form2
         'Label6
         '
         Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(470, 177)
+        Me.Label6.Location = New System.Drawing.Point(470, 245)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(39, 20)
         Me.Label6.TabIndex = 18
@@ -216,7 +216,7 @@ Partial Class Form2
         '
         Me.Button3.BackColor = System.Drawing.Color.DarkRed
         Me.Button3.ForeColor = System.Drawing.Color.White
-        Me.Button3.Location = New System.Drawing.Point(474, 208)
+        Me.Button3.Location = New System.Drawing.Point(474, 276)
         Me.Button3.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
         Me.Button3.Name = "Button3"
         Me.Button3.Size = New System.Drawing.Size(113, 27)
@@ -228,7 +228,7 @@ Partial Class Form2
         '
         Me.Label7.AutoSize = True
         Me.Label7.Font = New System.Drawing.Font("微软雅黑", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
-        Me.Label7.Location = New System.Drawing.Point(459, 247)
+        Me.Label7.Location = New System.Drawing.Point(459, 315)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(39, 19)
         Me.Label7.TabIndex = 20
@@ -257,10 +257,13 @@ Partial Class Form2
         'TextBox2
         '
         Me.TextBox2.Enabled = False
-        Me.TextBox2.Location = New System.Drawing.Point(148, 208)
+        Me.TextBox2.Location = New System.Drawing.Point(32, 242)
+        Me.TextBox2.Multiline = True
         Me.TextBox2.Name = "TextBox2"
-        Me.TextBox2.Size = New System.Drawing.Size(151, 27)
+        Me.TextBox2.ScrollBars = System.Windows.Forms.ScrollBars.Both
+        Me.TextBox2.Size = New System.Drawing.Size(385, 82)
         Me.TextBox2.TabIndex = 2
+        Me.TextBox2.WordWrap = False
         '
         'Label9
         '
@@ -293,7 +296,7 @@ Partial Class Form2
         '
         'Button6
         '
-        Me.Button6.Location = New System.Drawing.Point(593, 208)
+        Me.Button6.Location = New System.Drawing.Point(593, 276)
         Me.Button6.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
         Me.Button6.Name = "Button6"
         Me.Button6.Size = New System.Drawing.Size(113, 27)
@@ -304,7 +307,7 @@ Partial Class Form2
         'CheckBox3
         '
         Me.CheckBox3.AutoSize = True
-        Me.CheckBox3.Location = New System.Drawing.Point(33, 469)
+        Me.CheckBox3.Location = New System.Drawing.Point(33, 555)
         Me.CheckBox3.Name = "CheckBox3"
         Me.CheckBox3.Size = New System.Drawing.Size(133, 24)
         Me.CheckBox3.TabIndex = 12
@@ -314,7 +317,7 @@ Partial Class Form2
         'Label10
         '
         Me.Label10.AutoSize = True
-        Me.Label10.Location = New System.Drawing.Point(29, 352)
+        Me.Label10.Location = New System.Drawing.Point(29, 438)
         Me.Label10.Name = "Label10"
         Me.Label10.Size = New System.Drawing.Size(144, 20)
         Me.Label10.TabIndex = 30
@@ -322,7 +325,7 @@ Partial Class Form2
         '
         'Button7
         '
-        Me.Button7.Location = New System.Drawing.Point(179, 349)
+        Me.Button7.Location = New System.Drawing.Point(179, 435)
         Me.Button7.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
         Me.Button7.Name = "Button7"
         Me.Button7.Size = New System.Drawing.Size(113, 27)
@@ -337,7 +340,7 @@ Partial Class Form2
         '
         'Button8
         '
-        Me.Button8.Location = New System.Drawing.Point(134, 380)
+        Me.Button8.Location = New System.Drawing.Point(134, 466)
         Me.Button8.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
         Me.Button8.Name = "Button8"
         Me.Button8.Size = New System.Drawing.Size(113, 27)
@@ -348,7 +351,7 @@ Partial Class Form2
         'Label11
         '
         Me.Label11.AutoSize = True
-        Me.Label11.Location = New System.Drawing.Point(29, 383)
+        Me.Label11.Location = New System.Drawing.Point(29, 469)
         Me.Label11.Name = "Label11"
         Me.Label11.Size = New System.Drawing.Size(99, 20)
         Me.Label11.TabIndex = 32
@@ -369,7 +372,7 @@ Partial Class Form2
         'CheckBox4
         '
         Me.CheckBox4.AutoSize = True
-        Me.CheckBox4.Location = New System.Drawing.Point(33, 529)
+        Me.CheckBox4.Location = New System.Drawing.Point(474, 144)
         Me.CheckBox4.Name = "CheckBox4"
         Me.CheckBox4.Size = New System.Drawing.Size(133, 24)
         Me.CheckBox4.TabIndex = 14
@@ -379,7 +382,7 @@ Partial Class Form2
         'Label12
         '
         Me.Label12.AutoSize = True
-        Me.Label12.Location = New System.Drawing.Point(29, 556)
+        Me.Label12.Location = New System.Drawing.Point(470, 171)
         Me.Label12.Name = "Label12"
         Me.Label12.Size = New System.Drawing.Size(39, 20)
         Me.Label12.TabIndex = 36
@@ -388,7 +391,7 @@ Partial Class Form2
         'TextBox3
         '
         Me.TextBox3.Enabled = False
-        Me.TextBox3.Location = New System.Drawing.Point(74, 553)
+        Me.TextBox3.Location = New System.Drawing.Point(515, 168)
         Me.TextBox3.Name = "TextBox3"
         Me.TextBox3.Size = New System.Drawing.Size(83, 27)
         Me.TextBox3.TabIndex = 15
@@ -396,7 +399,7 @@ Partial Class Form2
         'TextBox4
         '
         Me.TextBox4.Enabled = False
-        Me.TextBox4.Location = New System.Drawing.Point(208, 553)
+        Me.TextBox4.Location = New System.Drawing.Point(649, 168)
         Me.TextBox4.Name = "TextBox4"
         Me.TextBox4.Size = New System.Drawing.Size(83, 27)
         Me.TextBox4.TabIndex = 16
@@ -404,7 +407,7 @@ Partial Class Form2
         'Label13
         '
         Me.Label13.AutoSize = True
-        Me.Label13.Location = New System.Drawing.Point(163, 556)
+        Me.Label13.Location = New System.Drawing.Point(604, 171)
         Me.Label13.Name = "Label13"
         Me.Label13.Size = New System.Drawing.Size(39, 20)
         Me.Label13.TabIndex = 38
@@ -412,7 +415,7 @@ Partial Class Form2
         '
         'Button9
         '
-        Me.Button9.Location = New System.Drawing.Point(297, 553)
+        Me.Button9.Location = New System.Drawing.Point(738, 168)
         Me.Button9.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
         Me.Button9.Name = "Button9"
         Me.Button9.Size = New System.Drawing.Size(113, 27)
@@ -423,7 +426,7 @@ Partial Class Form2
         'Label14
         '
         Me.Label14.AutoSize = True
-        Me.Label14.Location = New System.Drawing.Point(29, 247)
+        Me.Label14.Location = New System.Drawing.Point(29, 333)
         Me.Label14.Name = "Label14"
         Me.Label14.Size = New System.Drawing.Size(39, 20)
         Me.Label14.TabIndex = 41
@@ -435,7 +438,7 @@ Partial Class Form2
         Me.ComboBox4.FlatStyle = System.Windows.Forms.FlatStyle.System
         Me.ComboBox4.FormattingEnabled = True
         Me.ComboBox4.Items.AddRange(New Object() {"圆角", "经典", "自定义背景", "（无）"})
-        Me.ComboBox4.Location = New System.Drawing.Point(134, 244)
+        Me.ComboBox4.Location = New System.Drawing.Point(134, 330)
         Me.ComboBox4.Name = "ComboBox4"
         Me.ComboBox4.Size = New System.Drawing.Size(181, 28)
         Me.ComboBox4.TabIndex = 4
@@ -443,7 +446,7 @@ Partial Class Form2
         'Label15
         '
         Me.Label15.AutoSize = True
-        Me.Label15.Location = New System.Drawing.Point(29, 284)
+        Me.Label15.Location = New System.Drawing.Point(29, 370)
         Me.Label15.Name = "Label15"
         Me.Label15.Size = New System.Drawing.Size(109, 60)
         Me.Label15.TabIndex = 43
@@ -451,7 +454,7 @@ Partial Class Form2
         '
         'Button10
         '
-        Me.Button10.Location = New System.Drawing.Point(134, 281)
+        Me.Button10.Location = New System.Drawing.Point(134, 367)
         Me.Button10.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
         Me.Button10.Name = "Button10"
         Me.Button10.Size = New System.Drawing.Size(113, 27)
@@ -462,7 +465,7 @@ Partial Class Form2
         'TextBox5
         '
         Me.TextBox5.Enabled = False
-        Me.TextBox5.Location = New System.Drawing.Point(134, 315)
+        Me.TextBox5.Location = New System.Drawing.Point(134, 401)
         Me.TextBox5.Name = "TextBox5"
         Me.TextBox5.ReadOnly = True
         Me.TextBox5.Size = New System.Drawing.Size(285, 27)
@@ -470,7 +473,7 @@ Partial Class Form2
         '
         'Button11
         '
-        Me.Button11.Location = New System.Drawing.Point(253, 281)
+        Me.Button11.Location = New System.Drawing.Point(253, 367)
         Me.Button11.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
         Me.Button11.Name = "Button11"
         Me.Button11.Size = New System.Drawing.Size(113, 27)
@@ -482,7 +485,7 @@ Partial Class Form2
         '
         Me.TrackBar1.AutoSize = False
         Me.TrackBar1.LargeChange = 2
-        Me.TrackBar1.Location = New System.Drawing.Point(530, 122)
+        Me.TrackBar1.Location = New System.Drawing.Point(530, 190)
         Me.TrackBar1.Maximum = 100
         Me.TrackBar1.Minimum = 20
         Me.TrackBar1.Name = "TrackBar1"
@@ -496,7 +499,7 @@ Partial Class Form2
         'Label16
         '
         Me.Label16.AutoSize = True
-        Me.Label16.Location = New System.Drawing.Point(470, 132)
+        Me.Label16.Location = New System.Drawing.Point(470, 200)
         Me.Label16.Name = "Label16"
         Me.Label16.Size = New System.Drawing.Size(54, 20)
         Me.Label16.TabIndex = 48
@@ -505,7 +508,7 @@ Partial Class Form2
         'Label17
         '
         Me.Label17.AutoSize = True
-        Me.Label17.Location = New System.Drawing.Point(783, 135)
+        Me.Label17.Location = New System.Drawing.Point(783, 203)
         Me.Label17.Name = "Label17"
         Me.Label17.Size = New System.Drawing.Size(49, 20)
         Me.Label17.TabIndex = 49
@@ -515,7 +518,7 @@ Partial Class Form2
         '
         Me.LinkLabel1.AutoSize = True
         Me.LinkLabel1.LinkColor = System.Drawing.Color.DodgerBlue
-        Me.LinkLabel1.Location = New System.Drawing.Point(466, 356)
+        Me.LinkLabel1.Location = New System.Drawing.Point(466, 424)
         Me.LinkLabel1.Name = "LinkLabel1"
         Me.LinkLabel1.Size = New System.Drawing.Size(69, 20)
         Me.LinkLabel1.TabIndex = 25
@@ -526,7 +529,7 @@ Partial Class Form2
         '
         Me.LinkLabel2.AutoSize = True
         Me.LinkLabel2.LinkColor = System.Drawing.Color.DodgerBlue
-        Me.LinkLabel2.Location = New System.Drawing.Point(541, 356)
+        Me.LinkLabel2.Location = New System.Drawing.Point(541, 424)
         Me.LinkLabel2.Name = "LinkLabel2"
         Me.LinkLabel2.Size = New System.Drawing.Size(69, 20)
         Me.LinkLabel2.TabIndex = 26
@@ -536,7 +539,7 @@ Partial Class Form2
         'CheckBox5
         '
         Me.CheckBox5.AutoSize = True
-        Me.CheckBox5.Location = New System.Drawing.Point(33, 499)
+        Me.CheckBox5.Location = New System.Drawing.Point(474, 114)
         Me.CheckBox5.Name = "CheckBox5"
         Me.CheckBox5.Size = New System.Drawing.Size(297, 24)
         Me.CheckBox5.TabIndex = 13
@@ -548,7 +551,7 @@ Partial Class Form2
         Me.LinkLabel3.AutoSize = True
         Me.LinkLabel3.Font = New System.Drawing.Font("微软雅黑", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
         Me.LinkLabel3.LinkColor = System.Drawing.Color.IndianRed
-        Me.LinkLabel3.Location = New System.Drawing.Point(719, 356)
+        Me.LinkLabel3.Location = New System.Drawing.Point(719, 424)
         Me.LinkLabel3.Name = "LinkLabel3"
         Me.LinkLabel3.Size = New System.Drawing.Size(144, 20)
         Me.LinkLabel3.TabIndex = 29
@@ -558,7 +561,7 @@ Partial Class Form2
         'Label19
         '
         Me.Label19.AutoSize = True
-        Me.Label19.Location = New System.Drawing.Point(467, 324)
+        Me.Label19.Location = New System.Drawing.Point(467, 392)
         Me.Label19.Name = "Label19"
         Me.Label19.Size = New System.Drawing.Size(365, 20)
         Me.Label19.TabIndex = 55
@@ -568,7 +571,7 @@ Partial Class Form2
         '
         Me.LinkLabel4.AutoSize = True
         Me.LinkLabel4.LinkColor = System.Drawing.Color.DodgerBlue
-        Me.LinkLabel4.Location = New System.Drawing.Point(661, 356)
+        Me.LinkLabel4.Location = New System.Drawing.Point(661, 424)
         Me.LinkLabel4.Name = "LinkLabel4"
         Me.LinkLabel4.Size = New System.Drawing.Size(52, 20)
         Me.LinkLabel4.TabIndex = 28
@@ -579,7 +582,7 @@ Partial Class Form2
         '
         Me.LinkLabel5.AutoSize = True
         Me.LinkLabel5.LinkColor = System.Drawing.Color.DodgerBlue
-        Me.LinkLabel5.Location = New System.Drawing.Point(616, 356)
+        Me.LinkLabel5.Location = New System.Drawing.Point(616, 424)
         Me.LinkLabel5.Name = "LinkLabel5"
         Me.LinkLabel5.Size = New System.Drawing.Size(39, 20)
         Me.LinkLabel5.TabIndex = 27
@@ -613,7 +616,7 @@ Partial Class Form2
         '
         Me.Button12.BackColor = System.Drawing.Color.Transparent
         Me.Button12.ForeColor = System.Drawing.Color.Black
-        Me.Button12.Location = New System.Drawing.Point(712, 208)
+        Me.Button12.Location = New System.Drawing.Point(712, 276)
         Me.Button12.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
         Me.Button12.Name = "Button12"
         Me.Button12.Size = New System.Drawing.Size(148, 27)

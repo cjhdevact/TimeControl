@@ -1507,7 +1507,9 @@ Public Class Form1
                 Me.BackgroundImage = Nothing
             End If
             'End If
-            Opacity = 1
+            If TimeTheme = 0 Or 1 Then
+                Opacity = 1
+            End If
             Me.FullM.Text = "退出全屏"
         Else
             Me.WindowState = FormWindowState.Normal
@@ -1520,7 +1522,7 @@ Public Class Form1
                     Else
                         Me.BackgroundImage = My.Resources.bkgdark
                     End If
-                    'Me.TransparencyKey = Color.FromArgb(1, 1, 1)
+                    Me.TransparencyKey = Color.FromArgb(1, 1, 1)
                     Opacity = 0.99
                 Else
                     If Me.Width >= 250 Then
@@ -1530,7 +1532,7 @@ Public Class Form1
                     Else
                         Me.BackgroundImage = My.Resources.bkg
                     End If
-                    'Me.TransparencyKey = Color.FromArgb(184, 184, 184)
+                    Me.TransparencyKey = Color.FromArgb(184, 184, 184)
                     Opacity = 0.99
                 End If
             ElseIf TimeTheme = 1 Then
