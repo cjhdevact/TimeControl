@@ -97,7 +97,7 @@ Partial Class Form2
         '
         'Label1
         '
-        Me.Label1.Location = New System.Drawing.Point(468, 335)
+        Me.Label1.Location = New System.Drawing.Point(468, 356)
         Me.Label1.Name = "Label1"
         Me.Label1.Size = New System.Drawing.Size(387, 52)
         Me.Label1.TabIndex = 8
@@ -125,7 +125,7 @@ Partial Class Form2
         '
         'TextBox1
         '
-        Me.TextBox1.Location = New System.Drawing.Point(515, 242)
+        Me.TextBox1.Location = New System.Drawing.Point(515, 263)
         Me.TextBox1.Name = "TextBox1"
         Me.TextBox1.Size = New System.Drawing.Size(95, 27)
         Me.TextBox1.TabIndex = 19
@@ -138,14 +138,14 @@ Partial Class Form2
         Me.ComboBox1.ForeColor = System.Drawing.Color.Black
         Me.ComboBox1.FormattingEnabled = True
         Me.ComboBox1.Items.AddRange(New Object() {"秒", "分钟", "小时"})
-        Me.ComboBox1.Location = New System.Drawing.Point(620, 241)
+        Me.ComboBox1.Location = New System.Drawing.Point(620, 262)
         Me.ComboBox1.Name = "ComboBox1"
         Me.ComboBox1.Size = New System.Drawing.Size(121, 28)
         Me.ComboBox1.TabIndex = 20
         '
         'Button2
         '
-        Me.Button2.Location = New System.Drawing.Point(747, 242)
+        Me.Button2.Location = New System.Drawing.Point(747, 263)
         Me.Button2.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
         Me.Button2.Name = "Button2"
         Me.Button2.Size = New System.Drawing.Size(113, 27)
@@ -197,7 +197,7 @@ Partial Class Form2
         '
         Me.Label5.AutoSize = True
         Me.Label5.Font = New System.Drawing.Font("微软雅黑", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
-        Me.Label5.Location = New System.Drawing.Point(459, 223)
+        Me.Label5.Location = New System.Drawing.Point(459, 244)
         Me.Label5.Name = "Label5"
         Me.Label5.Size = New System.Drawing.Size(39, 19)
         Me.Label5.TabIndex = 17
@@ -206,7 +206,7 @@ Partial Class Form2
         'Label6
         '
         Me.Label6.AutoSize = True
-        Me.Label6.Location = New System.Drawing.Point(470, 245)
+        Me.Label6.Location = New System.Drawing.Point(470, 266)
         Me.Label6.Name = "Label6"
         Me.Label6.Size = New System.Drawing.Size(39, 20)
         Me.Label6.TabIndex = 18
@@ -216,7 +216,7 @@ Partial Class Form2
         '
         Me.Button3.BackColor = System.Drawing.Color.DarkRed
         Me.Button3.ForeColor = System.Drawing.Color.White
-        Me.Button3.Location = New System.Drawing.Point(474, 276)
+        Me.Button3.Location = New System.Drawing.Point(474, 297)
         Me.Button3.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
         Me.Button3.Name = "Button3"
         Me.Button3.Size = New System.Drawing.Size(113, 27)
@@ -228,7 +228,7 @@ Partial Class Form2
         '
         Me.Label7.AutoSize = True
         Me.Label7.Font = New System.Drawing.Font("微软雅黑", 11.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
-        Me.Label7.Location = New System.Drawing.Point(459, 315)
+        Me.Label7.Location = New System.Drawing.Point(459, 336)
         Me.Label7.Name = "Label7"
         Me.Label7.Size = New System.Drawing.Size(39, 19)
         Me.Label7.TabIndex = 20
@@ -296,7 +296,7 @@ Partial Class Form2
         '
         'Button6
         '
-        Me.Button6.Location = New System.Drawing.Point(593, 276)
+        Me.Button6.Location = New System.Drawing.Point(593, 297)
         Me.Button6.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
         Me.Button6.Name = "Button6"
         Me.Button6.Size = New System.Drawing.Size(113, 27)
@@ -483,9 +483,8 @@ Partial Class Form2
         '
         'TrackBar1
         '
-        Me.TrackBar1.AutoSize = False
         Me.TrackBar1.LargeChange = 2
-        Me.TrackBar1.Location = New System.Drawing.Point(530, 190)
+        Me.TrackBar1.Location = New System.Drawing.Point(530, 204)
         Me.TrackBar1.Maximum = 100
         Me.TrackBar1.Minimum = 20
         Me.TrackBar1.Name = "TrackBar1"
@@ -499,7 +498,7 @@ Partial Class Form2
         'Label16
         '
         Me.Label16.AutoSize = True
-        Me.Label16.Location = New System.Drawing.Point(470, 200)
+        Me.Label16.Location = New System.Drawing.Point(470, 214)
         Me.Label16.Name = "Label16"
         Me.Label16.Size = New System.Drawing.Size(54, 20)
         Me.Label16.TabIndex = 48
@@ -508,7 +507,7 @@ Partial Class Form2
         'Label17
         '
         Me.Label17.AutoSize = True
-        Me.Label17.Location = New System.Drawing.Point(783, 203)
+        Me.Label17.Location = New System.Drawing.Point(783, 214)
         Me.Label17.Name = "Label17"
         Me.Label17.Size = New System.Drawing.Size(49, 20)
         Me.Label17.TabIndex = 49
@@ -518,7 +517,7 @@ Partial Class Form2
         '
         Me.LinkLabel1.AutoSize = True
         Me.LinkLabel1.LinkColor = System.Drawing.Color.DodgerBlue
-        Me.LinkLabel1.Location = New System.Drawing.Point(466, 424)
+        Me.LinkLabel1.Location = New System.Drawing.Point(466, 445)
         Me.LinkLabel1.Name = "LinkLabel1"
         Me.LinkLabel1.Size = New System.Drawing.Size(69, 20)
         Me.LinkLabel1.TabIndex = 25
@@ -529,7 +528,7 @@ Partial Class Form2
         '
         Me.LinkLabel2.AutoSize = True
         Me.LinkLabel2.LinkColor = System.Drawing.Color.DodgerBlue
-        Me.LinkLabel2.Location = New System.Drawing.Point(541, 424)
+        Me.LinkLabel2.Location = New System.Drawing.Point(541, 445)
         Me.LinkLabel2.Name = "LinkLabel2"
         Me.LinkLabel2.Size = New System.Drawing.Size(69, 20)
         Me.LinkLabel2.TabIndex = 26
@@ -551,7 +550,7 @@ Partial Class Form2
         Me.LinkLabel3.AutoSize = True
         Me.LinkLabel3.Font = New System.Drawing.Font("微软雅黑", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
         Me.LinkLabel3.LinkColor = System.Drawing.Color.IndianRed
-        Me.LinkLabel3.Location = New System.Drawing.Point(719, 424)
+        Me.LinkLabel3.Location = New System.Drawing.Point(719, 445)
         Me.LinkLabel3.Name = "LinkLabel3"
         Me.LinkLabel3.Size = New System.Drawing.Size(144, 20)
         Me.LinkLabel3.TabIndex = 29
@@ -561,7 +560,7 @@ Partial Class Form2
         'Label19
         '
         Me.Label19.AutoSize = True
-        Me.Label19.Location = New System.Drawing.Point(467, 392)
+        Me.Label19.Location = New System.Drawing.Point(467, 413)
         Me.Label19.Name = "Label19"
         Me.Label19.Size = New System.Drawing.Size(365, 20)
         Me.Label19.TabIndex = 55
@@ -571,7 +570,7 @@ Partial Class Form2
         '
         Me.LinkLabel4.AutoSize = True
         Me.LinkLabel4.LinkColor = System.Drawing.Color.DodgerBlue
-        Me.LinkLabel4.Location = New System.Drawing.Point(661, 424)
+        Me.LinkLabel4.Location = New System.Drawing.Point(661, 445)
         Me.LinkLabel4.Name = "LinkLabel4"
         Me.LinkLabel4.Size = New System.Drawing.Size(52, 20)
         Me.LinkLabel4.TabIndex = 28
@@ -582,7 +581,7 @@ Partial Class Form2
         '
         Me.LinkLabel5.AutoSize = True
         Me.LinkLabel5.LinkColor = System.Drawing.Color.DodgerBlue
-        Me.LinkLabel5.Location = New System.Drawing.Point(616, 424)
+        Me.LinkLabel5.Location = New System.Drawing.Point(616, 445)
         Me.LinkLabel5.Name = "LinkLabel5"
         Me.LinkLabel5.Size = New System.Drawing.Size(39, 20)
         Me.LinkLabel5.TabIndex = 27
@@ -616,7 +615,7 @@ Partial Class Form2
         '
         Me.Button12.BackColor = System.Drawing.Color.Transparent
         Me.Button12.ForeColor = System.Drawing.Color.Black
-        Me.Button12.Location = New System.Drawing.Point(712, 276)
+        Me.Button12.Location = New System.Drawing.Point(712, 297)
         Me.Button12.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
         Me.Button12.Name = "Button12"
         Me.Button12.Size = New System.Drawing.Size(148, 27)
@@ -642,7 +641,6 @@ Partial Class Form2
         Me.Controls.Add(Me.LinkLabel1)
         Me.Controls.Add(Me.Label17)
         Me.Controls.Add(Me.Label16)
-        Me.Controls.Add(Me.TrackBar1)
         Me.Controls.Add(Me.Button11)
         Me.Controls.Add(Me.TextBox5)
         Me.Controls.Add(Me.Button10)
@@ -684,6 +682,7 @@ Partial Class Form2
         Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.Label15)
         Me.Controls.Add(Me.Label20)
+        Me.Controls.Add(Me.TrackBar1)
         Me.Font = New System.Drawing.Font("微软雅黑", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
         Me.ForeColor = System.Drawing.Color.Black
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
