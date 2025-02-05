@@ -456,7 +456,8 @@ errcode:
         If aa = 1 Then
             Form1.Timer1.Enabled = False
             Form1.Timer2.Enabled = False
-            End
+            'End
+            Application.Exit()
         End If
     End Sub
 
@@ -1702,14 +1703,15 @@ errcode:
 
     Private Sub Button12_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button12.Click
         Dim bb As Integer = 0
-        If (MessageBox.Show("确定重启时间小工具吗？", "时间小工具", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) = DialogResult.Yes) Then
+        If MessageBox.Show("确定重启时间小工具吗？", "时间小工具", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) = DialogResult.Yes Then
             bb = 1
         End If
         If bb = 1 Then
             Form1.Timer1.Enabled = False
             Form1.Timer2.Enabled = False
             System.Diagnostics.Process.Start(Application.ExecutablePath)
-            End
+            'End
+            Application.Exit()
         End If
     End Sub
 End Class
