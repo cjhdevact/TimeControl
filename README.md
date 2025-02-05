@@ -1,5 +1,5 @@
 <h1 align="center">
-  TimeControl - 时间小工具
+  <a href="https://github.com/cjhdevact/TimeControl">TimeControl - 时间小工具</a>
 </h1>
 
 ## 关于本项目

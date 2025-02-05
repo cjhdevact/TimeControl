@@ -1,0 +1,9 @@
+/Src/.vs/
+
+/Src/*.suo
+
+/Src/TimeControl-bin/
+
+/Src/TimeControl/bin/
+
+/Src/TimeControl/obj/
