@@ -94,6 +94,7 @@ Public Class Form1
     Public UnSaveData As Integer '不保存设置
     Public UnReadData As Integer '不读取设置
     Public ShowModeTips As Integer '不显示横幅
+    Public NeedStillTopMost As Integer '是否强制顶置
 
     '在Alt+Tab中隐藏
     Const WS_EX_COMPOSITED = &H2000000 '0x02000000
@@ -132,7 +133,9 @@ Public Class Form1
         End If
         If Me.TopMost = True Then
             If Me.Visible = True Then
-                SetWindowPos(Me.Handle, HWND_TOPMOST, 0, 0, 0, 0, TOPMOST_FLAGS)
+                If NeedStillTopMost = 1 Then
+                    SetWindowPos(Me.Handle, HWND_TOPMOST, 0, 0, 0, 0, TOPMOST_FLAGS)
+                End If
             End If
         End If
     End Sub
@@ -371,6 +374,7 @@ Public Class Form1
         Form2.TrackBar1.Value = CustOpacity
     End Sub
     Private Sub Form1_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        NeedStillTopMost = 1
         TimeF = "HH:mm:ss"
         '（在Alt+Tab隐藏窗体：启动时设置为Me.FormBorderStyle = Windows.Forms.FormBorderStyle.None，但切换其他模式再切换回来又会显示）
         Me.FormBorderStyle = Windows.Forms.FormBorderStyle.None
@@ -1446,7 +1450,9 @@ Public Class Form1
         'If MessageBox.Show("确定要关闭时钟吗？", "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) = MsgBoxResult.Yes Then
         'End
         'End If
+        NeedStillTopMost = 0
         Form2.ShowDialog()
+        NeedStillTopMost = 1
     End Sub
 
     Private Sub Me_FormClosing(ByVal sender As Object, ByVal e As FormClosingEventArgs) Handles Me.FormClosing
