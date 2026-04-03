@@ -27,6 +27,7 @@
 Imports System.Runtime.InteropServices
 Imports System.Drawing
 Imports Microsoft.Win32
+Imports System
 
 Public Class Form2
     <DllImport("dwmapi.dll")> _
@@ -209,7 +210,7 @@ errcode:
             ComboBox4.SelectedText = "自定义背景"
         End If
 
-        Label1.Text = "时间小工具 版本：" & My.Application.Info.Version.ToString & vbCrLf & "版权所有 © 2022-2025 CJH。"
+        Label1.Text = "时间小工具 版本：" & My.Application.Info.Version.ToString & vbCrLf & "版权所有 © 2022-2026 CJH。"
         Call formatcolorcurset()
     End Sub
     Private Sub TextBox1_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TextBox1.KeyPress
@@ -229,6 +230,7 @@ errcode:
     Sub formatcolorcurset()
         If Form1.crmd = 0 Then
             EnableDarkModeForWindow(Me.Handle, True)
+            Application.SetColorMode(SystemColorMode.Dark)
             Me.BackColor = Color.FromArgb(32, 32, 32)
             Me.ForeColor = Color.White
             Me.Button1.BackColor = Color.FromArgb(32, 32, 32)
@@ -280,6 +282,7 @@ errcode:
             Me.CheckBox4.BackColor = Color.FromArgb(32, 32, 32)
             Me.CheckBox4.ForeColor = Color.White
         Else
+            Application.SetColorMode(SystemColorMode.Classic)
             EnableDarkModeForWindow(Me.Handle, False)
             Me.BackColor = Color.White
             Me.ForeColor = Color.Black
@@ -1004,7 +1007,7 @@ errcode:
     End Sub
 
     Private Sub Button5_Click(sender As System.Object, e As System.EventArgs) Handles Button5.Click
-        If MessageBox.Show("                                 " & vbCrLf & "确定要恢复默认设置吗？" & vbCrLf & "执行该操作会把设置恢复到默认的状态，并删除自定义内容，此操作无法撤销。" & vbCrLf & vbCrLf & "你确定要继续吗？" & vbCrLf & "                                 ", "警告 - 恢复默认设置", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) = Windows.Forms.DialogResult.Yes Then
+        If MessageBox.Show("                                 " & vbCrLf & "确定要恢复默认设置吗？" & vbCrLf & "执行该操作会把设置恢复到默认的状态，并删除自定义内容，此操作无法撤销。" & vbCrLf & vbCrLf & "你确定要继续吗？" & vbCrLf & "                                 ", "警告 - 恢复默认设置", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) = System.Windows.Forms.DialogResult.Yes Then
             '如果预先关联事件， Me.CheckBox1.Checked = Ture / Flase 操作会触发事件，导致操作相反
             'RemoveHandler CheckBox1.CheckedChanged, AddressOf CheckBox1_CheckedChanged
             'RemoveHandler CheckBox2.CheckedChanged, AddressOf CheckBox2_CheckedChanged
@@ -1195,7 +1198,7 @@ errcode:
     End Sub
 
     Private Sub Button7_Click(sender As System.Object, e As System.EventArgs) Handles Button7.Click
-        If FontDialog1.ShowDialog = Windows.Forms.DialogResult.OK Then
+        If FontDialog1.ShowDialog = System.Windows.Forms.DialogResult.OK Then
             Form1.Label1.Font = FontDialog1.Font
             'New System.Drawing.Font("微软雅黑", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
             If Form1.UnSaveData = 0 Then
@@ -1243,7 +1246,7 @@ errcode:
     End Sub
 
     Private Sub Button8_Click(sender As System.Object, e As System.EventArgs) Handles Button8.Click
-        If ColorDialog1.ShowDialog = Windows.Forms.DialogResult.OK Then
+        If ColorDialog1.ShowDialog = System.Windows.Forms.DialogResult.OK Then
             Form1.Label1.ForeColor = ColorDialog1.Color
             If Form1.UnSaveData = 0 Then
                 RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFontR", Form1.Label1.ForeColor.R, RegistryValueKind.DWord, "HKCU")
@@ -1514,7 +1517,7 @@ errcode:
     End Sub
 
     Private Sub Button11_Click(sender As System.Object, e As System.EventArgs) Handles Button11.Click
-        If MessageBox.Show("确定要清除自定义背景吗？" & vbCrLf & "这将恢复背景到默认圆角主题。", "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
+        If MessageBox.Show("确定要清除自定义背景吗？" & vbCrLf & "这将恢复背景到默认圆角主题。", "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = System.Windows.Forms.DialogResult.Yes Then
             TextBox5.Text = ""
             If Form1.WindowState = FormWindowState.Normal Then
                 If Form1.Width >= 250 Then
@@ -1553,7 +1556,7 @@ errcode:
     End Sub
 
     Private Sub Button10_Click(sender As System.Object, e As System.EventArgs) Handles Button10.Click
-        If OpenFileDialog1.ShowDialog = Windows.Forms.DialogResult.OK Then
+        If OpenFileDialog1.ShowDialog = System.Windows.Forms.DialogResult.OK Then
             If IO.File.Exists(OpenFileDialog1.FileName) Then
                 Try
                     Form1.BackgroundImage = Image.FromFile(OpenFileDialog1.FileName)
@@ -1685,7 +1688,7 @@ errcode:
     End Sub
 
     Private Sub LinkLabel3_LinkClicked(sender As System.Object, e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles LinkLabel3.LinkClicked
-        If MessageBox.Show("                                 " & vbCrLf & "确定要删除自定义配置并退出程序吗？" & vbCrLf & "执行该操作会删除本机时间小工具的自定义设置并退出，相当于清除在本机的设置，此操作无法撤销。" & vbCrLf & vbCrLf & "你确定要继续吗？" & vbCrLf & "                                 ", "警告 - 删除自定义配置并退出", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) = Windows.Forms.DialogResult.Yes Then
+        If MessageBox.Show("                                 " & vbCrLf & "确定要删除自定义配置并退出程序吗？" & vbCrLf & "执行该操作会删除本机时间小工具的自定义设置并退出，相当于清除在本机的设置，此操作无法撤销。" & vbCrLf & vbCrLf & "你确定要继续吗？" & vbCrLf & "                                 ", "警告 - 删除自定义配置并退出", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) = System.Windows.Forms.DialogResult.Yes Then
             If Form1.UnSaveData = 0 Then
                 RegKeyModule.DelKey("Software\CJH\TimeControl", True, "HKCU")
             End If

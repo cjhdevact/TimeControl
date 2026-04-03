@@ -377,7 +377,7 @@ Public Class Form1
         NeedStillTopMost = 1
         TimeF = "HH:mm:ss"
         '（在Alt+Tab隐藏窗体：启动时设置为Me.FormBorderStyle = Windows.Forms.FormBorderStyle.None，但切换其他模式再切换回来又会显示）
-        Me.FormBorderStyle = Windows.Forms.FormBorderStyle.None
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None
         MovedV = 0
         appcolor = 0
         Dim disi As Graphics = Me.CreateGraphics()
@@ -1365,7 +1365,7 @@ Public Class Form1
             'Me.h5m.BackColor = Color.Black
             'Me.h5m.ForeColor = Color.White
             EnableDarkModeForWindow(Me.Handle, True)
-
+            Application.SetColorMode(SystemColorMode.Dark)
         Else
             If Me.WindowState = FormWindowState.Normal Then
                 If TimeTheme = 0 Then
@@ -1406,6 +1406,7 @@ Public Class Form1
             Me.ContextMenuStrip2.BackColor = Color.White
             Me.ContextMenuStrip2.ForeColor = Color.Black
             EnableDarkModeForWindow(Me.Handle, False)
+            Application.SetColorMode(SystemColorMode.Classic)
         End If
     End Sub
     Private Sub h30s_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles h30s.Click
