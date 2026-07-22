@@ -27,6 +27,7 @@
 Imports System.Runtime.InteropServices
 Imports System.Drawing
 Imports Microsoft.Win32
+Imports System.IO
 
 Public Class Form2
     <DllImport("dwmapi.dll")> _
@@ -107,6 +108,36 @@ Public Class Form2
 errcode:
         MsgBox(Err.Description, MsgBoxStyle.Critical, "错误")
     End Sub
+
+    '获取编译时间函数
+    Private Function GetPe32Time(ByVal fileName As String) As DateTime
+        Dim num As Integer
+        Using reader As BinaryReader = New BinaryReader(New FileStream(fileName, FileMode.Open, FileAccess.Read))
+            Dim buffer As Byte() = reader.ReadBytes(2)
+            Dim message As String = "Error in PE32 file."
+            If (buffer.Length <> 2) Then
+                'Throw New Exception(message)
+            End If
+            If ((buffer(0) <> &H4D) OrElse (buffer(1) <> 90)) Then
+                'Throw New Exception(message)
+            End If
+            reader.BaseStream.Seek(60, SeekOrigin.Begin)
+            Dim num2 As Byte = reader.ReadByte
+            reader.BaseStream.Seek(CLng(num2), SeekOrigin.Begin)
+            buffer = reader.ReadBytes(4)
+            If (buffer.Length <> 4) Then
+                'Throw New Exception(message)
+            End If
+            If ((((buffer(0) <> 80) OrElse (buffer(1) <> &H45)) OrElse (buffer(2) <> 0)) OrElse (buffer(3) <> 0)) Then
+                'Throw New Exception(message)
+            End If
+            If (reader.ReadBytes(4).Length <> 4) Then
+                'Throw New Exception(message)
+            End If
+            num = reader.ReadInt32
+        End Using
+        Return DateTime.SpecifyKind(New DateTime(&H7B2, 1, 1), DateTimeKind.Utc).AddSeconds(CDbl(num)).ToLocalTime
+    End Function
 
     Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
         Me.Close()
@@ -209,7 +240,7 @@ errcode:
             ComboBox4.SelectedText = "自定义背景"
         End If
 
-        Label1.Text = "时间小工具 版本：" & My.Application.Info.Version.ToString & vbCrLf & "版权所有 © 2022-2025 CJH。"
+        Label1.Text = "时间小工具 版本：" & My.Application.Info.Version.ToString & vbCrLf & "编译时间：" & GetPe32Time(Application.ExecutablePath) & vbCrLf & "版权所有 © 2022-2026 CJH。"
         Call formatcolorcurset()
     End Sub
     Private Sub TextBox1_KeyPress(ByVal sender As Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles TextBox1.KeyPress
@@ -279,6 +310,10 @@ errcode:
             Me.CheckBox3.ForeColor = Color.White
             Me.CheckBox4.BackColor = Color.FromArgb(32, 32, 32)
             Me.CheckBox4.ForeColor = Color.White
+            Me.CheckBox5.BackColor = Color.FromArgb(32, 32, 32)
+            Me.CheckBox5.ForeColor = Color.White
+            Me.CheckBox6.BackColor = Color.FromArgb(32, 32, 32)
+            Me.CheckBox6.ForeColor = Color.White
         Else
             EnableDarkModeForWindow(Me.Handle, False)
             Me.BackColor = Color.White
@@ -331,6 +366,10 @@ errcode:
             Me.CheckBox3.ForeColor = Color.Black
             Me.CheckBox4.BackColor = Color.White
             Me.CheckBox4.ForeColor = Color.Black
+            Me.CheckBox5.BackColor = Color.White
+            Me.CheckBox5.ForeColor = Color.Black
+            Me.CheckBox6.BackColor = Color.White
+            Me.CheckBox6.ForeColor = Color.Black
         End If
     End Sub
 
@@ -370,7 +409,7 @@ errcode:
         End If
     End Sub
 
-    Private Sub ComboBox2_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles ComboBox2.SelectedIndexChanged
+    Private Sub ComboBox2_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ComboBox2.SelectedIndexChanged
         If ComboBox2.SelectedIndex = 0 Then
             If Form1.UnSupportDarkSys = 1 Then
                 If Form1.UnSaveData = 0 Then
@@ -461,7 +500,7 @@ errcode:
         End If
     End Sub
 
-    Public Sub ComboBox3_SelectedIndexChanged(sender As System.Object, e As System.EventArgs)
+    Public Sub ComboBox3_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
         Dim disi As Graphics = Me.CreateGraphics()
         Try
             'Dim a As Integer
@@ -943,7 +982,7 @@ errcode:
             MsgBox(ex.Message, MsgBoxStyle.Critical, "错误")
         End Try
     End Sub
-    Public Sub Button4_Click(sender As System.Object, e As System.EventArgs) Handles Button4.Click
+    Public Sub Button4_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button4.Click
         Try
             Form1.TimeF = Me.TextBox2.Text
             'Form1.Label1.AutoSize = True
@@ -1003,7 +1042,7 @@ errcode:
         End Try
     End Sub
 
-    Private Sub Button5_Click(sender As System.Object, e As System.EventArgs) Handles Button5.Click
+    Private Sub Button5_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button5.Click
         If MessageBox.Show("                                 " & vbCrLf & "确定要恢复默认设置吗？" & vbCrLf & "执行该操作会把设置恢复到默认的状态，并删除自定义内容，此操作无法撤销。" & vbCrLf & vbCrLf & "你确定要继续吗？" & vbCrLf & "                                 ", "警告 - 恢复默认设置", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) = Windows.Forms.DialogResult.Yes Then
             '如果预先关联事件， Me.CheckBox1.Checked = Ture / Flase 操作会触发事件，导致操作相反
             'RemoveHandler CheckBox1.CheckedChanged, AddressOf CheckBox1_CheckedChanged
@@ -1150,6 +1189,9 @@ errcode:
 
                 CheckBox5.Checked = False
 
+                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "GetUIAccess", 0, RegistryValueKind.DWord, "HKCU")
+                CheckBox6.Checked = False
+
                 Call Form1.formatcolorcur()
                 Call formatcolorcurset()
                 Call MsgForm.formatcolorcursetmsg()
@@ -1167,14 +1209,14 @@ errcode:
         End If
     End Sub
 
-    Private Sub Button6_Click(sender As System.Object, e As System.EventArgs) Handles Button6.Click
+    Private Sub Button6_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button6.Click
         Form1.NotifyIcon1.Visible = True
         Form1.NotifyIcon1.ShowBalloonTip(7000, "时间小工具", "时间小工具当前已隐藏到系统托盘，双击托盘图标重新显示。", ToolTipIcon.Info)
         Form1.Hide()
         Me.Close()
     End Sub
 
-    Private Sub CheckBox3_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles CheckBox3.CheckedChanged
+    Private Sub CheckBox3_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CheckBox3.CheckedChanged
         If CheckBox3.CheckState = False Then
             ' CheckBox3.Checked = False
             Form1.SaveLoc = 0
@@ -1194,7 +1236,7 @@ errcode:
         End If
     End Sub
 
-    Private Sub Button7_Click(sender As System.Object, e As System.EventArgs) Handles Button7.Click
+    Private Sub Button7_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button7.Click
         If FontDialog1.ShowDialog = Windows.Forms.DialogResult.OK Then
             Form1.Label1.Font = FontDialog1.Font
             'New System.Drawing.Font("微软雅黑", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
@@ -1242,7 +1284,7 @@ errcode:
         End If
     End Sub
 
-    Private Sub Button8_Click(sender As System.Object, e As System.EventArgs) Handles Button8.Click
+    Private Sub Button8_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button8.Click
         If ColorDialog1.ShowDialog = Windows.Forms.DialogResult.OK Then
             Form1.Label1.ForeColor = ColorDialog1.Color
             If Form1.UnSaveData = 0 Then
@@ -1254,11 +1296,11 @@ errcode:
         End If
     End Sub
 
-    Private Sub PictureBox1_Click(sender As System.Object, e As System.EventArgs) Handles PictureBox1.Click
+    Private Sub PictureBox1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PictureBox1.Click
         MsgForm.ShowDialog()
     End Sub
 
-    Private Sub CheckBox4_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles CheckBox4.CheckedChanged
+    Private Sub CheckBox4_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CheckBox4.CheckedChanged
         'If Form1.MySize = 1 Then
         If Me.CheckBox4.Checked = False Then
             'CheckBox4.CheckState = False
@@ -1346,7 +1388,7 @@ errcode:
         End If
     End Sub
 
-    Private Sub Button9_Click(sender As System.Object, e As System.EventArgs) Handles Button9.Click
+    Private Sub Button9_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button9.Click
         Try
             If TextBox3.Text = 0 And TextBox4.Text = 0 Then
                 MsgBox("设置自定义大小失败。" & vbCrLf & "大小不能为0。", MsgBoxStyle.Critical, "错误")
@@ -1407,7 +1449,7 @@ errcode:
         End Try
     End Sub
 
-    Private Sub PictureBox2_Click(sender As System.Object, e As System.EventArgs) Handles PictureBox2.Click
+    Private Sub PictureBox2_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles PictureBox2.Click
         If Label3.Text = "设置时间小工具" Then
             Dim a(5) As String
             a(0) = "^_^"
@@ -1424,7 +1466,7 @@ errcode:
         End If
     End Sub
 
-    Private Sub ComboBox4_SelectedIndexChanged(sender As System.Object, e As System.EventArgs) Handles ComboBox4.SelectedIndexChanged
+    Private Sub ComboBox4_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ComboBox4.SelectedIndexChanged
         If ComboBox4.SelectedIndex = 0 Then
             If Form1.UnSaveData = 0 Then
                 RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeTheme", 0, RegistryValueKind.DWord, "HKCU")
@@ -1513,7 +1555,7 @@ errcode:
         End If
     End Sub
 
-    Private Sub Button11_Click(sender As System.Object, e As System.EventArgs) Handles Button11.Click
+    Private Sub Button11_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button11.Click
         If MessageBox.Show("确定要清除自定义背景吗？" & vbCrLf & "这将恢复背景到默认圆角主题。", "提示", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.Yes Then
             TextBox5.Text = ""
             If Form1.WindowState = FormWindowState.Normal Then
@@ -1552,7 +1594,7 @@ errcode:
         End If
     End Sub
 
-    Private Sub Button10_Click(sender As System.Object, e As System.EventArgs) Handles Button10.Click
+    Private Sub Button10_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button10.Click
         If OpenFileDialog1.ShowDialog = Windows.Forms.DialogResult.OK Then
             If IO.File.Exists(OpenFileDialog1.FileName) Then
                 Try
@@ -1602,7 +1644,7 @@ errcode:
         End If
     End Sub
 
-    Private Sub TrackBar1_Scroll(sender As System.Object, e As System.EventArgs) Handles TrackBar1.Scroll
+    Private Sub TrackBar1_Scroll(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles TrackBar1.Scroll
         Form1.CustOpacity = Me.TrackBar1.Value
         If Form1.UnSaveData = 0 Then
             RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormOpacity", Form1.CustOpacity, RegistryValueKind.DWord, "HKCU")
@@ -1612,15 +1654,15 @@ errcode:
         Form1.Opacity = Form1.CustOpacity * 0.01
     End Sub
 
-    Private Sub LinkLabel1_LinkClicked(sender As System.Object, e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles LinkLabel1.LinkClicked
+    Private Sub LinkLabel1_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles LinkLabel1.LinkClicked
         System.Diagnostics.Process.Start("https://github.com/cjhdevact/TimeControl")
     End Sub
 
-    Private Sub LinkLabel2_LinkClicked(sender As System.Object, e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles LinkLabel2.LinkClicked
+    Private Sub LinkLabel2_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles LinkLabel2.LinkClicked
         System.Diagnostics.Process.Start("https://github.com/cjhdevact/TimeControl/issues")
     End Sub
 
-    Private Sub CheckBox5_CheckedChanged(sender As System.Object, e As System.EventArgs) Handles CheckBox5.CheckedChanged
+    Private Sub CheckBox5_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CheckBox5.CheckedChanged
         If CheckBox5.Checked = True Then
             If Form1.TimeF = "HH:mm:ss" Then
                 If Form1.MySize = 0 Then
@@ -1684,7 +1726,7 @@ errcode:
         End If
     End Sub
 
-    Private Sub LinkLabel3_LinkClicked(sender As System.Object, e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles LinkLabel3.LinkClicked
+    Private Sub LinkLabel3_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles LinkLabel3.LinkClicked
         If MessageBox.Show("                                 " & vbCrLf & "确定要删除自定义配置并退出程序吗？" & vbCrLf & "执行该操作会删除本机时间小工具的自定义设置并退出，相当于清除在本机的设置，此操作无法撤销。" & vbCrLf & vbCrLf & "你确定要继续吗？" & vbCrLf & "                                 ", "警告 - 删除自定义配置并退出", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation) = Windows.Forms.DialogResult.Yes Then
             If Form1.UnSaveData = 0 Then
                 RegKeyModule.DelKey("Software\CJH\TimeControl", True, "HKCU")
@@ -1693,11 +1735,11 @@ errcode:
         End If
     End Sub
 
-    Private Sub LinkLabel4_LinkClicked(sender As System.Object, e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles LinkLabel4.LinkClicked
+    Private Sub LinkLabel4_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles LinkLabel4.LinkClicked
         GPLForm.ShowDialog()
     End Sub
 
-    Private Sub LinkLabel5_LinkClicked(sender As System.Object, e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles LinkLabel5.LinkClicked
+    Private Sub LinkLabel5_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles LinkLabel5.LinkClicked
         MessageBox.Show("当前支持的命令行：" & vbCrLf & "/safemode 以安全模式加载，不读取设置也不保存设置。当程序由于配置原因无法正常启动，可以使用该命令行启动后恢复默认设置。" & vbCrLf & "/noproflie 不使用配置文件。" & vbCrLf & "/nosaveprofile 读取设置但不保存设置" & vbCrLf & vbCrLf & "部分功能可能因为策略设置而不可用。命令行的内容要优先于策略设置，为所有用户设置的策略优先级高于针对单一用户设置的策略。", "帮助", MessageBoxButtons.OK, MessageBoxIcon.Information)
     End Sub
 
@@ -1713,5 +1755,19 @@ errcode:
             'End
             Application.Exit()
         End If
+    End Sub
+
+    Private Sub CheckBox6_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles CheckBox6.CheckedChanged
+
+        If CheckBox6.Checked = False Then
+            If Form1.UnSaveData = 0 Then
+                AddReg("Software\CJH\TimeControl\Settings", "GetUIAccess", 0, RegistryValueKind.DWord, "HKCU")
+            End If
+        Else
+            If Form1.UnSaveData = 0 Then
+                AddReg("Software\CJH\TimeControl\Settings", "GetUIAccess", 1, RegistryValueKind.DWord, "HKCU")
+            End If
+        End If
+
     End Sub
 End Class

@@ -30,6 +30,7 @@ Partial Class Form1
         Me.h1m = New System.Windows.Forms.ToolStripMenuItem()
         Me.h5m = New System.Windows.Forms.ToolStripMenuItem()
         Me.h10m = New System.Windows.Forms.ToolStripMenuItem()
+        Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
         Me.FullM = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripSeparator3 = New System.Windows.Forms.ToolStripSeparator()
         Me.ext = New System.Windows.Forms.ToolStripMenuItem()
@@ -38,7 +39,7 @@ Partial Class Form1
         Me.NotifyIcon1 = New System.Windows.Forms.NotifyIcon(Me.components)
         Me.ContextMenuStrip2 = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.shtbar = New System.Windows.Forms.ToolStripMenuItem()
-        Me.ToolStripSeparator2 = New System.Windows.Forms.ToolStripSeparator()
+        Me.h40m = New System.Windows.Forms.ToolStripMenuItem()
         Me.ContextMenuStrip1.SuspendLayout()
         Me.ContextMenuStrip2.SuspendLayout()
         Me.SuspendLayout()
@@ -60,10 +61,10 @@ Partial Class Form1
         'ContextMenuStrip1
         '
         Me.ContextMenuStrip1.ImageScalingSize = New System.Drawing.Size(8, 16)
-        Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.h30s, Me.h1m, Me.h5m, Me.h10m, Me.ToolStripSeparator2, Me.FullM, Me.ToolStripSeparator3, Me.ext})
+        Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.h30s, Me.h1m, Me.h5m, Me.h10m, Me.h40m, Me.ToolStripSeparator2, Me.FullM, Me.ToolStripSeparator3, Me.ext})
         Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
         Me.ContextMenuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.System
-        Me.ContextMenuStrip1.Size = New System.Drawing.Size(153, 170)
+        Me.ContextMenuStrip1.Size = New System.Drawing.Size(139, 170)
         '
         'h30s
         '
@@ -88,6 +89,11 @@ Partial Class Form1
         Me.h10m.Name = "h10m"
         Me.h10m.Size = New System.Drawing.Size(152, 22)
         Me.h10m.Text = "隐藏10分钟"
+        '
+        'ToolStripSeparator2
+        '
+        Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
+        Me.ToolStripSeparator2.Size = New System.Drawing.Size(149, 6)
         '
         'FullM
         '
@@ -133,10 +139,11 @@ Partial Class Form1
         Me.shtbar.Size = New System.Drawing.Size(115, 22)
         Me.shtbar.Text = "显示(&S)"
         '
-        'ToolStripSeparator2
+        'h40m
         '
-        Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
-        Me.ToolStripSeparator2.Size = New System.Drawing.Size(149, 6)
+        Me.h40m.Name = "h40m"
+        Me.h40m.Size = New System.Drawing.Size(152, 22)
+        Me.h40m.Text = "隐藏40分钟"
         '
         'Form1
         '
@@ -183,5 +190,6 @@ Partial Class Form1
     Friend WithEvents shtbar As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents FullM As System.Windows.Forms.ToolStripMenuItem
     Friend WithEvents ToolStripSeparator2 As System.Windows.Forms.ToolStripSeparator
+    Friend WithEvents h40m As System.Windows.Forms.ToolStripMenuItem
 
 End Class
