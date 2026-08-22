@@ -28,13 +28,13 @@
 
 ## 下载
 
-转到[发布页](https://github.com/cjhdevact/TimeControl/releases/latest)下载程序或源代码。
+请访问[发布页](https://github.com/cjhdevact/TimeControl/releases/latest)下载最新版本的可执行文件或源代码。
 
-早期版本的源代码也在发布页里。
+早期版本亦可在发布页中找到。
 
 ## 数字签名
 
-本程序使用了自签证书进行了签名
+本项目发布的二进制文件使用自签名证书进行代码签名，以确保文件的完整性和来源可信。
 
 证书信息：
 ```
@@ -49,7 +49,7 @@ Certificate SerialNumber: dbde77418068d5a34b2064626a12ecde
 Key Type: md5RSA
 ```
 
-你可以在[这里](Src/TimeControl/files/rootcert.cer)下载证书来验证程序完整性。
+如需验证，可从[这里](Src/TimeControl/files/rootcert.cer)获取根证书文件。
 
 ## 程序截图
 
@@ -65,10 +65,6 @@ Key Type: md5RSA
 
 ![设置界面](Assets/SettingUI.png)
 
-## 开源说明
-
-在修改和由本仓库代码衍生的代码中需要说明“基于 TimeControl 开发”
-
 ## 相关项目
 
 [CountDownControl](https://github.com/cjhdevact/CountDownControl) - 倒计时小工具，支持高度自定义的倒计时小工具
@@ -81,6 +77,10 @@ Key Type: md5RSA
 
 [uiaccess](https://github.com/killtimer0/uiaccess)
 
-------------
+## 开源说明
 
-本程序基于 `GPL-3.0` 授权。
+在修改和由本仓库代码衍生的代码中需要说明“基于 TimeControl 开发”。
+
+本项目基于 `GPLv3` 许可证开源，详情请参阅 [License](License) 文件。 
+
+您可以在遵守许可证的前提下自由使用、修改和分发本软件。
