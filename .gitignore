@@ -2,7 +2,9 @@
 
 /Src/*.suo
 
-/Src/TimeControl-bin/
+/Tools/TimeControl-Bin/
+
+/Tools/TimeControl*-Bin*
 
 /Src/TimeControl/bin/
 

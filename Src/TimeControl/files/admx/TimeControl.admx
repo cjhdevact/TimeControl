@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--  Copyright (C) 2022-2025 CJH.  -->
+<!--  Copyright (C) 2022-2026 CJH.  -->
 <policyDefinitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" revision="1.0" schemaVersion="1.0" xmlns="http://schemas.microsoft.com/GroupPolicy/2006/07/PolicyDefinitions">
   <policyNamespaces>
     <target prefix="timecontrol" namespace="CJH.Policies.TimeControl" />
     <using prefix="windows" namespace="Microsoft.Policies.Windows" />
   </policyNamespaces>
   <resources minRequiredRevision="1.0" />
+    <supportedOn>
+   <definitions>
+      <definition name="SUPPORTED_TimeControl_Ver"
+                  displayName="$(string.SUPPORTED_TimeControl_Ver)"/>
+     </definitions>
+   </supportedOn>
   <categories>
     <!--  <category name="CJH" displayName="$(string.CJH)"/> -->
     <category name="TimeControl" displayName="$(string.TimeControl)"/>
@@ -15,7 +21,7 @@
   <policies>
     <policy name="TimeControlDisbFu" class="Both" displayName="$(string.TimeControlDisbFu)" explainText="$(string.TimeControlDisbFu_Help)" key="Software\Policies\CJH\TimeControl" valueName="DisableFeatures">
       <parentCategory ref="TimeControl" />
-	  <supportedOn ref="windows:SUPPORTED_WindowsVista" />
+	  <supportedOn ref="SUPPORTED_TimeControl_Ver" />
       <enabledValue>
         <decimal value="1" />
       </enabledValue>
@@ -25,7 +31,7 @@
     </policy>
     <policy name="TimeControlDisbFuTip" class="Both" displayName="$(string.TimeControlDisbFuTip)" explainText="$(string.TimeControlDisbFuTip_Help)" key="Software\Policies\CJH\TimeControl" valueName="DisableFeaturesTip">
       <parentCategory ref="TimeControl" />
-	  <supportedOn ref="windows:SUPPORTED_WindowsVista" />
+	  <supportedOn ref="SUPPORTED_TimeControl_Ver" />
       <enabledValue>
         <decimal value="1" />
       </enabledValue>
@@ -35,7 +41,7 @@
     </policy>
 	<policy name="TimeControlNoSaveProfile" class="Both" displayName="$(string.TimeControlNoSaveProfile)" explainText="$(string.TimeControlNoSaveProfile_Help)" key="Software\Policies\CJH\TimeControl" valueName="NoSaveProfile">
       <parentCategory ref="TimeControl" />
-	  <supportedOn ref="windows:SUPPORTED_WindowsVista" />
+	  <supportedOn ref="SUPPORTED_TimeControl_Ver" />
       <enabledValue>
         <decimal value="1" />
       </enabledValue>
@@ -45,7 +51,7 @@
     </policy>
 	<policy name="TimeControlNoProfile" class="Both" displayName="$(string.TimeControlNoProfile)" explainText="$(string.TimeControlNoProfile_Help)" key="Software\Policies\CJH\TimeControl" valueName="NoProfile">
       <parentCategory ref="TimeControl" />
-	  <supportedOn ref="windows:SUPPORTED_WindowsVista" />
+	  <supportedOn ref="SUPPORTED_TimeControl_Ver" />
       <enabledValue>
         <decimal value="1" />
       </enabledValue>
@@ -53,6 +59,5 @@
         <decimal value="0" />
       </disabledValue>
     </policy>
-	
   </policies>
 </policyDefinitions>

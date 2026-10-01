@@ -1,6 +1,6 @@
 ﻿'****************************************************************************
 '    TimeControl
-'    Copyright (C) 2022-2025 CJH.
+'    Copyright (C) 2022-2026 CJH.
 '
 '    This program is free software: you can redistribute it and/or modify
 '    it under the terms of the GNU General Public License as published by
@@ -150,6 +150,11 @@ errcode:
         OpenFileDialog1.Filter = "所有支持的文件 (*.png;*.jpg;*.jpeg;*.jpe;*.jfif;*.bmp;*.dib;*.gif;*.tif;*.tiff;*.ico)|*.png;*.jpg;*.jpeg;*.jpe;*.jfif;*.bmp;*.dib;*.gif;*.tif;*.tiff;*.ico|" _
                               & "PNG 图像 (*.png)|*.png|JPEG 文件 (*.jpg;*.jpeg;*.jpe;*.jfif)|*.jpg;*.jpeg;*.jpe;*.jfif|" _
                               & "BMP 文件 (*.bmp;*.dib)|*.bmp;*.dib|GIF 图像 (*.gif)|*.gif|TIFF 文件 (*.tif;*.tiff)|*.tif;*.tiff|图标文件(*.ico)|*.ico|所有文件 (*.*)|*.*"
+
+        Me.SaveFileDialog1.Filter = "配置文件 (*.reg)|*.reg|所有文件 (*.*)|*.*"
+        Me.SaveFileDialog1.DefaultExt = "reg"
+        Me.SaveFileDialog1.AddExtension = True
+        Me.SaveFileDialog1.OverwritePrompt = True
         If Form1.TopMost = True Then
             Me.CheckBox1.Checked = True
         Else
@@ -284,6 +289,12 @@ errcode:
             Me.Button11.ForeColor = Color.White
             Me.Button12.BackColor = Color.FromArgb(32, 32, 32)
             Me.Button12.ForeColor = Color.White
+            Me.Button13.BackColor = Color.FromArgb(32, 32, 32)
+            Me.Button13.ForeColor = Color.White
+            Me.Button14.BackColor = Color.FromArgb(32, 32, 32)
+            Me.Button14.ForeColor = Color.White
+            Me.Button15.BackColor = Color.FromArgb(32, 32, 32)
+            Me.Button15.ForeColor = Color.White
             Me.TextBox1.BackColor = Color.FromArgb(32, 32, 32)
             Me.TextBox1.ForeColor = Color.White
             Me.TextBox2.BackColor = Color.FromArgb(32, 32, 32)
@@ -340,6 +351,12 @@ errcode:
             Me.Button11.ForeColor = Color.Black
             Me.Button12.BackColor = Color.Transparent
             Me.Button12.ForeColor = Color.Black
+            Me.Button13.BackColor = Color.Transparent
+            Me.Button13.ForeColor = Color.Black
+            Me.Button14.BackColor = Color.Transparent
+            Me.Button14.ForeColor = Color.Black
+            Me.Button15.BackColor = Color.Transparent
+            Me.Button15.ForeColor = Color.Black
             Me.TextBox1.BackColor = Color.White
             Me.TextBox1.ForeColor = Color.Black
             Me.TextBox2.BackColor = Color.White
@@ -496,6 +513,13 @@ errcode:
             Form1.Timer1.Enabled = False
             Form1.Timer2.Enabled = False
             'End
+            Form1.ReleaseMutex()
+            'If CheckBox6.Checked = True Then
+            '    Environment.Exit(0)
+            '    Process.GetCurrentProcess().Kill()
+            'Else
+            '    Application.Exit()
+            'End If
             Application.Exit()
         End If
     End Sub
@@ -1142,12 +1166,25 @@ errcode:
                 RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFontR", Form1.Label1.ForeColor.R, RegistryValueKind.DWord, "HKCU")
                 RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFontG", Form1.Label1.ForeColor.G, RegistryValueKind.DWord, "HKCU")
                 RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFontB", Form1.Label1.ForeColor.B, RegistryValueKind.DWord, "HKCU")
+                ColorDialog1.Color = Form1.Label1.ForeColor
+
+                FontDialog2.Font = New System.Drawing.Font("Segoe UI", 72.0F, FontStyle.Regular, GraphicsUnit.Point)
+
+                ColorDialog2.Color = Form1.Label1.ForeColor
+
+                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "FullScreenFont", "Segoe UI", RegistryValueKind.String, "HKCU")
+                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "FullScreenFontPx", 72, RegistryValueKind.DWord, "HKCU")
+                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "FullScreenFontItalic", 0, RegistryValueKind.DWord, "HKCU")
+                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "FullScreenFontBold", 0, RegistryValueKind.DWord, "HKCU")
+                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "FullScreenFontUnderLine", 0, RegistryValueKind.DWord, "HKCU")
+                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "FullScreenFontStrikeout", 0, RegistryValueKind.DWord, "HKCU")
+                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "FullScreenFontR", Form1.Label1.ForeColor.R, RegistryValueKind.DWord, "HKCU")
+                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "FullScreenFontG", Form1.Label1.ForeColor.G, RegistryValueKind.DWord, "HKCU")
+                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "FullScreenFontB", Form1.Label1.ForeColor.B, RegistryValueKind.DWord, "HKCU")
 
                 RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeTheme", 0, RegistryValueKind.DWord, "HKCU")
                 Form1.TimeTheme = 0
                 RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "CustomThemePath", "", RegistryValueKind.String, "HKCU")
-
-
 
                 TextBox1.Text = ""
                 TextBox2.Text = "HH:mm:ss"
@@ -1238,7 +1275,9 @@ errcode:
 
     Private Sub Button7_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button7.Click
         If FontDialog1.ShowDialog = Windows.Forms.DialogResult.OK Then
-            Form1.Label1.Font = FontDialog1.Font
+            If Form1.WindowState <> FormWindowState.Maximized Then
+                Form1.Label1.Font = FontDialog1.Font
+            End If
             'New System.Drawing.Font("微软雅黑", 11.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
             If Form1.UnSaveData = 0 Then
                 RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFont", Form1.Label1.Font.Name, RegistryValueKind.String, "HKCU")
@@ -1286,7 +1325,9 @@ errcode:
 
     Private Sub Button8_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button8.Click
         If ColorDialog1.ShowDialog = Windows.Forms.DialogResult.OK Then
-            Form1.Label1.ForeColor = ColorDialog1.Color
+            If Form1.WindowState <> FormWindowState.Maximized Then
+                Form1.Label1.ForeColor = ColorDialog1.Color
+            End If
             If Form1.UnSaveData = 0 Then
                 RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFontR", Form1.Label1.ForeColor.R, RegistryValueKind.DWord, "HKCU")
                 RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFontG", Form1.Label1.ForeColor.G, RegistryValueKind.DWord, "HKCU")
@@ -1731,7 +1772,16 @@ errcode:
             If Form1.UnSaveData = 0 Then
                 RegKeyModule.DelKey("Software\CJH\TimeControl", True, "HKCU")
             End If
-            End
+            Form1.Timer1.Enabled = False
+            Form1.Timer2.Enabled = False
+            Form1.ReleaseMutex()
+            Application.Exit()
+            'If CheckBox6.Checked = True Then
+            '    Environment.Exit(0)
+            '    Process.GetCurrentProcess().Kill()
+            'Else
+            '    Application.Exit()
+            'End If
         End If
     End Sub
 
@@ -1751,9 +1801,21 @@ errcode:
         If bb = 1 Then
             Form1.Timer1.Enabled = False
             Form1.Timer2.Enabled = False
-            System.Diagnostics.Process.Start(Application.ExecutablePath)
+            Form1.ReleaseMutex()
+            '如果处于UIAcces模式下可能会因为Mutex冲突导致提权失败（提权后意外退出）
+            'System.ComponentModel.Win32Exception (0x80004005): 进程意外终止。
+            '使用延迟启动新的程序
+            Threading.Thread.Sleep(200)
+            System.Diagnostics.Process.Start(Application.ExecutablePath, Command)
             'End
             Application.Exit()
+
+            'If CheckBox6.Checked = True Then
+            '    Environment.Exit(0)
+            '    Process.GetCurrentProcess().Kill()
+            'Else
+            '    Application.Exit()
+            'End If
         End If
     End Sub
 
@@ -1769,5 +1831,83 @@ errcode:
             End If
         End If
 
+    End Sub
+
+    Private Sub Button13_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button13.Click
+        If FontDialog2.ShowDialog = Windows.Forms.DialogResult.OK Then
+            If Form1.UnSaveData = 0 Then
+                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "FullScreenFont", FontDialog2.Font.Name, RegistryValueKind.String, "HKCU")
+                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "FullScreenFontPx", CInt(FontDialog2.Font.Size), RegistryValueKind.DWord, "HKCU")
+                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "FullScreenFontItalic", If(FontDialog2.Font.Italic, 1, 0), RegistryValueKind.DWord, "HKCU")
+                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "FullScreenFontBold", If(FontDialog2.Font.Bold, 1, 0), RegistryValueKind.DWord, "HKCU")
+                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "FullScreenFontUnderLine", If(FontDialog2.Font.Underline, 1, 0), RegistryValueKind.DWord, "HKCU")
+                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "FullScreenFontStrikeout", If(FontDialog2.Font.Strikeout, 1, 0), RegistryValueKind.DWord, "HKCU")
+            End If
+            If Form1.WindowState = FormWindowState.Maximized Then
+                Form1.Label1.Font = FontDialog2.Font
+            End If
+        End If
+    End Sub
+
+    Private Sub Button14_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button14.Click
+        If ColorDialog2.ShowDialog = Windows.Forms.DialogResult.OK Then
+            If Form1.UnSaveData = 0 Then
+                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "FullScreenFontR", ColorDialog2.Color.R, RegistryValueKind.DWord, "HKCU")
+                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "FullScreenFontG", ColorDialog2.Color.G, RegistryValueKind.DWord, "HKCU")
+                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "FullScreenFontB", ColorDialog2.Color.B, RegistryValueKind.DWord, "HKCU")
+            End If
+            If Form1.WindowState = FormWindowState.Maximized Then
+                Form1.Label1.ForeColor = ColorDialog2.Color
+            End If
+        End If
+    End Sub
+
+    Private Sub Button15_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button15.Click
+        Dim version As String = My.Application.Info.Version.ToString()
+        Dim timestamp As String = DateTime.Now.ToString("yyyyMMdd-HHmmss")
+        Dim defaultFileName As String = "TimeControlConfig_" & version & "_" & timestamp & ".reg"
+
+        SaveFileDialog1.FileName = defaultFileName
+        'SaveFileDialog1.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop)
+
+        If SaveFileDialog1.ShowDialog() <> Windows.Forms.DialogResult.OK Then
+            Return
+        End If
+
+        Dim targetPath As String = SaveFileDialog1.FileName
+
+        Try
+            Dim regKeyPath As String = "HKCU\Software\CJH\TimeControl"
+            Dim psi As New ProcessStartInfo()
+            psi.FileName = "reg.exe"
+            psi.Arguments = "export """ & regKeyPath & """ """ & targetPath & """ /y"
+            psi.CreateNoWindow = True
+            psi.UseShellExecute = False
+            psi.RedirectStandardOutput = True
+            psi.RedirectStandardError = True
+
+            Dim proc As Process = Process.Start(psi)
+            Dim output As String = proc.StandardOutput.ReadToEnd()
+            Dim errOutput As String = proc.StandardError.ReadToEnd()
+            proc.WaitForExit()
+
+            If proc.ExitCode = 0 Then
+                MessageBox.Show("                                 " & vbCrLf &
+                                "配置已成功导出到：" & vbCrLf & targetPath & vbCrLf &
+                                "                                 ",
+                                "信息 - 导出配置", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            Else
+                MessageBox.Show("                                 " & vbCrLf &
+                                "导出失败。" & vbCrLf &
+                                "错误信息：" & errOutput & vbCrLf &
+                                "                                 ",
+                                "错误 - 导出配置", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            End If
+        Catch ex As Exception
+            MessageBox.Show("                                 " & vbCrLf &
+                            "导出配置时发生错误。" & vbCrLf & ex.Message & vbCrLf &
+                            "                                 ",
+                            "错误 - 导出配置", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
     End Sub
 End Class

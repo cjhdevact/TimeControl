@@ -1,6 +1,6 @@
 ﻿'****************************************************************************
 '    TimeControl
-'    Copyright (C) 2022-2025 CJH.
+'    Copyright (C) 2022-2026 CJH.
 '
 '    This program is free software: you can redistribute it and/or modify
 '    it under the terms of the GNU General Public License as published by
@@ -98,6 +98,7 @@ Public Class Form1
     Public UnReadData As Integer '不读取设置
     Public ShowModeTips As Integer '不显示横幅
     Public NeedStillTopMost As Integer '是否强制顶置
+    Private Shared instanceMutex As System.Threading.Mutex 'Mutex标记
 
     '在Alt+Tab中隐藏
     Const WS_EX_COMPOSITED = &H2000000 '0x02000000
@@ -150,6 +151,39 @@ Public Class Form1
     Const SWP_NOSIZE As UInteger = &H1
     Const SWP_NOMOVE As UInteger = &H2
     Const TOPMOST_FLAGS As UInteger = SWP_NOMOVE Or SWP_NOSIZE
+
+    '创建Mutex函数
+    Public Function CreateMutex() As Boolean
+        '' 检测命令行是否带 /m 参数（DLL 提权启动的子进程）
+        'For Each arg As String In Environment.GetCommandLineArgs()
+        '    If arg.Equals("/m", StringComparison.OrdinalIgnoreCase) Then
+        '        Return True
+        '        Exit Function
+        '    End If
+        'Next
+
+        ' 普通启动：创建并持有 Mutex
+        Dim createdNew As Boolean
+        instanceMutex = New System.Threading.Mutex(True, "TimeControl", createdNew)
+
+        If Not createdNew Then
+            Return False
+        End If
+
+        Return True
+    End Function
+
+    '释放Mutex函数
+    Public Sub ReleaseMutex()
+        If instanceMutex IsNot Nothing Then
+            Try
+                instanceMutex.ReleaseMutex()
+            Catch
+            End Try
+            instanceMutex.Close()
+            instanceMutex = Nothing
+        End If
+    End Sub
 
     Public Sub SetTimeFormSize(ByVal MeH As Integer, ByVal MeW As Integer)
         Dim disi As Graphics = Me.CreateGraphics()
@@ -212,6 +246,8 @@ Public Class Form1
         Form2.ComboBox4.Enabled = False
         Form2.Button10.Enabled = False
         Form2.Button11.Enabled = False
+        Form2.Button13.Enabled = False
+        Form2.Button14.Enabled = False
         Form2.TextBox5.Enabled = False
         Form2.TextBox2.Enabled = False
         Form2.Button4.Enabled = False
@@ -433,6 +469,10 @@ Public Class Form1
         Form2.TrackBar1.Value = CustOpacity
     End Sub
     Private Sub Form1_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        If Not CreateMutex() Then
+            Environment.Exit(0)
+        End If
+
         'Dim tmppath1 As String
         'tmppath1 = Path.GetTempPath()
         'SetDllDirectory(tmppath1)
@@ -620,43 +660,52 @@ Public Class Form1
         Catch ex As Exception
         End Try
 
+        Dim setappmode As Boolean = False
+
         Try
-            If Command().ToLower = "/safemode" Then
-                If DisbFuState = 1 Then
-                    Form2.Label20.Text = "当前处于安全模式，你的更改将不会被保存。部分功能由于被管理员禁用而无法使用。"
-                Else
-                    Form2.Label20.Text = "当前处于安全模式，你的更改将不会被保存。"
+            For Each arg As String In Environment.GetCommandLineArgs()
+                If arg.Equals("/safemode", StringComparison.OrdinalIgnoreCase) Then
+                    If setappmode = False Then
+                        setappmode = True
+                        If DisbFuState = 1 Then
+                            Form2.Label20.Text = "当前处于安全模式，你的更改将不会被保存。部分功能由于被管理员禁用而无法使用。"
+                        Else
+                            Form2.Label20.Text = "当前处于安全模式，你的更改将不会被保存。"
+                        End If
+                        UnReadData = 1
+                        UnSaveData = 1
+                        Form2.Label20.Visible = True
+                        Form2.LinkLabel3.Visible = True
+                        Form2.Button5.Visible = True
+                        Call loaddef(sender, e)
+                    End If
+                ElseIf arg.Equals("/noprofile", StringComparison.OrdinalIgnoreCase) Then
+                    If setappmode = False Then
+                        setappmode = True
+                        If DisbFuState = 1 Then
+                            Form2.Label20.Text = "当前处于无配置模式，你的更改将不会被保存。部分功能由于被管理员禁用而无法使用。"
+                        Else
+                            Form2.Label20.Text = "当前处于无配置模式，你的更改将不会被保存。"
+                        End If
+                        UnReadData = 1
+                        UnSaveData = 1
+                        Call loaddef(sender, e)
+                    End If
+                ElseIf arg.Equals("/nosaveprofile", StringComparison.OrdinalIgnoreCase) Then
+                    If setappmode = False Then
+                        setappmode = True
+                        If DisbFuState = 1 Then
+                            Form2.Label20.Text = "当前你的更改将不会被保存。部分功能由于被管理员禁用而无法使用。"
+                        Else
+                            Form2.Label20.Text = "当前你的更改将不会被保存。"
+                        End If
+                        UnReadData = 0
+                        UnSaveData = 1
+                        Form2.LinkLabel3.Visible = False
+                        Form2.Button5.Visible = False
+                    End If
                 End If
-                UnReadData = 1
-                UnSaveData = 1
-                Form2.Label20.Visible = True
-                Form2.LinkLabel3.Visible = True
-                Form2.Button5.Visible = True
-                Call loaddef(sender, e)
-            End If
-
-            If Command().ToLower = "/noprofile" Then
-                If DisbFuState = 1 Then
-                    Form2.Label20.Text = "当前处于无配置模式，你的更改将不会被保存。部分功能由于被管理员禁用而无法使用。"
-                Else
-                    Form2.Label20.Text = "当前处于无配置模式，你的更改将不会被保存。"
-                End If
-                UnReadData = 1
-                UnSaveData = 1
-                Call loaddef(sender, e)
-            End If
-
-            If Command().ToLower = "/nosaveprofile" Then
-                If DisbFuState = 1 Then
-                    Form2.Label20.Text = "当前你的更改将不会被保存。部分功能由于被管理员禁用而无法使用。"
-                Else
-                    Form2.Label20.Text = "当前你的更改将不会被保存。"
-                End If
-                UnReadData = 0
-                UnSaveData = 1
-                Form2.LinkLabel3.Visible = False
-                Form2.Button5.Visible = False
-            End If
+            Next
         Catch ex As Exception
         End Try
 
@@ -731,9 +780,15 @@ Public Class Form1
                                     .FileName = Application.ExecutablePath,
                                     .Verb = "runas"
                                 }
+                                Timer1.Enabled = False
+                                Timer2.Enabled = False
+                                ReleaseMutex()
+                                Threading.Thread.Sleep(1000)
                                 Process.Start(startInfo)
                                 Application.Exit()
                             Catch
+                                CreateMutex()
+                                Form2.CheckBox6.Text = "使用 UIAccess 权限顶置（获取权限失败）"
                                 'Form2.CheckBox6.Enabled = False
                                 'Form2.CheckBox6.Checked = False
                             End Try
@@ -746,12 +801,12 @@ Public Class Form1
                                     Dim HashExt As String
                                     HashExt = GetFileHash(targetPath, "SHA256")
                                     If System.Environment.Is64BitProcess = True Then
-                                        If Not HashExt = "a02b434d8f8411fc8be3c07149d0238a0734d22305a706af1acffe5ea7837154" Then
+                                        If Not HashExt = "d8f5d40144f41e5a082dcaa60a7d8d6381ecae6b9cca7d0012f88ff7b2df87d4" Then
                                             File.Delete(targetPath)
                                             File.WriteAllBytes(targetPath, My.Resources.TimeControl_UIAccess64)
                                         End If
                                     Else
-                                        If Not HashExt = "eaea53af93cb18e8e30453e0959f5326a9ca65ce09e6b0c10a68294156384c1b" Then
+                                        If Not HashExt = "f053a0be3ffb81c9d7a27d5366dc1dce1e5758e9754cf11a8dd67dc611619c4e" Then
                                             File.Delete(targetPath)
                                             File.WriteAllBytes(targetPath, My.Resources.TimeControl_UIAccess)
                                         End If
@@ -772,15 +827,29 @@ Public Class Form1
                                 'End If
                                 If Not CheckUIAccessStatus() Then
                                     ' 如果没有UIAccess权限，尝试提升
+                                    ReleaseMutex()
+                                    Threading.Thread.Sleep(1000)
+                                    Me.Visible = False
                                     Dim result = PrepareForUIAccess()
-                                    Dim hr As Integer
-                                    hr = CType(result, Integer)
-                                    If Not result = ERROR_SUCCESS Then
+                                    If result = ERROR_SUCCESS Then
+                                        'Environment.Exit(0)
+                                        Application.Exit()
+                                    Else
+                                        Me.Visible = True
+                                        'Form2.CheckBox6.Enabled = False
+                                        'Form2.CheckBox6.Checked = False
+                                        Form2.CheckBox6.Text = "使用 UIAccess 权限顶置（获取权限失败）"
+                                        CreateMutex()
+                                        Dim hr As Integer
+                                        hr = CType(result, Integer)
                                         Throw New System.ComponentModel.Win32Exception(hr)
                                     End If
                                 End If
                             Catch ex As Exception
                                 MsgBox("获取 UIAccess 权限失败。" & vbCrLf & ex.ToString, MsgBoxStyle.Exclamation, "警告")
+                                'Form2.CheckBox6.Enabled = False
+                                'Form2.CheckBox6.Checked = False
+                                Form2.CheckBox6.Text = "使用 UIAccess 权限顶置（获取权限失败）"
                                 Exit Try
                             End Try
                         End If
@@ -790,7 +859,7 @@ Public Class Form1
                     Form2.CheckBox6.Checked = False
                     Form2.CheckBox6.Text = "使用 UIAccess 权限顶置（当前系统不支持）"
                 End If
-                
+
 
                 '////////////////////////////////////////////////////////////////////////////////////
                 '//
@@ -1212,6 +1281,186 @@ Public Class Form1
 
                 '////////////////////////////////////////////////////////////////////////////////////
                 '//
+                '//  全屏时钟字体样式注册表读取
+                '//
+                '////////////////////////////////////////////////////////////////////////////////////
+                Dim fsfnt As String
+                If (Not mykey Is Nothing) Then
+                    fsfnt = mykey.GetValue("FullScreenFont", Chr(10))
+                    If fsfnt = Chr(10) Then
+                        fsfnt = "Segoe UI"
+                        RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "FullScreenFont", "Segoe UI", RegistryValueKind.String, "HKCU")
+                    End If
+                Else
+                    fsfnt = "Segoe UI"
+                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "FullScreenFont", "Segoe UI", RegistryValueKind.String, "HKCU")
+                End If
+
+                Dim fsfntpx As Single
+                If (Not mykey Is Nothing) Then
+                    fsfntpx = mykey.GetValue("FullScreenFontPx", -1)
+                    If fsfntpx = -1 Then
+                        fsfntpx = 72.0F
+                        RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "FullScreenFontPx", 72, RegistryValueKind.DWord, "HKCU")
+                    End If
+                Else
+                    fsfntpx = 72.0F
+                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "FullScreenFontPx", 72, RegistryValueKind.DWord, "HKCU")
+                End If
+
+                Dim fsfntit As Integer
+                If (Not mykey Is Nothing) Then
+                    fsfntit = mykey.GetValue("FullScreenFontItalic", -1)
+                    If fsfntit = -1 Then
+                        RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "FullScreenFontItalic", 0, RegistryValueKind.DWord, "HKCU")
+                        fsfntit = 0
+                    ElseIf fsfntit > 1 Then
+                        RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "FullScreenFontItalic", 0, RegistryValueKind.DWord, "HKCU")
+                        fsfntit = 0
+                    End If
+                Else
+                    fsfntit = 0
+                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "FullScreenFontItalic", 0, RegistryValueKind.DWord, "HKCU")
+                End If
+
+                Dim fsfntbd As Integer
+                If (Not mykey Is Nothing) Then
+                    fsfntbd = mykey.GetValue("FullScreenFontBold", -1)
+                    If fsfntbd = -1 Then
+                        RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "FullScreenFontBold", 0, RegistryValueKind.DWord, "HKCU")
+                        fsfntbd = 0
+                    ElseIf fsfntbd > 1 Then
+                        RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "FullScreenFontBold", 0, RegistryValueKind.DWord, "HKCU")
+                        fsfntbd = 0
+                    End If
+                Else
+                    fsfntbd = 0
+                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "FullScreenFontBold", 0, RegistryValueKind.DWord, "HKCU")
+                End If
+
+                Dim fsfntul As Integer
+                If (Not mykey Is Nothing) Then
+                    fsfntul = mykey.GetValue("FullScreenFontUnderLine", -1)
+                    If fsfntul = -1 Then
+                        RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "FullScreenFontUnderLine", 0, RegistryValueKind.DWord, "HKCU")
+                        fsfntul = 0
+                    ElseIf fsfntul > 1 Then
+                        RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "FullScreenFontUnderLine", 0, RegistryValueKind.DWord, "HKCU")
+                        fsfntul = 0
+                    End If
+                Else
+                    fsfntul = 0
+                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "FullScreenFontUnderLine", 0, RegistryValueKind.DWord, "HKCU")
+                End If
+
+                Dim fsfntst As Integer
+                If (Not mykey Is Nothing) Then
+                    fsfntst = mykey.GetValue("FullScreenFontStrikeout", -1)
+                    If fsfntst = -1 Then
+                        RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "FullScreenFontStrikeout", 0, RegistryValueKind.DWord, "HKCU")
+                        fsfntst = 0
+                    ElseIf fsfntst > 1 Then
+                        RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "FullScreenFontStrikeout", 0, RegistryValueKind.DWord, "HKCU")
+                        fsfntst = 0
+                    End If
+                Else
+                    fsfntst = 0
+                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "FullScreenFontStrikeout", 0, RegistryValueKind.DWord, "HKCU")
+                End If
+
+                ' 样式组合
+                Dim fsfntype As Object
+                If fsfntit = 1 And fsfntbd = 1 And fsfntul = 1 And fsfntst = 1 Then
+                    fsfntype = CType((System.Drawing.FontStyle.Underline Or System.Drawing.FontStyle.Strikeout Or System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Italic), System.Drawing.FontStyle)
+                ElseIf fsfntit = 1 And fsfntbd = 1 And fsfntul = 1 Then
+                    fsfntype = CType((System.Drawing.FontStyle.Underline Or System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Italic), System.Drawing.FontStyle)
+                ElseIf fsfntit = 1 And fsfntbd = 1 And fsfntst = 1 Then
+                    fsfntype = CType((System.Drawing.FontStyle.Strikeout Or System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Italic), System.Drawing.FontStyle)
+                ElseIf fsfntbd = 1 And fsfntul = 1 And fsfntst = 1 Then
+                    fsfntype = CType((System.Drawing.FontStyle.Underline Or System.Drawing.FontStyle.Strikeout Or System.Drawing.FontStyle.Bold), System.Drawing.FontStyle)
+                ElseIf fsfntit = 1 And fsfntul = 1 And fsfntst = 1 Then
+                    fsfntype = CType((System.Drawing.FontStyle.Underline Or System.Drawing.FontStyle.Strikeout Or System.Drawing.FontStyle.Italic), System.Drawing.FontStyle)
+                ElseIf fsfntit = 1 And fsfntbd = 1 Then
+                    fsfntype = CType((System.Drawing.FontStyle.Bold Or System.Drawing.FontStyle.Italic), System.Drawing.FontStyle)
+                ElseIf fsfntit = 1 And fsfntul = 1 Then
+                    fsfntype = CType((System.Drawing.FontStyle.Underline Or System.Drawing.FontStyle.Italic), System.Drawing.FontStyle)
+                ElseIf fsfntbd = 1 And fsfntul = 1 Then
+                    fsfntype = CType((System.Drawing.FontStyle.Underline Or System.Drawing.FontStyle.Bold), System.Drawing.FontStyle)
+                ElseIf fsfntit = 1 And fsfntst = 1 Then
+                    fsfntype = CType((System.Drawing.FontStyle.Strikeout Or System.Drawing.FontStyle.Italic), System.Drawing.FontStyle)
+                ElseIf fsfntbd = 1 And fsfntst = 1 Then
+                    fsfntype = CType((System.Drawing.FontStyle.Strikeout Or System.Drawing.FontStyle.Bold), System.Drawing.FontStyle)
+                ElseIf fsfntul = 1 And fsfntst = 1 Then
+                    fsfntype = CType((System.Drawing.FontStyle.Underline Or System.Drawing.FontStyle.Strikeout), System.Drawing.FontStyle)
+                ElseIf fsfntbd = 1 Then
+                    fsfntype = System.Drawing.FontStyle.Bold
+                ElseIf fsfntit = 1 Then
+                    fsfntype = System.Drawing.FontStyle.Italic
+                ElseIf fsfntst = 1 Then
+                    fsfntype = System.Drawing.FontStyle.Strikeout
+                ElseIf fsfntul = 1 Then
+                    fsfntype = System.Drawing.FontStyle.Underline
+                Else
+                    fsfntype = System.Drawing.FontStyle.Regular
+                End If
+                Form2.FontDialog2.Font = New System.Drawing.Font(fsfnt, fsfntpx, fsfntype, System.Drawing.GraphicsUnit.Point)
+                '////////////////////////////////////////////////////////////////////////////////////
+                '//
+                '//  全屏时钟字体颜色注册表读取
+                '//
+                '////////////////////////////////////////////////////////////////////////////////////
+                Dim fsfntcr As Integer
+                If (Not mykey Is Nothing) Then
+                    fsfntcr = mykey.GetValue("FullScreenFontR", -1)
+                    If fsfntcr = -1 Then
+                        RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "FullScreenFontR", Me.Label1.ForeColor.R, RegistryValueKind.DWord, "HKCU")
+                        fsfntcr = Me.Label1.ForeColor.R
+                        If fsfntcr > 255 Then
+                            RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "FullScreenFontR", Me.Label1.ForeColor.R, RegistryValueKind.DWord, "HKCU")
+                            fsfntcr = Me.Label1.ForeColor.R
+                        End If
+                    End If
+                Else
+                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "FullScreenFontR", Me.Label1.ForeColor.R, RegistryValueKind.DWord, "HKCU")
+                    fsfntcr = Me.Label1.ForeColor.R
+                End If
+
+                Dim fsfntcg As Integer
+                If (Not mykey Is Nothing) Then
+                    fsfntcg = mykey.GetValue("FullScreenFontG", -1)
+                    If fsfntcg = -1 Then
+                        RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "FullScreenFontG", Me.Label1.ForeColor.G, RegistryValueKind.DWord, "HKCU")
+                        fsfntcg = Me.Label1.ForeColor.G
+                        If fsfntcg > 255 Then
+                            RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "FullScreenFontG", Me.Label1.ForeColor.G, RegistryValueKind.DWord, "HKCU")
+                            fsfntcg = Me.Label1.ForeColor.G
+                        End If
+                    End If
+                Else
+                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "FullScreenFontG", Me.Label1.ForeColor.G, RegistryValueKind.DWord, "HKCU")
+                    fsfntcg = Me.Label1.ForeColor.G
+                End If
+
+                Dim fsfntcb As Integer
+                If (Not mykey Is Nothing) Then
+                    fsfntcb = mykey.GetValue("FullScreenFontB", -1)
+                    If fsfntcb = -1 Then
+                        RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "FullScreenFontB", Me.Label1.ForeColor.B, RegistryValueKind.DWord, "HKCU")
+                        fsfntcb = Me.Label1.ForeColor.B
+                        If fsfntcb > 255 Then
+                            RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "FullScreenFontB", Me.Label1.ForeColor.B, RegistryValueKind.DWord, "HKCU")
+                            fsfntcb = Me.Label1.ForeColor.B
+                        End If
+                    End If
+                Else
+                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "FullScreenFontB", Me.Label1.ForeColor.B, RegistryValueKind.DWord, "HKCU")
+                    fsfntcb = Me.Label1.ForeColor.B
+                End If
+
+                Form2.ColorDialog2.Color = Color.FromArgb(fsfntcr, fsfntcg, fsfntcb)
+
+                '////////////////////////////////////////////////////////////////////////////////////
+                '//
                 '//  时钟显示格式注册表读取
                 '//
                 '////////////////////////////////////////////////////////////////////////////////////
@@ -1520,15 +1769,30 @@ Public Class Form1
 
             End If
 
-            If Label1.ForeColor.R = 0 And Label1.ForeColor.G = 0 And Label1.ForeColor.B = 0 Then
-                Me.Label1.ForeColor = Color.White
-                If UnSaveData = 0 Then
-                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFontR", Label1.ForeColor.R, RegistryValueKind.DWord, "HKCU")
-                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFontG", Label1.ForeColor.G, RegistryValueKind.DWord, "HKCU")
-                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFontB", Label1.ForeColor.B, RegistryValueKind.DWord, "HKCU")
-                End If
+            If Form2.ColorDialog1.Color.R = 0 And Form2.ColorDialog1.Color.G = 0 And Form2.ColorDialog1.Color.B = 0 Then
                 Form2.ColorDialog1.Color = Color.White
+                If Me.WindowState <> FormWindowState.Maximized Then
+                    Me.Label1.ForeColor = Form2.ColorDialog1.Color
+                End If
+                If UnSaveData = 0 Then
+                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFontR", Form2.ColorDialog1.Color.R, RegistryValueKind.DWord, "HKCU")
+                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFontG", Form2.ColorDialog1.Color.G, RegistryValueKind.DWord, "HKCU")
+                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFontB", Form2.ColorDialog1.Color.B, RegistryValueKind.DWord, "HKCU")
+                End If
             End If
+
+            If Form2.ColorDialog2.Color.R = 0 And Form2.ColorDialog2.Color.G = 0 And Form2.ColorDialog2.Color.B = 0 Then
+                Form2.ColorDialog2.Color = Color.White
+                If Me.WindowState = FormWindowState.Maximized Then
+                    Me.Label1.ForeColor = Form2.ColorDialog2.Color
+                End If
+                If UnSaveData = 0 Then
+                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "FullScreenFontR", Form2.ColorDialog2.Color.R, RegistryValueKind.DWord, "HKCU")
+                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "FullScreenFontG", Form2.ColorDialog2.Color.G, RegistryValueKind.DWord, "HKCU")
+                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "FullScreenFontB", Form2.ColorDialog2.Color.B, RegistryValueKind.DWord, "HKCU")
+                End If
+            End If
+
             Me.ContextMenuStrip1.BackColor = Color.FromArgb(32, 32, 32)
             Me.ContextMenuStrip1.ForeColor = Color.White
             Me.ContextMenuStrip2.BackColor = Color.FromArgb(32, 32, 32)
@@ -1571,15 +1835,31 @@ Public Class Form1
             End If
             Me.BackColor = Color.White
             Me.ForeColor = Color.Black
-            If Label1.ForeColor.R = 255 And Label1.ForeColor.G = 255 And Label1.ForeColor.B = 255 Then
-                Me.Label1.ForeColor = Color.Black
-                If UnSaveData = 0 Then
-                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFontR", Label1.ForeColor.R, RegistryValueKind.DWord, "HKCU")
-                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFontG", Label1.ForeColor.G, RegistryValueKind.DWord, "HKCU")
-                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFontB", Label1.ForeColor.B, RegistryValueKind.DWord, "HKCU")
-                End If
+    
+            If Form2.ColorDialog1.Color.R = 255 And Form2.ColorDialog1.Color.G = 255 And Form2.ColorDialog1.Color.B = 255 Then
                 Form2.ColorDialog1.Color = Color.Black
+                If Me.WindowState <> FormWindowState.Maximized Then
+                    Me.Label1.ForeColor = Form2.ColorDialog1.Color
+                End If
+                If UnSaveData = 0 Then
+                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFontR", Form2.ColorDialog1.Color.R, RegistryValueKind.DWord, "HKCU")
+                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFontG", Form2.ColorDialog1.Color.G, RegistryValueKind.DWord, "HKCU")
+                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFontB", Form2.ColorDialog1.Color.B, RegistryValueKind.DWord, "HKCU")
+                End If
             End If
+
+            If Form2.ColorDialog2.Color.R = 255 And Form2.ColorDialog2.Color.G = 255 And Form2.ColorDialog2.Color.B = 255 Then
+                Form2.ColorDialog2.Color = Color.Black
+                If Me.WindowState = FormWindowState.Maximized Then
+                    Me.Label1.ForeColor = Form2.ColorDialog2.Color
+                End If
+                If UnSaveData = 0 Then
+                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "FullScreenFontR", Form2.ColorDialog2.Color.R, RegistryValueKind.DWord, "HKCU")
+                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "FullScreenFontG", Form2.ColorDialog2.Color.G, RegistryValueKind.DWord, "HKCU")
+                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "FullScreenFontB", Form2.ColorDialog2.Color.B, RegistryValueKind.DWord, "HKCU")
+                End If
+            End If
+
             Me.ContextMenuStrip1.BackColor = Color.White
             Me.ContextMenuStrip1.ForeColor = Color.Black
             Me.ContextMenuStrip2.BackColor = Color.White
@@ -1647,24 +1927,21 @@ Public Class Form1
         Select Case (e.CloseReason)
             '应用程序要求关闭窗口
             Case CloseReason.ApplicationExitCall
+                'ReleaseMutex()
                 e.Cancel = False '不拦截，响应操作
-                '自身窗口上的关闭按钮
-            Case CloseReason.FormOwnerClosing
+            Case CloseReason.FormOwnerClosing '自身窗口上的关闭按钮
                 e.Cancel = True '拦截，不响应操作
-                'MDI窗体关闭事件
-            Case CloseReason.MdiFormClosing
+            Case CloseReason.MdiFormClosing 'MDI窗体关闭事件
                 e.Cancel = True '拦截，不响应操作
-                '不明原因的关闭
-            Case CloseReason.None
-                e.Cancel = False
-                '任务管理器关闭进程
-            Case CloseReason.TaskManagerClosing
+            Case CloseReason.None '不明原因的关闭
+                e.Cancel = True
+            Case CloseReason.TaskManagerClosing '任务管理器关闭进程
+                'ReleaseMutex()
                 e.Cancel = False  '不拦截，响应操作
-                '用户通过UI关闭窗口或者通过Alt+F4关闭窗口
-            Case CloseReason.UserClosing
+            Case CloseReason.UserClosing '用户通过UI关闭窗口或者通过Alt+F4关闭窗口
                 e.Cancel = True '拦截，不响应操作
-                '操作系统准备关机()
-            Case (CloseReason.WindowsShutDown)
+            Case (CloseReason.WindowsShutDown) '操作系统准备关机()
+                'ReleaseMutex()
                 e.Cancel = False '不拦截，响应操作
         End Select
 
@@ -1726,6 +2003,8 @@ Public Class Form1
             Else
                 Me.BackgroundImage = Nothing
             End If
+            Label1.Font = Form2.FontDialog2.Font
+            Label1.ForeColor = Form2.ColorDialog2.Color
             'End If
             If TimeTheme = 0 Or 1 Then
                 Opacity = 1
@@ -1786,6 +2065,8 @@ Public Class Form1
             Else
                 Opacity = CustOpacity * 0.01
             End If
+            Label1.Font = Form2.FontDialog1.Font
+            Label1.ForeColor = Form2.ColorDialog1.Color
             Me.FullM.Text = "全屏"
         End If
     End Sub

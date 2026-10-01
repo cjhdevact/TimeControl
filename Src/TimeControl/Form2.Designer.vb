@@ -80,6 +80,12 @@ Partial Class Form2
         Me.CheckBox6 = New System.Windows.Forms.CheckBox()
         Me.PictureBox2 = New System.Windows.Forms.PictureBox()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.ColorDialog2 = New System.Windows.Forms.ColorDialog()
+        Me.FontDialog2 = New System.Windows.Forms.FontDialog()
+        Me.Button13 = New System.Windows.Forms.Button()
+        Me.Button14 = New System.Windows.Forms.Button()
+        Me.Button15 = New System.Windows.Forms.Button()
+        Me.SaveFileDialog1 = New System.Windows.Forms.SaveFileDialog()
         CType(Me.TrackBar1, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -331,7 +337,7 @@ Partial Class Form2
         Me.Button7.Name = "Button7"
         Me.Button7.Size = New System.Drawing.Size(113, 27)
         Me.Button7.TabIndex = 8
-        Me.Button7.Text = "设置"
+        Me.Button7.Text = "设置普通字体"
         Me.Button7.UseVisualStyleBackColor = True
         '
         'ColorDialog1
@@ -344,9 +350,9 @@ Partial Class Form2
         Me.Button8.Location = New System.Drawing.Point(134, 466)
         Me.Button8.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
         Me.Button8.Name = "Button8"
-        Me.Button8.Size = New System.Drawing.Size(113, 27)
+        Me.Button8.Size = New System.Drawing.Size(145, 27)
         Me.Button8.TabIndex = 9
-        Me.Button8.Text = "设置"
+        Me.Button8.Text = "设置普通字体颜色"
         Me.Button8.UseVisualStyleBackColor = True
         '
         'Label11
@@ -634,6 +640,36 @@ Partial Class Form2
         Me.PictureBox1.TabIndex = 34
         Me.PictureBox1.TabStop = False
         '
+        'Button13
+        '
+        Me.Button13.Location = New System.Drawing.Point(298, 435)
+        Me.Button13.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
+        Me.Button13.Name = "Button13"
+        Me.Button13.Size = New System.Drawing.Size(113, 27)
+        Me.Button13.TabIndex = 61
+        Me.Button13.Text = "设置全屏字体"
+        Me.Button13.UseVisualStyleBackColor = True
+        '
+        'Button14
+        '
+        Me.Button14.Location = New System.Drawing.Point(285, 466)
+        Me.Button14.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
+        Me.Button14.Name = "Button14"
+        Me.Button14.Size = New System.Drawing.Size(145, 27)
+        Me.Button14.TabIndex = 62
+        Me.Button14.Text = "设置全屏字体颜色"
+        Me.Button14.UseVisualStyleBackColor = True
+        '
+        'Button15
+        '
+        Me.Button15.Location = New System.Drawing.Point(163, 587)
+        Me.Button15.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
+        Me.Button15.Name = "Button15"
+        Me.Button15.Size = New System.Drawing.Size(133, 27)
+        Me.Button15.TabIndex = 63
+        Me.Button15.Text = "导出设置(&E)"
+        Me.Button15.UseVisualStyleBackColor = True
+        '
         'Form2
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(96.0!, 96.0!)
@@ -641,6 +677,9 @@ Partial Class Form2
         Me.BackColor = System.Drawing.Color.White
         Me.CancelButton = Me.Button1
         Me.ClientSize = New System.Drawing.Size(883, 623)
+        Me.Controls.Add(Me.Button15)
+        Me.Controls.Add(Me.Button14)
+        Me.Controls.Add(Me.Button13)
         Me.Controls.Add(Me.CheckBox6)
         Me.Controls.Add(Me.Button12)
         Me.Controls.Add(Me.PictureBox2)
@@ -769,4 +808,10 @@ Partial Class Form2
     Friend WithEvents PictureBox2 As System.Windows.Forms.PictureBox
     Friend WithEvents Button12 As System.Windows.Forms.Button
     Friend WithEvents CheckBox6 As System.Windows.Forms.CheckBox
+    Friend WithEvents ColorDialog2 As System.Windows.Forms.ColorDialog
+    Friend WithEvents FontDialog2 As System.Windows.Forms.FontDialog
+    Friend WithEvents Button13 As System.Windows.Forms.Button
+    Friend WithEvents Button14 As System.Windows.Forms.Button
+    Friend WithEvents Button15 As System.Windows.Forms.Button
+    Friend WithEvents SaveFileDialog1 As System.Windows.Forms.SaveFileDialog
 End Class

@@ -1,12 +1,11 @@
-::Tips Set the CSIGNCERT as your path.
+::Tips:
+::Set the CSIGNCERT as your Certificate File path.
+::Set the CSIGNTOOL as your SignPackPath
 @echo off
-path D:\ProjectsTmp\SignPack;%path%
-echo 任意键签名 时间小工具（TimeControl）...
-pause > nul
+path %CSIGNTOOL%;%path%
+echo [SIGNTOOL] 正在进行数字签名
 cmd.exe /c signcmd.cmd "%CSIGNCERT%" "%~dp0TimeControl-Bin\TimeControl.exe"
 cmd.exe /c signcmd.cmd "%CSIGNCERT%" "%~dp0TimeControl-Bin\TimeControl64.exe"
 cmd.exe /c signcmd.cmd "%CSIGNCERT%" "%~dp0TimeControl-Bin\TimeControlAdmxs.exe"
+echo [SIGNTOOL] 数字签名结束
 echo.
-echo 完成！
-echo 任意键退出...
-pause > nul

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--  Copyright (C) 2022-2025 CJH.  -->
+<!--  Copyright (C) 2022-2026 CJH.  -->
 <policyDefinitionResources xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" revision="1.0" schemaVersion="1.0" xmlns="http://schemas.microsoft.com/GroupPolicy/2006/07/PolicyDefinitions">
   <displayName>时间小工具</displayName>
   <description>时间小工具</description>
@@ -22,6 +22,7 @@
       <string id="TimeControlNoProfile_Help">启用后将默认加载默认设置，并不保存你的设置。
 
 注意：命令行的内容要优先于策略设置，在计算机配置设置的策略优先级高于用户配置里设置的策略，计算机配置里的策略对所有用户有效。时间小工具版本须在1.1.18.24101以上才支持本策略。</string>
+      <string id="SUPPORTED_TimeControl_Ver">需要时间小工具 1.1.18.24101 及以上版本</string>
     </stringTable>
   </resources>
 </policyDefinitionResources>
