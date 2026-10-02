@@ -98,6 +98,7 @@ Public Class Form1
     Public UnReadData As Integer '不读取设置
     Public ShowModeTips As Integer '不显示横幅
     Public NeedStillTopMost As Integer '是否强制顶置
+    Public TimeFormSize As Point '窗口尺寸
     Private Shared instanceMutex As System.Threading.Mutex 'Mutex标记
 
     '在Alt+Tab中隐藏
@@ -186,7 +187,7 @@ Public Class Form1
     End Sub
 
     Public Sub SetTimeFormSize(ByVal MeH As Integer, ByVal MeW As Integer)
-        Dim disi As Graphics = Me.CreateGraphics()
+        'Dim disi As Graphics = Me.CreateGraphics()
         'If disi.DpiX <= 96 Then
         '    Me.Height = MeH
         '    Me.Width = MeW
@@ -201,8 +202,15 @@ Public Class Form1
         '    Me.Height = MeH * disi.DpiY * 0.01
         '    Me.Width = MeW * disi.DpiX * 0.01
         'End If
-        Me.Height = MeH + disi.DpiY * 0.01 * 12
-        Me.Width = MeW + disi.DpiX * 0.01 * 12
+        'Me.Height = MeH + disi.DpiY * 0.01 * 12
+        'Me.Width = MeW + disi.DpiX * 0.01 * 12
+        Using disi As Graphics = Me.CreateGraphics()
+            'Me.Height = MeH + disi.DpiY * 0.01 * 12
+            'Me.Width = MeW + disi.DpiX * 0.01 * 12
+            Me.Height = MeH + CInt(disi.DpiY / 96.0 * 12)
+            Me.Width = MeW + CInt(disi.DpiX / 96.0 * 12)
+            TimeFormSize = New Point(MeW + CInt(disi.DpiX / 96.0 * 12), MeH + CInt(disi.DpiY / 96.0 * 12))
+        End Using
         If Me.WindowState = FormWindowState.Normal Then
             If TimeTheme = 0 Then
                 If Me.Width >= 250 Then
@@ -228,16 +236,22 @@ Public Class Form1
         End If
     End Sub
     Public Sub GetTimeFormSize(ByVal MeH As Integer, ByVal MeW As Integer)
-        Dim disi As Graphics = Me.CreateGraphics()
-        'If disi.DpiX <= 96 Then
-        '    CaH = MeH
-        '    CaW = MeW
-        'Else
-        '    CaH = MeH * disi.DpiY * 0.01 * 1.15
-        '    CaW = MeW * disi.DpiX * 0.01 * 1.15
-        'End If
-        CaH = MeH + disi.DpiY * 0.01 * 8
-        CaW = MeW + disi.DpiX * 0.01 * 8
+        'Dim disi As Graphics = Me.CreateGraphics()
+        ''If disi.DpiX <= 96 Then
+        ''    CaH = MeH
+        ''    CaW = MeW
+        ''Else
+        ''    CaH = MeH * disi.DpiY * 0.01 * 1.15
+        ''    CaW = MeW * disi.DpiX * 0.01 * 1.15
+        ''End If
+        'CaH = MeH + disi.DpiY * 0.01 * 8
+        'CaW = MeW + disi.DpiX * 0.01 * 8
+        Using disi As Graphics = Me.CreateGraphics()
+            'CaH = MeH + disi.DpiY * 0.01 * 8
+            'CaW = MeW + disi.DpiX * 0.01 * 8
+            CaH = MeH + CInt(disi.DpiY / 96.0 * 12)
+            CaW = MeW + CInt(disi.DpiX / 96.0 * 12)
+        End Using
     End Sub
     Public Sub disbfu()
         'Form2.Label20.Visible = True
@@ -472,6 +486,7 @@ Public Class Form1
         If Not CreateMutex() Then
             Environment.Exit(0)
         End If
+        TimeFormSize = New Point(Me.Width, Me.Height)
 
         'Dim tmppath1 As String
         'tmppath1 = Path.GetTempPath()
@@ -482,9 +497,15 @@ Public Class Form1
         Me.FormBorderStyle = Windows.Forms.FormBorderStyle.None
         MovedV = 0
         appcolor = 0
-        Dim disi As Graphics = Me.CreateGraphics()
+        'Dim disi As Graphics = Me.CreateGraphics()
         Timer1.Enabled = True
-        Me.Location = New Point(((System.Windows.Forms.SystemInformation.PrimaryMonitorSize.Width - Me.Width) / 2), 5 * disi.DpiY * 0.01)
+        'Me.Location = New Point(((System.Windows.Forms.SystemInformation.PrimaryMonitorSize.Width - Me.Width) / 2), 5 * disi.DpiY * 0.01)
+        Dim dpiY As Single
+        Using disi As Graphics = Me.CreateGraphics()
+            dpiY = disi.DpiY / 96.0
+        End Using
+        'Me.Location = New Point(((System.Windows.Forms.SystemInformation.PrimaryMonitorSize.Width - Me.Width) / 2), 5 * dpiY * 0.01)
+        Me.Location = New Point(((System.Windows.Forms.SystemInformation.PrimaryMonitorSize.Width - Me.Width) / 2), CInt(5 * dpiY))
         IsBootV = 1
         'Me.Height = 38
         'Me.Width = 120
@@ -1300,12 +1321,12 @@ Public Class Form1
                 If (Not mykey Is Nothing) Then
                     fsfntpx = mykey.GetValue("FullScreenFontPx", -1)
                     If fsfntpx = -1 Then
-                        fsfntpx = 72.0F
-                        RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "FullScreenFontPx", 72, RegistryValueKind.DWord, "HKCU")
+                        fsfntpx = 128.0F
+                        RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "FullScreenFontPx", 128, RegistryValueKind.DWord, "HKCU")
                     End If
                 Else
-                    fsfntpx = 72.0F
-                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "FullScreenFontPx", 72, RegistryValueKind.DWord, "HKCU")
+                    fsfntpx = 128.0F
+                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "FullScreenFontPx", 128, RegistryValueKind.DWord, "HKCU")
                 End If
 
                 Dim fsfntit As Integer
@@ -1533,6 +1554,7 @@ Public Class Form1
                 If Me.MySize = 1 Then
                     Me.Height = tformh
                     Me.Width = tformw
+                    TimeFormSize = New Point(tformw, tformh)
                 End If
 
                 '////////////////////////////////////////////////////////////////////////////////////
@@ -1541,7 +1563,8 @@ Public Class Form1
                 '//
                 '////////////////////////////////////////////////////////////////////////////////////
                 a.X = (System.Windows.Forms.SystemInformation.PrimaryMonitorSize.Width - Me.Width) / 2
-                a.Y = 5 * disi.DpiY * 0.01
+                'a.Y = 5 * dpiY * 0.01
+                a.Y = CInt(5 * dpiY)
                 If SaveLoc = 1 Then
                     Dim aa As Integer
                     Dim ba As Integer

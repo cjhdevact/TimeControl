@@ -111,32 +111,36 @@ errcode:
 
     '获取编译时间函数
     Private Function GetPe32Time(ByVal fileName As String) As DateTime
-        Dim num As Integer
-        Using reader As BinaryReader = New BinaryReader(New FileStream(fileName, FileMode.Open, FileAccess.Read))
-            Dim buffer As Byte() = reader.ReadBytes(2)
-            Dim message As String = "Error in PE32 file."
-            If (buffer.Length <> 2) Then
-                'Throw New Exception(message)
-            End If
-            If ((buffer(0) <> &H4D) OrElse (buffer(1) <> 90)) Then
-                'Throw New Exception(message)
-            End If
-            reader.BaseStream.Seek(60, SeekOrigin.Begin)
-            Dim num2 As Byte = reader.ReadByte
-            reader.BaseStream.Seek(CLng(num2), SeekOrigin.Begin)
-            buffer = reader.ReadBytes(4)
-            If (buffer.Length <> 4) Then
-                'Throw New Exception(message)
-            End If
-            If ((((buffer(0) <> 80) OrElse (buffer(1) <> &H45)) OrElse (buffer(2) <> 0)) OrElse (buffer(3) <> 0)) Then
-                'Throw New Exception(message)
-            End If
-            If (reader.ReadBytes(4).Length <> 4) Then
-                'Throw New Exception(message)
-            End If
-            num = reader.ReadInt32
+        Dim timestamp As Integer
+
+        Using reader As New BinaryReader(New FileStream(fileName, FileMode.Open, FileAccess.Read))
+            ' 1) 校验 DOS 头 "MZ"
+            'If reader.ReadUInt16() <> &H5A4DUS Then   ' 小端读出 'M'(0x4D) 'Z'(0x5A) → 0x5A4D
+            '    'Throw New InvalidDataException("不是有效的 PE 文件（缺少 MZ 签名）。")
+            'End If
+
+            ' 2) 跳到 0x3C 读取 e_lfanew（PE 头偏移），4 字节小端
+            reader.BaseStream.Seek(&H3C, SeekOrigin.Begin)
+            Dim peOffset As Integer = reader.ReadInt32()
+
+            ' 3) 定位到 PE 头，校验 "PE\0\0"
+            reader.BaseStream.Seek(peOffset, SeekOrigin.Begin)
+            Dim peSig As UInteger = reader.ReadUInt32()
+            'If peSig <> &H4550UI Then                 ' 'P'(0x50) 'E'(0x45) → 小端 0x00004550
+            '    ' Throw New InvalidDataException("不是有效的 PE 文件（缺少 PE 签名）。")
+            'End If
+
+            ' 4) COFF File Header：跳过 Machine(2) + NumberOfSections(2) 共 4 字节
+            reader.BaseStream.Seek(4, SeekOrigin.Current)
+
+            ' 5) 读取 TimeDateStamp（4 字节小端，自 1970-01-01 UTC 起的秒数）
+            timestamp = reader.ReadInt32()
         End Using
-        Return DateTime.SpecifyKind(New DateTime(&H7B2, 1, 1), DateTimeKind.Utc).AddSeconds(CDbl(num)).ToLocalTime
+
+        ' 6) 转换为本地时间
+        Return DateTime.SpecifyKind(New DateTime(1970, 1, 1), DateTimeKind.Utc) _
+                       .AddSeconds(CDbl(timestamp)) _
+                       .ToLocalTime()
     End Function
 
     Private Sub Button1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles Button1.Click
@@ -144,8 +148,11 @@ errcode:
     End Sub
 
     Private Sub Form2_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        Dim disi As Graphics = Me.CreateGraphics()
-        Label20.Width = Me.Width - disi.DpiX * 0.01 * 50
+        'Dim disi As Graphics = Me.CreateGraphics()
+        Using disi As Graphics = Me.CreateGraphics()
+            'Label20.Width = Me.Width - disi.DpiX * 0.01 * 50
+            Label20.Width = Me.Width - CInt(disi.DpiX / 96.0 * 50)
+        End Using
         TextBox2.Height = Me.Height * 0.12
         OpenFileDialog1.Filter = "所有支持的文件 (*.png;*.jpg;*.jpeg;*.jpe;*.jfif;*.bmp;*.dib;*.gif;*.tif;*.tiff;*.ico)|*.png;*.jpg;*.jpeg;*.jpe;*.jfif;*.bmp;*.dib;*.gif;*.tif;*.tiff;*.ico|" _
                               & "PNG 图像 (*.png)|*.png|JPEG 文件 (*.jpg;*.jpeg;*.jpe;*.jfif)|*.jpg;*.jpeg;*.jpe;*.jfif|" _
@@ -524,8 +531,36 @@ errcode:
         End If
     End Sub
 
+    Private Sub ApplyAutoSize()
+        If Form1.MySize <> 0 Then Return
+
+        Dim aa As SizeF = TextRenderer.MeasureText(Form1.Label1.Text, FontDialog1.Font)
+
+        If aa.Width <= 42 Then
+            Form1.GetTimeFormSize(38, aa.Width + 8)
+        ElseIf aa.Width >= 400 Then
+            Form1.GetTimeFormSize(aa.Height, aa.Width + 10)
+        Else
+            Form1.GetTimeFormSize(38, aa.Width + 6)
+        End If
+
+        Dim c As Integer = Form1.TimeFormSize.X - Form1.CaW
+        If Not (Form1.SaveLoc = 1 AndAlso Form1.IsBootV = 1) Then
+            If c <> 0 Then
+                Dim baseLoc As Point = If(Form1.WindowState = FormWindowState.Maximized, Form1.RestoreBounds.Location, Form1.Location)
+                Form1.Location = New Point(baseLoc.X + c \ 2, baseLoc.Y)
+                If Form1.SaveLoc = 1 AndAlso Form1.UnSaveData = 0 Then
+                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormX", baseLoc.X + c \ 2, RegistryValueKind.DWord, "HKCU")
+                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormY", baseLoc.Y, RegistryValueKind.DWord, "HKCU")
+                End If
+            End If
+        End If
+
+        Form1.SetTimeFormSize(aa.Height, aa.Width)
+    End Sub
+
     Public Sub ComboBox3_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs)
-        Dim disi As Graphics = Me.CreateGraphics()
+        'Dim disi As Graphics = Me.CreateGraphics()
         Try
             'Dim a As Integer
             If Me.ComboBox3.SelectedIndex = 0 Then
@@ -564,86 +599,87 @@ errcode:
                 '    End If
                 'End If
                 'a = 0
-                If Form1.MySize = 0 Then
-                    Dim aa As SizeF
-                    Dim b As Graphics = Graphics.FromImage(New Bitmap(1, 1))
-                    'ab = b.MeasureString(Form1.Label1.Text, Form1.Label1.Font)
-                    aa = TextRenderer.MeasureText(Form1.Label1.Text, Form1.Label1.Font)
-                    Dim c As Integer
-                    If aa.Width <= 42 Then
-                        Form1.GetTimeFormSize(38, aa.Width + 8)
-                    ElseIf 400 <= aa.Width Then
-                        Form1.GetTimeFormSize(aa.Height, aa.Width + 10)
-                    Else
-                        Form1.GetTimeFormSize(38, aa.Width + 6)
-                    End If
-                    c = Form1.Width - Form1.CaW
-                    If Not (Form1.SaveLoc = 1 And Form1.IsBootV = 1) Then
-                        If c <> 0 Then
-                            Form1.Location = New Point(Form1.Location.X + c / 2, Form1.Location.Y)
-                            If Form1.SaveLoc = 1 Then
-                                If Form1.UnSaveData = 0 Then
-                                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormX", Form1.Location.X, RegistryValueKind.DWord, "HKCU")
-                                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormY", Form1.Location.Y, RegistryValueKind.DWord, "HKCU")
-                                End If
+                ApplyAutoSize()
+                'If Form1.MySize = 0 Then
+                '    Dim aa As SizeF
+                '    Dim b As Graphics = Graphics.FromImage(New Bitmap(1, 1))
+                '    'ab = b.MeasureString(Form1.Label1.Text, Form1.Label1.Font)
+                '    aa = TextRenderer.MeasureText(Form1.Label1.Text, Form1.Label1.Font)
+                '    Dim c As Integer
+                '    If aa.Width <= 42 Then
+                '        Form1.GetTimeFormSize(38, aa.Width + 8)
+                '    ElseIf 400 <= aa.Width Then
+                '        Form1.GetTimeFormSize(aa.Height, aa.Width + 10)
+                '    Else
+                '        Form1.GetTimeFormSize(38, aa.Width + 6)
+                '    End If
+                '    c = Form1.Width - Form1.CaW
+                '    If Not (Form1.SaveLoc = 1 And Form1.IsBootV = 1) Then
+                '        If c <> 0 Then
+                '            Form1.Location = New Point(Form1.Location.X + c / 2, Form1.Location.Y)
+                '            If Form1.SaveLoc = 1 Then
+                '                If Form1.UnSaveData = 0 Then
+                '                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormX", Form1.Location.X, RegistryValueKind.DWord, "HKCU")
+                '                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormY", Form1.Location.Y, RegistryValueKind.DWord, "HKCU")
+                '                End If
 
-                            End If
-                        End If
-                    End If
+                '            End If
+                '        End If
+                '    End If
 
-                    c = 0
-                    Form1.SetTimeFormSize(aa.Height, aa.Width)
-                    'If disi.DpiY < 100 Then
-                    '    If aa.Width <= 42 Then
-                    '        Form1.SetTimeFormSize(aa.Height + 3, aa.Width + 12)
-                    '    ElseIf 400 <= aa.Width Then
-                    '        Form1.SetTimeFormSize(aa.Height + 3, aa.Width + 14)
-                    '    Else
-                    '        Form1.SetTimeFormSize(aa.Height + 3, aa.Width + 16)
-                    '    End If
-                    'ElseIf 100 < disi.DpiY < 135 Then
-                    '    Form1.SetTimeFormSize(aa.Height - 17 * disi.DpiY * 0.01, aa.Width - 13 - 15 * disi.DpiY * 0.01)
-                    'ElseIf 160 > disi.DpiY > 135 Then
-                    '    Form1.SetTimeFormSize(aa.Height - 26 * disi.DpiY * 0.01, aa.Width - 60 - 60 * disi.DpiY * 0.01)
-                    'ElseIf disi.DpiY > 160 Then
-                    '    Form1.SetTimeFormSize(aa.Height - 30 * disi.DpiY * 0.01, aa.Width - 120 - 800 * disi.DpiY * 0.01)
-                    'End If
+                '    c = 0
+                '    Form1.SetTimeFormSize(aa.Height, aa.Width)
+                '    'If disi.DpiY < 100 Then
+                '    '    If aa.Width <= 42 Then
+                '    '        Form1.SetTimeFormSize(aa.Height + 3, aa.Width + 12)
+                '    '    ElseIf 400 <= aa.Width Then
+                '    '        Form1.SetTimeFormSize(aa.Height + 3, aa.Width + 14)
+                '    '    Else
+                '    '        Form1.SetTimeFormSize(aa.Height + 3, aa.Width + 16)
+                '    '    End If
+                '    'ElseIf 100 < disi.DpiY < 135 Then
+                '    '    Form1.SetTimeFormSize(aa.Height - 17 * disi.DpiY * 0.01, aa.Width - 13 - 15 * disi.DpiY * 0.01)
+                '    'ElseIf 160 > disi.DpiY > 135 Then
+                '    '    Form1.SetTimeFormSize(aa.Height - 26 * disi.DpiY * 0.01, aa.Width - 60 - 60 * disi.DpiY * 0.01)
+                '    'ElseIf disi.DpiY > 160 Then
+                '    '    Form1.SetTimeFormSize(aa.Height - 30 * disi.DpiY * 0.01, aa.Width - 120 - 800 * disi.DpiY * 0.01)
+                '    'End If
 
-                    'If disi.DpiY < 100 Then
-                    '    If aa.Width <= 42 Then
-                    '        Form1.SetTimeFormSize(Form1.Label1.Font.Size * disi.DpiY * 0.01 + disi.DpiY * 0.01 * 20, aa.Width + 8)
-                    '    ElseIf 400 <= aa.Width Then
-                    '        Form1.SetTimeFormSize(Form1.Label1.Font.Size * disi.DpiY * 0.01 + disi.DpiY * 0.01 * 20, aa.Width + 10)
-                    '    Else
-                    '        Form1.SetTimeFormSize(Form1.Label1.Font.Size * disi.DpiY * 0.01 + disi.DpiY * 0.01 * 20, aa.Width + 6)
-                    '    End If
-                    'ElseIf 100 < disi.DpiY < 130 Then
-                    '    If aa.Width <= 42 Then
-                    '        Form1.SetTimeFormSize(Form1.Label1.Font.Size * disi.DpiY * 0.01 + disi.DpiY * 0.01 * 20, aa.Width + 8)
-                    '    ElseIf 400 <= aa.Width Then
-                    '        Form1.SetTimeFormSize(Form1.Label1.Font.Size * disi.DpiY * 0.01 + disi.DpiY * 0.01 * 20, aa.Width + 10)
-                    '    Else
-                    '        Form1.SetTimeFormSize(Form1.Label1.Font.Size * disi.DpiY * 0.01 + disi.DpiY * 0.01 * 20, aa.Width + 6)
-                    '    End If
-                    'ElseIf 130 < disi.DpiY < 150 Then
-                    '    If aa.Width <= 42 Then
-                    '        Form1.SetTimeFormSize(Form1.Label1.Font.Size * disi.DpiY * 0.01 + disi.DpiY * 0.01 * 3, aa.Width + 8)
-                    '    ElseIf 400 <= aa.Width Then
-                    '        Form1.SetTimeFormSize(Form1.Label1.Font.Size * disi.DpiY * 0.01 + disi.DpiY * 0.01 * 3, aa.Width + 10)
-                    '    Else
-                    '        Form1.SetTimeFormSize(Form1.Label1.Font.Size * disi.DpiY * 0.01 + disi.DpiY * 0.01 * 3, aa.Width + 6)
-                    '    End If
-                    'Else
-                    '    If aa.Width <= 42 Then
-                    '        Form1.SetTimeFormSize(Form1.Label1.Font.Size * disi.DpiY * 0.01 - disi.DpiY * 0.01 * 5, aa.Width + 8)
-                    '    ElseIf 400 <= aa.Width Then
-                    '        Form1.SetTimeFormSize(Form1.Label1.Font.Size * disi.DpiY * 0.01 - disi.DpiY * 0.01 * 5, aa.Width + 10)
-                    '    Else
-                    '        Form1.SetTimeFormSize(Form1.Label1.Font.Size * disi.DpiY * 0.01 - disi.DpiY * 0.01 * 5, aa.Width + 6)
-                    '    End If
-                    'End If
+                '    'If disi.DpiY < 100 Then
+                '    '    If aa.Width <= 42 Then
+                '    '        Form1.SetTimeFormSize(Form1.Label1.Font.Size * disi.DpiY * 0.01 + disi.DpiY * 0.01 * 20, aa.Width + 8)
+                '    '    ElseIf 400 <= aa.Width Then
+                '    '        Form1.SetTimeFormSize(Form1.Label1.Font.Size * disi.DpiY * 0.01 + disi.DpiY * 0.01 * 20, aa.Width + 10)
+                '    '    Else
+                '    '        Form1.SetTimeFormSize(Form1.Label1.Font.Size * disi.DpiY * 0.01 + disi.DpiY * 0.01 * 20, aa.Width + 6)
+                '    '    End If
+                '    'ElseIf 100 < disi.DpiY < 130 Then
+                '    '    If aa.Width <= 42 Then
+                '    '        Form1.SetTimeFormSize(Form1.Label1.Font.Size * disi.DpiY * 0.01 + disi.DpiY * 0.01 * 20, aa.Width + 8)
+                '    '    ElseIf 400 <= aa.Width Then
+                '    '        Form1.SetTimeFormSize(Form1.Label1.Font.Size * disi.DpiY * 0.01 + disi.DpiY * 0.01 * 20, aa.Width + 10)
+                '    '    Else
+                '    '        Form1.SetTimeFormSize(Form1.Label1.Font.Size * disi.DpiY * 0.01 + disi.DpiY * 0.01 * 20, aa.Width + 6)
+                '    '    End If
+                '    'ElseIf 130 < disi.DpiY < 150 Then
+                '    '    If aa.Width <= 42 Then
+                '    '        Form1.SetTimeFormSize(Form1.Label1.Font.Size * disi.DpiY * 0.01 + disi.DpiY * 0.01 * 3, aa.Width + 8)
+                '    '    ElseIf 400 <= aa.Width Then
+                '    '        Form1.SetTimeFormSize(Form1.Label1.Font.Size * disi.DpiY * 0.01 + disi.DpiY * 0.01 * 3, aa.Width + 10)
+                '    '    Else
+                '    '        Form1.SetTimeFormSize(Form1.Label1.Font.Size * disi.DpiY * 0.01 + disi.DpiY * 0.01 * 3, aa.Width + 6)
+                '    '    End If
+                '    'Else
+                '    '    If aa.Width <= 42 Then
+                '    '        Form1.SetTimeFormSize(Form1.Label1.Font.Size * disi.DpiY * 0.01 - disi.DpiY * 0.01 * 5, aa.Width + 8)
+                '    '    ElseIf 400 <= aa.Width Then
+                '    '        Form1.SetTimeFormSize(Form1.Label1.Font.Size * disi.DpiY * 0.01 - disi.DpiY * 0.01 * 5, aa.Width + 10)
+                '    '    Else
+                '    '        Form1.SetTimeFormSize(Form1.Label1.Font.Size * disi.DpiY * 0.01 - disi.DpiY * 0.01 * 5, aa.Width + 6)
+                '    '    End If
+                '    'End If
 
-                End If
+                'End If
 
                 If Form1.UnSaveData = 0 Then
                     AddReg("Software\CJH\TimeControl\Settings", "TimeFormat", 0, RegistryValueKind.DWord, "HKCU")
@@ -683,42 +719,43 @@ errcode:
                 'a = 0
                 'AddReg("Software\CJH\TimeControl\Settings", "TimeFormat", 1, RegistryValueKind.DWord, "HKCU")
                 'Form1.SetTimeFormSize(38, 90)
-                If Form1.MySize = 0 Then
-                    Dim aa As SizeF
-                    Dim b As Graphics = Graphics.FromImage(New Bitmap(1, 1))
-                    aa = TextRenderer.MeasureText(Form1.Label1.Text, Form1.Label1.Font)
-                    Dim c As Integer
-                    If aa.Width <= 42 Then
-                        Form1.GetTimeFormSize(38, aa.Width + 8)
-                    ElseIf 400 <= aa.Width Then
-                        Form1.GetTimeFormSize(aa.Height, aa.Width + 10)
-                    Else
-                        Form1.GetTimeFormSize(38, aa.Width + 6)
-                    End If
-                    c = Form1.Width - Form1.CaW
-                    If Not (Form1.SaveLoc = 1 And Form1.IsBootV = 1) Then
-                        If c <> 0 Then
-                            Form1.Location = New Point(Form1.Location.X + c / 2, Form1.Location.Y)
-                            If Form1.SaveLoc = 1 Then
-                                If Form1.UnSaveData = 0 Then
-                                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormX", Form1.Location.X, RegistryValueKind.DWord, "HKCU")
-                                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormY", Form1.Location.Y, RegistryValueKind.DWord, "HKCU")
-                                End If
+                ApplyAutoSize()
+                'If Form1.MySize = 0 Then
+                '    Dim aa As SizeF
+                '    Dim b As Graphics = Graphics.FromImage(New Bitmap(1, 1))
+                '    aa = TextRenderer.MeasureText(Form1.Label1.Text, Form1.Label1.Font)
+                '    Dim c As Integer
+                '    If aa.Width <= 42 Then
+                '        Form1.GetTimeFormSize(38, aa.Width + 8)
+                '    ElseIf 400 <= aa.Width Then
+                '        Form1.GetTimeFormSize(aa.Height, aa.Width + 10)
+                '    Else
+                '        Form1.GetTimeFormSize(38, aa.Width + 6)
+                '    End If
+                '    c = Form1.Width - Form1.CaW
+                '    If Not (Form1.SaveLoc = 1 And Form1.IsBootV = 1) Then
+                '        If c <> 0 Then
+                '            Form1.Location = New Point(Form1.Location.X + c / 2, Form1.Location.Y)
+                '            If Form1.SaveLoc = 1 Then
+                '                If Form1.UnSaveData = 0 Then
+                '                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormX", Form1.Location.X, RegistryValueKind.DWord, "HKCU")
+                '                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormY", Form1.Location.Y, RegistryValueKind.DWord, "HKCU")
+                '                End If
 
-                            End If
-                        End If
-                    End If
+                '            End If
+                '        End If
+                '    End If
 
-                    c = 0
-                    Form1.SetTimeFormSize(aa.Height, aa.Width)
-                    'If aa.Width <= 42 Then
-                    '    Form1.SetTimeFormSize(aa.Height, aa.Width + 8)
-                    'ElseIf 400 <= aa.Width Then
-                    '    Form1.SetTimeFormSize(aa.Height, aa.Width + 10)
-                    'Else
-                    '    Form1.SetTimeFormSize(aa.Height, aa.Width + 6)
-                    'End If
-                End If
+                '    c = 0
+                '    Form1.SetTimeFormSize(aa.Height, aa.Width)
+                '    'If aa.Width <= 42 Then
+                '    '    Form1.SetTimeFormSize(aa.Height, aa.Width + 8)
+                '    'ElseIf 400 <= aa.Width Then
+                '    '    Form1.SetTimeFormSize(aa.Height, aa.Width + 10)
+                '    'Else
+                '    '    Form1.SetTimeFormSize(aa.Height, aa.Width + 6)
+                '    'End If
+                'End If
 
                 If Form1.UnSaveData = 0 Then
                     AddReg("Software\CJH\TimeControl\Settings", "TimeFormat", 1, RegistryValueKind.DWord, "HKCU")
@@ -757,35 +794,36 @@ errcode:
                 'a = 0
                 'AddReg("Software\CJH\TimeControl\Settings", "TimeFormat", 2, RegistryValueKind.DWord, "HKCU")
                 'Form1.SetTimeFormSize(38, 120)
-                If Form1.MySize = 0 Then
-                    Dim aa As SizeF
-                    Dim b As Graphics = Graphics.FromImage(New Bitmap(1, 1))
-                    aa = TextRenderer.MeasureText(Form1.Label1.Text, Form1.Label1.Font)
-                    Dim c As Integer
-                    If aa.Width <= 42 Then
-                        Form1.GetTimeFormSize(38, aa.Width + 8)
-                    ElseIf 400 <= aa.Width Then
-                        Form1.GetTimeFormSize(aa.Height, aa.Width + 10)
-                    Else
-                        Form1.GetTimeFormSize(38, aa.Width + 6)
-                    End If
-                    c = Form1.Width - Form1.CaW
-                    If Not (Form1.SaveLoc = 1 And Form1.IsBootV = 1) Then
-                        If c <> 0 Then
-                            Form1.Location = New Point(Form1.Location.X + c / 2, Form1.Location.Y)
-                            If Form1.SaveLoc = 1 Then
-                                If Form1.UnSaveData = 0 Then
-                                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormX", Form1.Location.X, RegistryValueKind.DWord, "HKCU")
-                                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormY", Form1.Location.Y, RegistryValueKind.DWord, "HKCU")
-                                End If
+                'If Form1.MySize = 0 Then
+                '    Dim aa As SizeF
+                '    Dim b As Graphics = Graphics.FromImage(New Bitmap(1, 1))
+                '    aa = TextRenderer.MeasureText(Form1.Label1.Text, Form1.Label1.Font)
+                '    Dim c As Integer
+                '    If aa.Width <= 42 Then
+                '        Form1.GetTimeFormSize(38, aa.Width + 8)
+                '    ElseIf 400 <= aa.Width Then
+                '        Form1.GetTimeFormSize(aa.Height, aa.Width + 10)
+                '    Else
+                '        Form1.GetTimeFormSize(38, aa.Width + 6)
+                '    End If
+                '    c = Form1.Width - Form1.CaW
+                '    If Not (Form1.SaveLoc = 1 And Form1.IsBootV = 1) Then
+                '        If c <> 0 Then
+                '            Form1.Location = New Point(Form1.Location.X + c / 2, Form1.Location.Y)
+                '            If Form1.SaveLoc = 1 Then
+                '                If Form1.UnSaveData = 0 Then
+                '                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormX", Form1.Location.X, RegistryValueKind.DWord, "HKCU")
+                '                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormY", Form1.Location.Y, RegistryValueKind.DWord, "HKCU")
+                '                End If
 
-                            End If
-                        End If
-                    End If
+                '            End If
+                '        End If
+                '    End If
 
-                    c = 0
-                    Form1.SetTimeFormSize(aa.Height, aa.Width)
-                End If
+                '    c = 0
+                '    Form1.SetTimeFormSize(aa.Height, aa.Width)
+                'End If
+                ApplyAutoSize()
 
                 If Form1.UnSaveData = 0 Then
                     AddReg("Software\CJH\TimeControl\Settings", "TimeFormat", 2, RegistryValueKind.DWord, "HKCU")
@@ -824,35 +862,36 @@ errcode:
                 'a = 0
                 'AddReg("Software\CJH\TimeControl\Settings", "TimeFormat", 3, RegistryValueKind.DWord, "HKCU")
                 'Form1.SetTimeFormSize(38, 90)
-                If Form1.MySize = 0 Then
-                    Dim aa As SizeF
-                    Dim b As Graphics = Graphics.FromImage(New Bitmap(1, 1))
-                    aa = TextRenderer.MeasureText(Form1.Label1.Text, Form1.Label1.Font)
-                    Dim c As Integer
-                    If aa.Width <= 42 Then
-                        Form1.GetTimeFormSize(38, aa.Width + 8)
-                    ElseIf 400 <= aa.Width Then
-                        Form1.GetTimeFormSize(aa.Height, aa.Width + 10)
-                    Else
-                        Form1.GetTimeFormSize(38, aa.Width + 6)
-                    End If
-                    c = Form1.Width - Form1.CaW
-                    If Not (Form1.SaveLoc = 1 And Form1.IsBootV = 1) Then
-                        If c <> 0 Then
-                            Form1.Location = New Point(Form1.Location.X + c / 2, Form1.Location.Y)
-                            If Form1.SaveLoc = 1 Then
-                                If Form1.UnSaveData = 0 Then
-                                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormX", Form1.Location.X, RegistryValueKind.DWord, "HKCU")
-                                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormY", Form1.Location.Y, RegistryValueKind.DWord, "HKCU")
-                                End If
+                'If Form1.MySize = 0 Then
+                '    Dim aa As SizeF
+                '    Dim b As Graphics = Graphics.FromImage(New Bitmap(1, 1))
+                '    aa = TextRenderer.MeasureText(Form1.Label1.Text, Form1.Label1.Font)
+                '    Dim c As Integer
+                '    If aa.Width <= 42 Then
+                '        Form1.GetTimeFormSize(38, aa.Width + 8)
+                '    ElseIf 400 <= aa.Width Then
+                '        Form1.GetTimeFormSize(aa.Height, aa.Width + 10)
+                '    Else
+                '        Form1.GetTimeFormSize(38, aa.Width + 6)
+                '    End If
+                '    c = Form1.Width - Form1.CaW
+                '    If Not (Form1.SaveLoc = 1 And Form1.IsBootV = 1) Then
+                '        If c <> 0 Then
+                '            Form1.Location = New Point(Form1.Location.X + c / 2, Form1.Location.Y)
+                '            If Form1.SaveLoc = 1 Then
+                '                If Form1.UnSaveData = 0 Then
+                '                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormX", Form1.Location.X, RegistryValueKind.DWord, "HKCU")
+                '                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormY", Form1.Location.Y, RegistryValueKind.DWord, "HKCU")
+                '                End If
 
-                            End If
-                        End If
-                    End If
+                '            End If
+                '        End If
+                '    End If
 
-                    c = 0
-                    Form1.SetTimeFormSize(aa.Height, aa.Width)
-                End If
+                '    c = 0
+                '    Form1.SetTimeFormSize(aa.Height, aa.Width)
+                'End If
+                ApplyAutoSize()
 
                 If Form1.UnSaveData = 0 Then
                     AddReg("Software\CJH\TimeControl\Settings", "TimeFormat", 3, RegistryValueKind.DWord, "HKCU")
@@ -887,35 +926,36 @@ errcode:
                 'a = 0
                 'AddReg("Software\CJH\TimeControl\Settings", "TimeFormat", 4, RegistryValueKind.DWord, "HKCU")
                 'Form1.SetTimeFormSize(38, 400)
-                If Form1.MySize = 0 Then
-                    Dim aa As SizeF
-                    Dim b As Graphics = Graphics.FromImage(New Bitmap(1, 1))
-                    aa = TextRenderer.MeasureText(Form1.Label1.Text, Form1.Label1.Font)
-                    Dim c As Integer
-                    If aa.Width <= 42 Then
-                        Form1.GetTimeFormSize(38, aa.Width + 8)
-                    ElseIf 400 <= aa.Width Then
-                        Form1.GetTimeFormSize(aa.Height, aa.Width + 10)
-                    Else
-                        Form1.GetTimeFormSize(38, aa.Width + 6)
-                    End If
-                    c = Form1.Width - Form1.CaW
-                    If Not (Form1.SaveLoc = 1 And Form1.IsBootV = 1) Then
-                        If c <> 0 Then
-                            Form1.Location = New Point(Form1.Location.X + c / 2, Form1.Location.Y)
-                            If Form1.SaveLoc = 1 Then
-                                If Form1.UnSaveData = 0 Then
-                                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormX", Form1.Location.X, RegistryValueKind.DWord, "HKCU")
-                                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormY", Form1.Location.Y, RegistryValueKind.DWord, "HKCU")
-                                End If
+                'If Form1.MySize = 0 Then
+                '    Dim aa As SizeF
+                '    Dim b As Graphics = Graphics.FromImage(New Bitmap(1, 1))
+                '    aa = TextRenderer.MeasureText(Form1.Label1.Text, Form1.Label1.Font)
+                '    Dim c As Integer
+                '    If aa.Width <= 42 Then
+                '        Form1.GetTimeFormSize(38, aa.Width + 8)
+                '    ElseIf 400 <= aa.Width Then
+                '        Form1.GetTimeFormSize(aa.Height, aa.Width + 10)
+                '    Else
+                '        Form1.GetTimeFormSize(38, aa.Width + 6)
+                '    End If
+                '    c = Form1.Width - Form1.CaW
+                '    If Not (Form1.SaveLoc = 1 And Form1.IsBootV = 1) Then
+                '        If c <> 0 Then
+                '            Form1.Location = New Point(Form1.Location.X + c / 2, Form1.Location.Y)
+                '            If Form1.SaveLoc = 1 Then
+                '                If Form1.UnSaveData = 0 Then
+                '                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormX", Form1.Location.X, RegistryValueKind.DWord, "HKCU")
+                '                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormY", Form1.Location.Y, RegistryValueKind.DWord, "HKCU")
+                '                End If
 
-                            End If
-                        End If
-                    End If
+                '            End If
+                '        End If
+                '    End If
 
-                    c = 0
-                    Form1.SetTimeFormSize(aa.Height, aa.Width)
-                End If
+                '    c = 0
+                '    Form1.SetTimeFormSize(aa.Height, aa.Width)
+                'End If
+                ApplyAutoSize()
 
                 If Form1.UnSaveData = 0 Then
                     AddReg("Software\CJH\TimeControl\Settings", "TimeFormat", 4, RegistryValueKind.DWord, "HKCU")
@@ -955,35 +995,36 @@ errcode:
                 'a = 0
                 'AddReg("Software\CJH\TimeControl\Settings", "TimeFormat", 5, RegistryValueKind.DWord, "HKCU")
                 'Form1.SetTimeFormSize(38, 300)
-                If Form1.MySize = 0 Then
-                    Dim aa As SizeF
-                    Dim b As Graphics = Graphics.FromImage(New Bitmap(1, 1))
-                    aa = TextRenderer.MeasureText(Form1.Label1.Text, Form1.Label1.Font)
-                    Dim c As Integer
-                    If aa.Width <= 42 Then
-                        Form1.GetTimeFormSize(38, aa.Width + 8)
-                    ElseIf 400 <= aa.Width Then
-                        Form1.GetTimeFormSize(aa.Height, aa.Width + 10)
-                    Else
-                        Form1.GetTimeFormSize(38, aa.Width + 6)
-                    End If
-                    c = Form1.Width - Form1.CaW
-                    If Not (Form1.SaveLoc = 1 And Form1.IsBootV = 1) Then
-                        If c <> 0 Then
-                            Form1.Location = New Point(Form1.Location.X + c / 2, Form1.Location.Y)
-                            If Form1.SaveLoc = 1 Then
-                                If Form1.UnSaveData = 0 Then
-                                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormX", Form1.Location.X, RegistryValueKind.DWord, "HKCU")
-                                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormY", Form1.Location.Y, RegistryValueKind.DWord, "HKCU")
-                                End If
+                'If Form1.MySize = 0 Then
+                '    Dim aa As SizeF
+                '    Dim b As Graphics = Graphics.FromImage(New Bitmap(1, 1))
+                '    aa = TextRenderer.MeasureText(Form1.Label1.Text, Form1.Label1.Font)
+                '    Dim c As Integer
+                '    If aa.Width <= 42 Then
+                '        Form1.GetTimeFormSize(38, aa.Width + 8)
+                '    ElseIf 400 <= aa.Width Then
+                '        Form1.GetTimeFormSize(aa.Height, aa.Width + 10)
+                '    Else
+                '        Form1.GetTimeFormSize(38, aa.Width + 6)
+                '    End If
+                '    c = Form1.Width - Form1.CaW
+                '    If Not (Form1.SaveLoc = 1 And Form1.IsBootV = 1) Then
+                '        If c <> 0 Then
+                '            Form1.Location = New Point(Form1.Location.X + c / 2, Form1.Location.Y)
+                '            If Form1.SaveLoc = 1 Then
+                '                If Form1.UnSaveData = 0 Then
+                '                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormX", Form1.Location.X, RegistryValueKind.DWord, "HKCU")
+                '                    RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormY", Form1.Location.Y, RegistryValueKind.DWord, "HKCU")
+                '                End If
 
-                            End If
-                        End If
-                    End If
+                '            End If
+                '        End If
+                '    End If
 
-                    c = 0
-                    Form1.SetTimeFormSize(aa.Height, aa.Width)
-                End If
+                '    c = 0
+                '    Form1.SetTimeFormSize(aa.Height, aa.Width)
+                'End If
+                ApplyAutoSize()
                 If Form1.UnSaveData = 0 Then
                     AddReg("Software\CJH\TimeControl\Settings", "TimeFormat", 5, RegistryValueKind.DWord, "HKCU")
                 End If
@@ -1031,8 +1072,8 @@ errcode:
             End Try
             If Form1.MySize = 0 Then
                 Dim a As SizeF
-                Dim b As Graphics = Graphics.FromImage(New Bitmap(1, 1))
-                a = TextRenderer.MeasureText(Form1.Label1.Text, Form1.Label1.Font)
+                'Dim b As Graphics = Graphics.FromImage(New Bitmap(1, 1))
+                a = TextRenderer.MeasureText(Form1.Label1.Text, FontDialog1.Font)
                 Dim c As Integer
                 If a.Width <= 42 Then
                     Form1.GetTimeFormSize(38, a.Width + 8)
@@ -1041,13 +1082,14 @@ errcode:
                 Else
                     Form1.GetTimeFormSize(38, a.Width + 6)
                 End If
-                c = Form1.Width - Form1.CaW
+                c = Form1.TimeFormSize.X - Form1.CaW
                 If c <> 0 Then
-                    Form1.Location = New Point(Form1.Location.X + c / 2, Form1.Location.Y)
+                    Dim baseLoc As Point = If(Form1.WindowState = FormWindowState.Maximized, Form1.RestoreBounds.Location, Form1.Location)
+                    Form1.Location = New Point(baseLoc.X + c / 2, baseLoc.Y)
                     If Form1.SaveLoc = 1 Then
                         If Form1.UnSaveData = 0 Then
-                            RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormX", Form1.Location.X, RegistryValueKind.DWord, "HKCU")
-                            RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormY", Form1.Location.Y, RegistryValueKind.DWord, "HKCU")
+                            RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormX", baseLoc.X + c / 2, RegistryValueKind.DWord, "HKCU")
+                            RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormY", baseLoc.Y, RegistryValueKind.DWord, "HKCU")
                         End If
                     End If
                 End If
@@ -1168,12 +1210,12 @@ errcode:
                 RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFontB", Form1.Label1.ForeColor.B, RegistryValueKind.DWord, "HKCU")
                 ColorDialog1.Color = Form1.Label1.ForeColor
 
-                FontDialog2.Font = New System.Drawing.Font("Segoe UI", 72.0F, FontStyle.Regular, GraphicsUnit.Point)
+                FontDialog2.Font = New System.Drawing.Font("Segoe UI", 128.0F, FontStyle.Regular, GraphicsUnit.Point)
 
                 ColorDialog2.Color = Form1.Label1.ForeColor
 
                 RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "FullScreenFont", "Segoe UI", RegistryValueKind.String, "HKCU")
-                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "FullScreenFontPx", 72, RegistryValueKind.DWord, "HKCU")
+                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "FullScreenFontPx", 128, RegistryValueKind.DWord, "HKCU")
                 RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "FullScreenFontItalic", 0, RegistryValueKind.DWord, "HKCU")
                 RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "FullScreenFontBold", 0, RegistryValueKind.DWord, "HKCU")
                 RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "FullScreenFontUnderLine", 0, RegistryValueKind.DWord, "HKCU")
@@ -1290,8 +1332,8 @@ errcode:
 
             If Form1.MySize = 0 Then
                 Dim aa As SizeF
-                Dim b As Graphics = Graphics.FromImage(New Bitmap(1, 1))
-                aa = TextRenderer.MeasureText(Form1.Label1.Text, Form1.Label1.Font)
+                'Dim b As Graphics = Graphics.FromImage(New Bitmap(1, 1))
+                aa = TextRenderer.MeasureText(Form1.Label1.Text, FontDialog1.Font)
                 Dim c As Integer
                 If aa.Width <= 42 Then
                     Form1.GetTimeFormSize(38, aa.Width + 8)
@@ -1300,13 +1342,14 @@ errcode:
                 Else
                     Form1.GetTimeFormSize(38, aa.Width + 6)
                 End If
-                c = Form1.Width - Form1.CaW
+                c = Form1.TimeFormSize.X - Form1.CaW
                 If c <> 0 Then
-                    Form1.Location = New Point(Form1.Location.X + c / 2, Form1.Location.Y)
+                    Dim baseLoc As Point = If(Form1.WindowState = FormWindowState.Maximized, Form1.RestoreBounds.Location, Form1.Location)
+                    Form1.Location = New Point(baseLoc.X + c / 2, baseLoc.Y)
                     If Form1.SaveLoc = 1 Then
                         If Form1.UnSaveData = 0 Then
-                            RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormX", Form1.Location.X, RegistryValueKind.DWord, "HKCU")
-                            RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormY", Form1.Location.Y, RegistryValueKind.DWord, "HKCU")
+                            RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormX", baseLoc.X + c / 2, RegistryValueKind.DWord, "HKCU")
+                            RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormY", baseLoc.Y, RegistryValueKind.DWord, "HKCU")
                         End If
 
                     End If
@@ -1358,8 +1401,8 @@ errcode:
 
 
             Dim aa As SizeF
-            Dim b As Graphics = Graphics.FromImage(New Bitmap(1, 1))
-            aa = TextRenderer.MeasureText(Form1.Label1.Text, Form1.Label1.Font)
+            'Dim b As Graphics = Graphics.FromImage(New Bitmap(1, 1))
+            aa = TextRenderer.MeasureText(Form1.Label1.Text, FontDialog1.Font)
             Dim c As Integer
             If aa.Width <= 42 Then
                 Form1.GetTimeFormSize(38, aa.Width + 8)
@@ -1368,14 +1411,15 @@ errcode:
             Else
                 Form1.GetTimeFormSize(38, aa.Width + 6)
             End If
-            c = Form1.Width - Form1.CaW
+            c = Form1.TimeFormSize.X - Form1.CaW
             If Not (Form1.SaveLoc = 1 And Form1.IsBootV = 1) Then
                 If c <> 0 Then
-                    Form1.Location = New Point(Form1.Location.X + c / 2, Form1.Location.Y)
+                    Dim baseLoc As Point = If(Form1.WindowState = FormWindowState.Maximized, Form1.RestoreBounds.Location, Form1.Location)
+                    Form1.Location = New Point(baseLoc.X + c / 2, baseLoc.Y)
                     If Form1.SaveLoc = 1 Then
                         If Form1.UnSaveData = 0 Then
-                            RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormX", Form1.Location.X, RegistryValueKind.DWord, "HKCU")
-                            RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormY", Form1.Location.Y, RegistryValueKind.DWord, "HKCU")
+                            RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormX", baseLoc.X + c / 2, RegistryValueKind.DWord, "HKCU")
+                            RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormY", baseLoc.Y, RegistryValueKind.DWord, "HKCU")
                         End If
 
                     End If
@@ -1437,7 +1481,7 @@ errcode:
                 MsgBox("设置自定义大小失败。" & vbCrLf & "大小不能为空。", MsgBoxStyle.Critical, "错误")
             Else
                 Dim c As Integer
-                c = Form1.Width - TextBox3.Text
+                c = Form1.TimeFormSize.X - TextBox3.Text
 
                 Form1.Width = TextBox3.Text
                 Form1.Height = TextBox4.Text
@@ -1473,11 +1517,12 @@ errcode:
 
                 If Not (Form1.SaveLoc = 1 And Form1.IsBootV = 1) Then
                     If c <> 0 Then
-                        Form1.Location = New Point(Form1.Location.X + c / 2, Form1.Location.Y)
+                        Dim baseLoc As Point = If(Form1.WindowState = FormWindowState.Maximized, Form1.RestoreBounds.Location, Form1.Location)
+                        Form1.Location = New Point(baseLoc.X + c / 2, baseLoc.Y)
                         If Form1.SaveLoc = 1 Then
                             If Form1.UnSaveData = 0 Then
-                                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormX", Form1.Location.X, RegistryValueKind.DWord, "HKCU")
-                                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormY", Form1.Location.Y, RegistryValueKind.DWord, "HKCU")
+                                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormX", baseLoc.X + c / 2, RegistryValueKind.DWord, "HKCU")
+                                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormY", baseLoc.Y, RegistryValueKind.DWord, "HKCU")
                             End If
                         End If
                     End If
@@ -1709,8 +1754,8 @@ errcode:
                 If Form1.MySize = 0 Then
                     Form1.Label1.Text = Format(Now(), Form1.TimeF) & "." & DateTime.Now.Millisecond
                     Dim aa As SizeF
-                    Dim b As Graphics = Graphics.FromImage(New Bitmap(1, 1))
-                    aa = TextRenderer.MeasureText(Form1.Label1.Text, Form1.Label1.Font)
+                    'Dim b As Graphics = Graphics.FromImage(New Bitmap(1, 1))
+                    aa = TextRenderer.MeasureText(Form1.Label1.Text, FontDialog1.Font)
                     Form1.Timer1.Interval = 100
                     Dim c As Integer
                     If aa.Width <= 42 Then
@@ -1720,13 +1765,14 @@ errcode:
                     Else
                         Form1.GetTimeFormSize(38, aa.Width + 6)
                     End If
-                    c = Form1.Width - Form1.CaW
+                    c = Form1.TimeFormSize.X - Form1.CaW
                     If c <> 0 Then
-                        Form1.Location = New Point(Form1.Location.X + c / 2, Form1.Location.Y)
+                        Dim baseLoc As Point = If(Form1.WindowState = FormWindowState.Maximized, Form1.RestoreBounds.Location, Form1.Location)
+                        Form1.Location = New Point(baseLoc.X + c / 2, baseLoc.Y)
                         If Form1.SaveLoc = 1 Then
                             If Form1.UnSaveData = 0 Then
-                                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormX", Form1.Location.X, RegistryValueKind.DWord, "HKCU")
-                                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormY", Form1.Location.Y, RegistryValueKind.DWord, "HKCU")
+                                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormX", baseLoc.X + c / 2, RegistryValueKind.DWord, "HKCU")
+                                RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormY", baseLoc.Y, RegistryValueKind.DWord, "HKCU")
                             End If
 
                         End If
@@ -1740,8 +1786,8 @@ errcode:
                 Form1.Label1.Text = Format(Now(), Form1.TimeF)
                 Form1.Timer1.Interval = 1000
                 Dim aa As SizeF
-                Dim b As Graphics = Graphics.FromImage(New Bitmap(1, 1))
-                aa = TextRenderer.MeasureText(Form1.Label1.Text, Form1.Label1.Font)
+                'Dim b As Graphics = Graphics.FromImage(New Bitmap(1, 1))
+                aa = TextRenderer.MeasureText(Form1.Label1.Text, FontDialog1.Font)
                 Dim c As Integer
                 If aa.Width <= 42 Then
                     Form1.GetTimeFormSize(38, aa.Width + 8)
@@ -1750,13 +1796,14 @@ errcode:
                 Else
                     Form1.GetTimeFormSize(38, aa.Width + 6)
                 End If
-                c = Form1.Width - Form1.CaW
+                c = Form1.TimeFormSize.X - Form1.CaW
                 If c <> 0 Then
-                    Form1.Location = New Point(Form1.Location.X + c / 2, Form1.Location.Y)
+                    Dim baseLoc As Point = If(Form1.WindowState = FormWindowState.Maximized, Form1.RestoreBounds.Location, Form1.Location)
+                    Form1.Location = New Point(baseLoc.X + c / 2, baseLoc.Y)
                     If Form1.SaveLoc = 1 Then
                         If Form1.UnSaveData = 0 Then
-                            RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormX", Form1.Location.X, RegistryValueKind.DWord, "HKCU")
-                            RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormY", Form1.Location.Y, RegistryValueKind.DWord, "HKCU")
+                            RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormX", baseLoc.X + c / 2, RegistryValueKind.DWord, "HKCU")
+                            RegKeyModule.AddReg("Software\CJH\TimeControl\Settings", "TimeFormY", baseLoc.Y, RegistryValueKind.DWord, "HKCU")
                         End If
 
                     End If

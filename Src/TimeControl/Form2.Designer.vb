@@ -98,7 +98,7 @@ Partial Class Form2
         Me.Button1.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
         Me.Button1.Name = "Button1"
         Me.Button1.Size = New System.Drawing.Size(113, 27)
-        Me.Button1.TabIndex = 31
+        Me.Button1.TabIndex = 35
         Me.Button1.Text = "关闭(&C)"
         Me.Button1.UseVisualStyleBackColor = True
         '
@@ -135,7 +135,7 @@ Partial Class Form2
         Me.TextBox1.Location = New System.Drawing.Point(515, 292)
         Me.TextBox1.Name = "TextBox1"
         Me.TextBox1.Size = New System.Drawing.Size(95, 27)
-        Me.TextBox1.TabIndex = 19
+        Me.TextBox1.TabIndex = 22
         '
         'ComboBox1
         '
@@ -148,7 +148,7 @@ Partial Class Form2
         Me.ComboBox1.Location = New System.Drawing.Point(620, 291)
         Me.ComboBox1.Name = "ComboBox1"
         Me.ComboBox1.Size = New System.Drawing.Size(121, 28)
-        Me.ComboBox1.TabIndex = 20
+        Me.ComboBox1.TabIndex = 23
         '
         'Button2
         '
@@ -156,7 +156,7 @@ Partial Class Form2
         Me.Button2.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
         Me.Button2.Name = "Button2"
         Me.Button2.Size = New System.Drawing.Size(113, 27)
-        Me.Button2.TabIndex = 21
+        Me.Button2.TabIndex = 24
         Me.Button2.Text = "应用"
         Me.Button2.UseVisualStyleBackColor = True
         '
@@ -186,7 +186,7 @@ Partial Class Form2
         Me.CheckBox1.Location = New System.Drawing.Point(33, 496)
         Me.CheckBox1.Name = "CheckBox1"
         Me.CheckBox1.Size = New System.Drawing.Size(88, 24)
-        Me.CheckBox1.TabIndex = 10
+        Me.CheckBox1.TabIndex = 12
         Me.CheckBox1.Text = "始终顶置"
         Me.CheckBox1.UseVisualStyleBackColor = True
         '
@@ -196,7 +196,7 @@ Partial Class Form2
         Me.CheckBox2.Location = New System.Drawing.Point(32, 556)
         Me.CheckBox2.Name = "CheckBox2"
         Me.CheckBox2.Size = New System.Drawing.Size(88, 24)
-        Me.CheckBox2.TabIndex = 11
+        Me.CheckBox2.TabIndex = 14
         Me.CheckBox2.Text = "允许拖动"
         Me.CheckBox2.UseVisualStyleBackColor = True
         '
@@ -227,7 +227,7 @@ Partial Class Form2
         Me.Button3.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
         Me.Button3.Name = "Button3"
         Me.Button3.Size = New System.Drawing.Size(113, 27)
-        Me.Button3.TabIndex = 22
+        Me.Button3.TabIndex = 25
         Me.Button3.Text = "退出(&X)"
         Me.Button3.UseVisualStyleBackColor = False
         '
@@ -297,7 +297,7 @@ Partial Class Form2
         Me.Button5.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
         Me.Button5.Name = "Button5"
         Me.Button5.Size = New System.Drawing.Size(133, 27)
-        Me.Button5.TabIndex = 30
+        Me.Button5.TabIndex = 33
         Me.Button5.Text = "恢复默认设置(&D)"
         Me.Button5.UseVisualStyleBackColor = True
         '
@@ -307,7 +307,7 @@ Partial Class Form2
         Me.Button6.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
         Me.Button6.Name = "Button6"
         Me.Button6.Size = New System.Drawing.Size(113, 27)
-        Me.Button6.TabIndex = 23
+        Me.Button6.TabIndex = 26
         Me.Button6.Text = "隐藏(&H)"
         Me.Button6.UseVisualStyleBackColor = True
         '
@@ -317,7 +317,7 @@ Partial Class Form2
         Me.CheckBox3.Location = New System.Drawing.Point(474, 112)
         Me.CheckBox3.Name = "CheckBox3"
         Me.CheckBox3.Size = New System.Drawing.Size(133, 24)
-        Me.CheckBox3.TabIndex = 12
+        Me.CheckBox3.TabIndex = 15
         Me.CheckBox3.Text = "保存小工具位置"
         Me.CheckBox3.UseVisualStyleBackColor = True
         '
@@ -351,7 +351,7 @@ Partial Class Form2
         Me.Button8.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
         Me.Button8.Name = "Button8"
         Me.Button8.Size = New System.Drawing.Size(145, 27)
-        Me.Button8.TabIndex = 9
+        Me.Button8.TabIndex = 10
         Me.Button8.Text = "设置普通字体颜色"
         Me.Button8.UseVisualStyleBackColor = True
         '
@@ -370,7 +370,7 @@ Partial Class Form2
         Me.CheckBox4.Location = New System.Drawing.Point(474, 172)
         Me.CheckBox4.Name = "CheckBox4"
         Me.CheckBox4.Size = New System.Drawing.Size(133, 24)
-        Me.CheckBox4.TabIndex = 14
+        Me.CheckBox4.TabIndex = 17
         Me.CheckBox4.Text = "使用自定义大小"
         Me.CheckBox4.UseVisualStyleBackColor = True
         '
@@ -389,7 +389,7 @@ Partial Class Form2
         Me.TextBox3.Location = New System.Drawing.Point(515, 196)
         Me.TextBox3.Name = "TextBox3"
         Me.TextBox3.Size = New System.Drawing.Size(83, 27)
-        Me.TextBox3.TabIndex = 15
+        Me.TextBox3.TabIndex = 18
         '
         'TextBox4
         '
@@ -397,7 +397,7 @@ Partial Class Form2
         Me.TextBox4.Location = New System.Drawing.Point(649, 196)
         Me.TextBox4.Name = "TextBox4"
         Me.TextBox4.Size = New System.Drawing.Size(83, 27)
-        Me.TextBox4.TabIndex = 16
+        Me.TextBox4.TabIndex = 19
         '
         'Label13
         '
@@ -414,7 +414,7 @@ Partial Class Form2
         Me.Button9.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
         Me.Button9.Name = "Button9"
         Me.Button9.Size = New System.Drawing.Size(113, 27)
-        Me.Button9.TabIndex = 17
+        Me.Button9.TabIndex = 20
         Me.Button9.Text = "应用"
         Me.Button9.UseVisualStyleBackColor = True
         '
@@ -485,7 +485,7 @@ Partial Class Form2
         Me.TrackBar1.Name = "TrackBar1"
         Me.TrackBar1.Size = New System.Drawing.Size(247, 45)
         Me.TrackBar1.SmallChange = 2
-        Me.TrackBar1.TabIndex = 18
+        Me.TrackBar1.TabIndex = 21
         Me.TrackBar1.TickFrequency = 2
         Me.TrackBar1.TickStyle = System.Windows.Forms.TickStyle.Both
         Me.TrackBar1.Value = 20
@@ -515,7 +515,7 @@ Partial Class Form2
         Me.LinkLabel1.Location = New System.Drawing.Point(466, 502)
         Me.LinkLabel1.Name = "LinkLabel1"
         Me.LinkLabel1.Size = New System.Drawing.Size(69, 20)
-        Me.LinkLabel1.TabIndex = 25
+        Me.LinkLabel1.TabIndex = 28
         Me.LinkLabel1.TabStop = True
         Me.LinkLabel1.Text = "项目主页"
         '
@@ -526,7 +526,7 @@ Partial Class Form2
         Me.LinkLabel2.Location = New System.Drawing.Point(541, 502)
         Me.LinkLabel2.Name = "LinkLabel2"
         Me.LinkLabel2.Size = New System.Drawing.Size(69, 20)
-        Me.LinkLabel2.TabIndex = 26
+        Me.LinkLabel2.TabIndex = 29
         Me.LinkLabel2.TabStop = True
         Me.LinkLabel2.Text = "反馈问题"
         '
@@ -536,7 +536,7 @@ Partial Class Form2
         Me.CheckBox5.Location = New System.Drawing.Point(474, 142)
         Me.CheckBox5.Name = "CheckBox5"
         Me.CheckBox5.Size = New System.Drawing.Size(297, 24)
-        Me.CheckBox5.TabIndex = 13
+        Me.CheckBox5.TabIndex = 16
         Me.CheckBox5.Text = "显示毫秒（仅HH:mm:ss显示格式可用）"
         Me.CheckBox5.UseVisualStyleBackColor = True
         '
@@ -548,7 +548,7 @@ Partial Class Form2
         Me.LinkLabel3.Location = New System.Drawing.Point(719, 502)
         Me.LinkLabel3.Name = "LinkLabel3"
         Me.LinkLabel3.Size = New System.Drawing.Size(144, 20)
-        Me.LinkLabel3.TabIndex = 29
+        Me.LinkLabel3.TabIndex = 32
         Me.LinkLabel3.TabStop = True
         Me.LinkLabel3.Text = "删除配置并退出程序"
         '
@@ -568,7 +568,7 @@ Partial Class Form2
         Me.LinkLabel4.Location = New System.Drawing.Point(661, 502)
         Me.LinkLabel4.Name = "LinkLabel4"
         Me.LinkLabel4.Size = New System.Drawing.Size(52, 20)
-        Me.LinkLabel4.TabIndex = 28
+        Me.LinkLabel4.TabIndex = 31
         Me.LinkLabel4.TabStop = True
         Me.LinkLabel4.Text = "GPL-3"
         '
@@ -579,7 +579,7 @@ Partial Class Form2
         Me.LinkLabel5.Location = New System.Drawing.Point(616, 502)
         Me.LinkLabel5.Name = "LinkLabel5"
         Me.LinkLabel5.Size = New System.Drawing.Size(39, 20)
-        Me.LinkLabel5.TabIndex = 27
+        Me.LinkLabel5.TabIndex = 30
         Me.LinkLabel5.TabStop = True
         Me.LinkLabel5.Text = "帮助"
         '
@@ -603,7 +603,7 @@ Partial Class Form2
         Me.Button12.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
         Me.Button12.Name = "Button12"
         Me.Button12.Size = New System.Drawing.Size(148, 27)
-        Me.Button12.TabIndex = 24
+        Me.Button12.TabIndex = 27
         Me.Button12.Text = "重启本程序(&R)"
         Me.Button12.UseVisualStyleBackColor = False
         '
@@ -613,7 +613,7 @@ Partial Class Form2
         Me.CheckBox6.Location = New System.Drawing.Point(32, 526)
         Me.CheckBox6.Name = "CheckBox6"
         Me.CheckBox6.Size = New System.Drawing.Size(431, 24)
-        Me.CheckBox6.TabIndex = 60
+        Me.CheckBox6.TabIndex = 13
         Me.CheckBox6.Text = "使用 UIAccess 权限顶置（重启程序生效，需要管理员权限）"
         Me.CheckBox6.UseVisualStyleBackColor = True
         '
@@ -646,7 +646,7 @@ Partial Class Form2
         Me.Button13.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
         Me.Button13.Name = "Button13"
         Me.Button13.Size = New System.Drawing.Size(113, 27)
-        Me.Button13.TabIndex = 61
+        Me.Button13.TabIndex = 9
         Me.Button13.Text = "设置全屏字体"
         Me.Button13.UseVisualStyleBackColor = True
         '
@@ -656,7 +656,7 @@ Partial Class Form2
         Me.Button14.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
         Me.Button14.Name = "Button14"
         Me.Button14.Size = New System.Drawing.Size(145, 27)
-        Me.Button14.TabIndex = 62
+        Me.Button14.TabIndex = 11
         Me.Button14.Text = "设置全屏字体颜色"
         Me.Button14.UseVisualStyleBackColor = True
         '
@@ -666,7 +666,7 @@ Partial Class Form2
         Me.Button15.Margin = New System.Windows.Forms.Padding(3, 4, 3, 4)
         Me.Button15.Name = "Button15"
         Me.Button15.Size = New System.Drawing.Size(133, 27)
-        Me.Button15.TabIndex = 63
+        Me.Button15.TabIndex = 34
         Me.Button15.Text = "导出设置(&E)"
         Me.Button15.UseVisualStyleBackColor = True
         '
